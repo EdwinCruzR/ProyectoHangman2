@@ -1,0 +1,71 @@
+* {
+    font-size: large;
+}
+.spanVidas{
+    font-size: 1.6rem;
+    color: brown;
+}
+.spanVerbo{
+    font-size: 1.6rem;
+}
+
+.spanPista{
+    font-size: 1.2rem;
+    color:blue;
+}
+.spanPuntos{
+    font-size: 1.2rem;
+    color:blue;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.oculto {
+    visibility: hidden;
+}
+
+.quitar {
+    display: none;
+}
+
+.poner {
+    display: block;
+}
+
+.visible {
+    visibility: visible;
+}
+
+#divHangman{
+    position: relative;
+    display: flex;
+    height: 210px;
+}
+
+#divHangman img{
+    position: absolute;
+    fill: transparent;
+}
+
+.botonLetra {
+    width: calc(1.9em);
+    border-radius: 70%;
+}
+.botonLetra:hover {
+
+    background-color: coral;
+}
+
+
+@media (max-width:600px){
+    #divHangman img{
+        margin-left: 15%;
+    }
+}
+
+@media (max-width:400px){
+    
+    #divHangman img{
+        margin-left: 20%;
+    }
+    
+}
