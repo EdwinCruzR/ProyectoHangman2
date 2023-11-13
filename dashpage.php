@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/styledash.css">
+    <link rel="stylesheet" href="/styledash.css">
     <title>Dashboard</title>
 </head>
 <body>
@@ -77,8 +77,55 @@
 
     <div class="salas">
         <div id="sala_crear" class="content">
-        <h2>Contenido para crear salas</h2>
-        <p>Este es el contenido que se mostrará cuando se seleccione la Opción 1.</p>
+            <div class="form-container">
+                <h1>Crear Sala de Juego</h1>
+
+                <form id="gameForm" action="#" method="post">
+                <label class="form-label" for="roomName">Nombre de la sala:</label>
+                <input class="form-input" type="text" id="roomName" name="roomName" maxlength="50" required>
+
+                <label class="form-label" for="roomDescription">Descripción de la sala:</label>
+                <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required></textarea>
+
+                <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
+                <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()">
+
+                <label class="form-label" for="numLives">Número de vidas:</label>
+                <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="3" disabled>
+
+                <label class="form-label" for="showHints">¿Mostrar pistas?</label>
+                <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" checked>
+
+                <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
+                <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="3">
+
+                <label class="form-label" for="showFeedback">¿Mostrar retroalimentación?</label>
+                <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback" checked>
+
+                <label class="form-label" for="randomOrder">¿Orden de palabras aleatorio?</label>
+                <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder">
+
+                <label class="form-label" for="isOpen">¿Abierta?</label>
+                <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked>
+
+                <label class="form-label" for="wordSource">Palabras de la sala:</label>
+                <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
+                    <option value="system">Palabras del sistema</option>
+                    <option value="teacher">Palabras del docente</option>
+                </select>
+
+                <div class="word-list" id="wordList">
+                    <label class="form-label">Seleccione la lista de palabras:</label>
+                    <select class="select-input" id="wordListSelect">
+                    <option value="list1">cocina</option>
+                    <option value="list2">viajes</option>
+                    <option value="list3">guerra</option>
+                    </select>
+                </div>
+
+                <button class="form-button" type="submit">Crear Sala</button>
+                </form>
+            </div>
         </div>
     
         <div id="sala_consultar" class="content">
@@ -135,6 +182,19 @@
       if (selectedContent) {
         selectedContent.classList.toggle('visible');
       }
+    }
+
+    function toggleLivesInput() {
+      var numLivesInput = document.getElementById("numLives");
+      numLivesInput.disabled = document.getElementById("unlimitedLives").checked;
+    }
+
+    function toggleWordList() {
+      var wordList = document.getElementById("wordList");
+      var wordSource = document.getElementById("wordSource");
+      
+      // Muestra la lista de palabras solo cuando se selecciona "Palabras del docente"
+      wordList.style.display = (wordSource.value === "teacher") ? "block" : "none";
     }
   </script>
 </body>
