@@ -16,6 +16,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="./styledash.css">
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./salas.css">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <title>Dashboard</title>
 </head>
 <body>
@@ -198,17 +200,131 @@
         </div>
     
         <div id="sala_consultar" class="content">
-            <h2>Contenido ara consultar salas</h2>
-            <p>Este es el contenido que se mostrará cuando se seleccione la Opción 2.</p>
+            <h2>Tus salas</h2>
+            <div class="contenido">
+
+            <?php 
+            
+            $consulta_salas = mysqli_query($conexion,"SELECT * FROM room WHERE user_id=$id");
+                    
+            if ($consulta_salas->num_rows > 0) {
+                
+                // Itera sobre los resultados y muestra cada fila en la tabla
+                // fetch_assoc() hace que los datos de la consulta se pongan en un array
+                while ($fila = $consulta_salas->fetch_assoc()) {
+                    echo '<table>';
+                    echo '<tr>';
+                    echo '<th>Dato</th>';
+                    echo '<td>Valor</td>';
+                    echo '</tr>';
+
+                    echo '<tr>';
+                    echo '<th>ID</th>';
+                    echo '<td>' . $fila['id'] . '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>Nombre de la sala</th>';
+                    echo '<td>' . $fila['roomname'] . '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>Descripción</th>';
+                    echo '<td>' . $fila['description'] . '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>Vidas</th>';
+                    echo '<td>' . $fila['lives'] . '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>Pista</th>';
+                    echo '<td>' . (($fila['clue'] == 1)? "Si" : "No") .'</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>Pista Después de</th>';
+                    echo '<td>' . $fila['clueafter'] . ' intentos</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>Mostrar Feedback?</th>';
+                    echo '<td>' . (($fila['feedback'] == 1)? "Si" : "No")  . '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>palabras Random?</th>';
+                    echo '<td>' . (($fila['random'] == 1)? "Si" : "No"). '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>¿Está Abierta?</th>';
+                    echo '<td>' . (($fila['isopen'] == 1)? "Si" : "No") . '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>Creada</th>';
+                    echo '<td>' . $fila['timestamp'] . '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>Código de Sala</th>';
+                    echo '<td>' . $fila['roomcode'] . '</td>';
+                    echo '</tr>';
+            
+                    echo '<tr>';
+                    echo '<th>QR</th>';
+                    
+                    ?>
+
+                    <td>
+                                    <!-- Contenedor para el código QR -->
+                        <div id="qrcode"></div>
+
+                        <script>
+                            // Contenido para el código QR
+                            var contenidoQR = '<?php echo $fila['qrstring']; ?>';
+
+                            // Configuración del código QR
+                            var opcionesQR = {
+                                text: contenidoQR,
+                                width: 128,
+                                height: 128
+                            };
+
+                            // Genera el código QR en el contenedor con el id "qrcode"
+                            var qrcode = new QRCode(document.getElementById("qrcode"), opcionesQR);
+                        </script>
+                    </td>
+                    <?php
+                    echo '</tr>';
+            
+                    echo '</table>';
+                    echo '<br><br>';
+
+                }
+            
+                
+            } else {
+                echo 'No hay salas.';
+            }
+            
+            ?>
+
+
+
+
+            </div>
         </div>
     
         <div id="sala_editar" class="content">
-            <h2>Contenido ara editar salas</h2>
+            <h2>Contenido para editar salas</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
         </div>
     
         <div id="sala_eliminar" class="content">
-            <h2>Contenido ara eliminar salas</h2>
+            <h2>Contenido para eliminar salas</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
         </div>
     </div>
