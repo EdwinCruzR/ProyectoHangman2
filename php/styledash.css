@@ -7,13 +7,13 @@ body {
   background-color: #82ade58a
 }
 
-nav {
+/* nav {
   background-color: #333333;
   color: #fff;
   padding: 10px;
   display: flex;
   align-items: center;
-}
+} */
 
 .logo img {
   width: 50px;
@@ -70,7 +70,6 @@ li:hover .submenu {
 #logout-btn:hover {
   background-color: #777;
 }
-
 
 
 .floating-div {
