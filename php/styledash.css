@@ -94,7 +94,7 @@ li:hover .submenu {
 
 /* AQUI LO DE CREAR SALAS */
 
-.sala_crear{
+#sala_crear{
   margin: 0;
   padding: 0;
   display: flex;
