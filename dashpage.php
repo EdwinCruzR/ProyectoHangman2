@@ -70,14 +70,61 @@
     
 
 <main>
-    <!-- <div class="floating-div">
-        <h2>Contenido del div flotante</h2>
-        <p>Este es un div flotante en el centro de la página.</p>
-    </div> -->
-
     <div class="salas">
         <div id="sala_crear" class="content">
             <div class="form-container">
+            <?php 
+            if(isset($_POST['submit_crear_sala'])){
+
+                function makeRoomCode() {
+                    $roomcode = '';
+                    $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+                    for ($i = 0; $i < 6; $i++) {
+                        $roomcode .= $caracteres[rand(0, strlen($caracteres) - 1)];
+                    }
+                    return $roomcode;
+                }
+
+
+                $roomName = $_POST['roomName'];
+                $roomDescription = $_POST['roomDescription'];
+                $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on")? -1 : intval($_POST['numLives']);
+                $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? 1 : 0;
+                $clueafter = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? intval($_POST['errorNumber']) : -1;
+                $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on")? 1 : 0 ;
+                $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "on")? 1 : 0 ;
+                $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
+                $roomcode = '';
+                do {
+                    $roomcode = makeRoomCode();
+                    $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
+                } while (mysqli_num_rows($verifCode) != 0);
+
+                $qrcode = "https://www.cbtis150.edu.mx/hangman/";
+                
+                $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
+                
+                if(mysqli_num_rows($insertCreate) !=0 ){
+                    echo "<div class='message'>
+                            <p>Error al crear la sala</p>
+                        </div> <br>";
+                    echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
+                }else{
+        
+                    mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
+                    
+        
+                    echo "<p>Sala creada correctamente</p>
+                          <br>";
+                    echo "<a href='dashpage.php'><button class='btn'>Inico</button>";
+                 
+        
+                 }
+
+            }else{
+            
+            ?>
                 <h1>Crear Sala de Juego</h1>
 
                 <form id="gameForm" action="#" method="post">
@@ -122,10 +169,10 @@
                     <option value="list3">guerra</option>
                     </select>
                 </div>
-
-                <button class="form-button" type="submit">Crear Sala</button>
+                <input type="submit" class="form-button" name="submit_crear_sala" value="Crear Sala" required>
                 </form>
             </div>
+            <?php } ?>
         </div>
     
         <div id="sala_consultar" class="content">
