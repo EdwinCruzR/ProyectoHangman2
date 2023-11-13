@@ -1,9 +1,9 @@
 <?php 
    session_start();
 
-   include("bd/conex.php");
+   include("../bd/conexion.php");
    if(!isset($_SESSION['id'])){
-    header("Location: index.php");
+    header("Location: ../index.php");
    }
 
 ?>
@@ -13,7 +13,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styledash.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./styledash.css">
     <title>Dashboard</title>
 </head>
 <body>
@@ -31,41 +32,59 @@
     }
 
 ?>
-<nav>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
     <div class="logo">
-        <img src="./assets/img/hangman_logo_blue.png" alt="Logo">
+        <img src="../assets/img/hangman_logo_blue.png" alt="Logo">
     </div>
-    <ul>
-        <li>ADMINISTRADOR DOCENTE</li>
-        <li>¡Hola!, <?php echo $name ?></li>
-        <li><a href="dashpage.php">Inicio</a></li>
-        <li><a href="arenagame.html">Jugar modo arena</a></li>
-        <li><a href="">Unirse a sala</a></li>
-        <li>Salas
-        <!-- Submenu -->
-        <ul class="submenu">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+        <p class="nav-link scrollto">ADMINISTRADOR DOCENTE</p>
+        </li>
+        <li class="nav-item">
+        <p class="nav-link ">¡Hola!, <?php echo $name ?></p>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../arenagame.html">Jugar modo arena</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="">Unirse a sala</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Salas
+          </a>
+          <ul class="submenu dropdown-menu">
             <li><a href="#" onclick="toggleContent('sala_crear')">Crear</a></li>
             <li><a href="#" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
             <li><a href="#" onclick="toggleContent('sala_editar')">Editar</a></li>
             <li><a href="#" onclick="toggleContent('sala_eliminar')">Eliminar</a></li>
-        </ul>
-
-        <li>Palabras
-        <!-- Submenu -->
-        <ul class="submenu">
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Palabras
+          </a>
+          <ul class="submenu dropdown-menu">
             <li><a href="#" onclick="toggleContent('palabras_crear')">Crear</a></li>
             <li><a href="#" onclick="toggleContent('palabras_consultar')">Colsultar</a></li>
             <li><a href="#" onclick="toggleContent('palabras_editar')">Editar</a></li>
             <li><a href="#" onclick="toggleContent('palabras_eliminar')">Eliminar</a></li>
-        </ul>
-
-        <li><a class="nav-link scrollto" href="tablageneral.html">Tabla general</a></li>
+          </ul>
         </li>
-        
-    </ul>
-    <!-- Botón de cierre de sesión -->
-    <a href="./cerrarsesion.php"> <button id="logout-btn">Cerrar sesión</button> </a>
-    
+        <li class="nav-item">
+        <a class="nav-link scrollto" href="../tablageneral.html">Tabla general</a>
+        </li>
+        <li class="nav-item">
+        <a href="./cerrarsesion.php"> <button id="logout-btn">Cerrar sesión</button> </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
     
 
@@ -166,7 +185,8 @@
     </div>
 
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 <script>
     function toggleContent(contentId) {
       // Oculta los demás contenidos
