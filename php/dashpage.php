@@ -204,87 +204,50 @@
             <div class="contenido">
 
             <?php 
-            
             $consulta_salas = mysqli_query($conexion,"SELECT * FROM room WHERE user_id=$id");
                     
             if ($consulta_salas->num_rows > 0) {
-                
-                // Itera sobre los resultados y muestra cada fila en la tabla
-                // fetch_assoc() hace que los datos de la consulta se pongan en un array
-                while ($fila = $consulta_salas->fetch_assoc()) {
-                    echo '<table>';
-                    echo '<tr>';
-                    echo '<th>Dato</th>';
-                    echo '<td>Valor</td>';
-                    echo '</tr>';
+            ?>
 
-                    echo '<tr>';
-                    echo '<th>ID</th>';
-                    echo '<td>' . $fila['id'] . '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>Nombre de la sala</th>';
-                    echo '<td>' . $fila['roomname'] . '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>Descripción</th>';
-                    echo '<td>' . $fila['description'] . '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>Vidas</th>';
-                    echo '<td>' . $fila['lives'] . '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>Pista</th>';
-                    echo '<td>' . (($fila['clue'] == 1)? "Si" : "No") .'</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>Pista Después de</th>';
-                    echo '<td>' . $fila['clueafter'] . ' intentos</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>Mostrar Feedback?</th>';
-                    echo '<td>' . (($fila['feedback'] == 1)? "Si" : "No")  . '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>palabras Random?</th>';
-                    echo '<td>' . (($fila['random'] == 1)? "Si" : "No"). '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>¿Está Abierta?</th>';
-                    echo '<td>' . (($fila['isopen'] == 1)? "Si" : "No") . '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>Creada</th>';
-                    echo '<td>' . $fila['timestamp'] . '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>Código de Sala</th>';
-                    echo '<td>' . $fila['roomcode'] . '</td>';
-                    echo '</tr>';
-            
-                    echo '<tr>';
-                    echo '<th>QR</th>';
-                    
-                    ?>
-
-                    <td>
-                                    <!-- Contenedor para el código QR -->
+            <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Vidas</th>
+                    <th>Pista</th>
+                    <th>Pista Después de</th>
+                    <th>¿Mostrar Feedback?</th>
+                    <th>¿Palabras Random?</th>
+                    <th>¿Está Abierta?</th>
+                    <th>Creada</th>
+                    <th>Código de Sala</th>
+                    <th>QR</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = mysqli_fetch_array($consulta_salas)): ?>
+                    <tr>
+                        <th><?= $row['id'] ?></th>
+                        <th><?= $row['roomname'] ?></th>
+                        <th><?= $row['description'] ?></th>
+                        <th><?= $row['lives'] ?></th>
+                        <th><?=  (($row['clue'] == 1)? "Si" : "No") ?></th>
+                        <th><?= $row['clueafter'] ?> intentos</th>
+                        <th><?= (($row['feedback'] == 1)? "Si" : "No")  ?></th>
+                        <th><?= (($row['random'] == 1)? "Si" : "No") ?></th>
+                        <th><?= (($row['isopen'] == 1)? "Si" : "No") ?></th>
+                        <th><?= $row['timestamp'] ?></th>
+                        <th><?= $row['roomcode'] ?></th>
+                        <th>
                         <div id="qrcode"></div>
 
                         <script>
                             // Contenido para el código QR
-                            var contenidoQR = '<?php echo $fila['qrstring']; ?>';
+                            var contenidoQR = '<?php echo $row['qrstring']; ?>';
 
                             // Configuración del código QR
                             var opcionesQR = {
@@ -296,25 +259,19 @@
                             // Genera el código QR en el contenedor con el id "qrcode"
                             var qrcode = new QRCode(document.getElementById("qrcode"), opcionesQR);
                         </script>
-                    </td>
-                    <?php
-                    echo '</tr>';
-            
-                    echo '</table>';
-                    echo '<br><br>';
-
-                }
-            
-                
-            } else {
-                echo 'No hay salas.';
+                        </th>
+                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a></th>
+                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--delete" >Eliminar</a></th>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+        <?php 
+            }else {
+                echo 'No hay salas registradas.';
             }
             
-            ?>
-
-
-
-
+        ?>
             </div>
         </div>
     
