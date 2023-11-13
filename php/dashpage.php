@@ -92,107 +92,109 @@
 <main>
     <div class="salas">
         <div id="sala_crear" class="content">
-            <div class="form-container">
-            <?php 
-            if(isset($_POST['submit_crear_sala'])){
+          <div class="contenido">
+              <div class="form-container">
+              <?php 
+              if(isset($_POST['submit_crear_sala'])){
 
-                function makeRoomCode() {
-                    $roomcode = '';
-                    $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                  function makeRoomCode() {
+                      $roomcode = '';
+                      $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-                    for ($i = 0; $i < 6; $i++) {
-                        $roomcode .= $caracteres[rand(0, strlen($caracteres) - 1)];
-                    }
-                    return $roomcode;
-                }
+                      for ($i = 0; $i < 6; $i++) {
+                          $roomcode .= $caracteres[rand(0, strlen($caracteres) - 1)];
+                      }
+                      return $roomcode;
+                  }
 
 
-                $roomName = $_POST['roomName'];
-                $roomDescription = $_POST['roomDescription'];
-                $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on")? -1 : intval($_POST['numLives']);
-                $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? 1 : 0;
-                $clueafter = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? intval($_POST['errorNumber']) : -1;
-                $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on")? 1 : 0 ;
-                $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "on")? 1 : 0 ;
-                $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
-                $roomcode = '';
-                do {
-                    $roomcode = makeRoomCode();
-                    $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
-                } while (mysqli_num_rows($verifCode) != 0);
+                  $roomName = $_POST['roomName'];
+                  $roomDescription = $_POST['roomDescription'];
+                  $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on")? -1 : intval($_POST['numLives']);
+                  $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? 1 : 0;
+                  $clueafter = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? intval($_POST['errorNumber']) : -1;
+                  $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on")? 1 : 0 ;
+                  $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "on")? 1 : 0 ;
+                  $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
+                  $roomcode = '';
+                  do {
+                      $roomcode = makeRoomCode();
+                      $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
+                  } while (mysqli_num_rows($verifCode) != 0);
 
-                $qrcode = "https://www.cbtis150.edu.mx/hangman/";
-                
-                $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
-                
-                if(mysqli_num_rows($insertCreate) !=0 ){
-                    echo "<div class='message'>
-                            <p>Error al crear la sala</p>
-                        </div> <br>";
-                    echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
-                }else{
-        
-                    mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
-                    
-        
-                    echo "<p>Sala creada correctamente</p>
-                          <br>";
-                    echo "<a href='dashpage.php'><button class='btn'>Inico</button>";
-                 
-        
-                 }
+                  $qrcode = "https://www.cbtis150.edu.mx/hangman/";
+                  
+                  $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
+                  
+                  if(mysqli_num_rows($insertCreate) !=0 ){
+                      echo "<div class='message'>
+                              <p>Error al crear la sala</p>
+                          </div> <br>";
+                      echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
+                  }else{
+          
+                      mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
+                      
+          
+                      echo "<p>Sala creada correctamente</p>
+                            <br>";
+                      echo "<a href='dashpage.php'><button class='btn'>Inico</button>";
+                  
+          
+                  }
 
-            }else{
-            
-            ?>
-                <h1>Crear Sala de Juego</h1>
+              }else{
+              
+              ?>
+                  <h1>Crear Sala de Juego</h1>
 
-                <form id="gameForm" action="#" method="post">
-                <label class="form-label" for="roomName">Nombre de la sala:</label>
-                <input class="form-input" type="text" id="roomName" name="roomName" maxlength="50" required>
+                  <form id="gameForm" action="#" method="post">
+                  <label class="form-label" for="roomName">Nombre de la sala:</label>
+                  <input class="form-input" type="text" id="roomName" name="roomName" maxlength="50" required>
 
-                <label class="form-label" for="roomDescription">Descripción de la sala:</label>
-                <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required></textarea>
+                  <label class="form-label" for="roomDescription">Descripción de la sala:</label>
+                  <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required></textarea>
 
-                <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
-                <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()">
+                  <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
+                  <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()">
 
-                <label class="form-label" for="numLives">Número de vidas:</label>
-                <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="3" disabled>
+                  <label class="form-label" for="numLives">Número de vidas:</label>
+                  <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="3" disabled>
 
-                <label class="form-label" for="showHints">¿Mostrar pistas?</label>
-                <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" checked>
+                  <label class="form-label" for="showHints">¿Mostrar pistas?</label>
+                  <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" checked>
 
-                <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
-                <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="3">
+                  <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
+                  <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="3">
 
-                <label class="form-label" for="showFeedback">¿Mostrar retroalimentación?</label>
-                <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback" checked>
+                  <label class="form-label" for="showFeedback">¿Mostrar retroalimentación?</label>
+                  <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback" checked>
 
-                <label class="form-label" for="randomOrder">¿Orden de palabras aleatorio?</label>
-                <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder">
+                  <label class="form-label" for="randomOrder">¿Orden de palabras aleatorio?</label>
+                  <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder">
 
-                <label class="form-label" for="isOpen">¿Abierta?</label>
-                <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked>
+                  <label class="form-label" for="isOpen">¿Abierta?</label>
+                  <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked>
 
-                <label class="form-label" for="wordSource">Palabras de la sala:</label>
-                <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
-                    <option value="system">Palabras del sistema</option>
-                    <option value="teacher">Palabras del docente</option>
-                </select>
+                  <label class="form-label" for="wordSource">Palabras de la sala:</label>
+                  <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
+                      <option value="system">Palabras del sistema</option>
+                      <option value="teacher">Palabras del docente</option>
+                  </select>
 
-                <div class="word-list" id="wordList">
-                    <label class="form-label">Seleccione la lista de palabras:</label>
-                    <select class="select-input" id="wordListSelect">
-                    <option value="list1">cocina</option>
-                    <option value="list2">viajes</option>
-                    <option value="list3">guerra</option>
-                    </select>
-                </div>
-                <input type="submit" class="form-button" name="submit_crear_sala" value="Crear Sala" required>
-                </form>
-            </div>
-            <?php } ?>
+                  <div class="word-list" id="wordList">
+                      <label class="form-label">Seleccione la lista de palabras:</label>
+                      <select class="select-input" id="wordListSelect">
+                      <option value="list1">cocina</option>
+                      <option value="list2">viajes</option>
+                      <option value="list3">guerra</option>
+                      </select>
+                  </div>
+                  <input type="submit" class="form-button" name="submit_crear_sala" value="Crear Sala" required>
+                  </form>
+              </div>
+              <?php } ?>
+          </div>
         </div>
     
         <div id="sala_consultar" class="content">
