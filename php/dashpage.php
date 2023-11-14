@@ -18,6 +18,8 @@
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="./salas.css">
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <title>Dashboard</title>
 </head>
 <body>
@@ -94,7 +96,6 @@
 <main>
     <div class="salas">
         <div id="sala_crear" class="content">
-          <div class="contenido">
               <div class="form-container">
               <?php 
               if(isset($_POST['submit_crear_sala'])){
@@ -129,18 +130,22 @@
                   $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
                   
                   if(mysqli_num_rows($insertCreate) !=0 ){
-                      echo "<div class='message'>
-                              <p>Error al crear la sala</p>
-                          </div> <br>";
-                      echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
+                    echo "<div class='alert alert-danger' role='alert'>
+                    Error al crear la sala
+                  </div>";
+                    echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
+                    <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
+                  </div>";
                   }else{
           
                       mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
                       
-          
-                      echo "<p>Sala creada correctamente</p>
-                            <br>";
-                      echo "<a href='dashpage.php'><button class='btn'>Inico</button>";
+                      echo "<div class='alert alert-success' role='alert'>
+                      Sala creada correctamente
+                    </div>";
+                      echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
+                      <a href='./dashpage.php'><button type='button' class='btn btn-success'>Inico</button></a>
+                    </div>";
                   
           
                   }
@@ -150,7 +155,7 @@
               ?>
                   <h1>Crear Sala de Juego</h1>
 
-                  <form id="gameForm" action="#" method="post">
+                  <form id="gameForm" action="./dashpage.php" method="post">
                   <label class="form-label" for="roomName">Nombre de la sala:</label>
                   <input class="form-input" type="text" id="roomName" name="roomName" maxlength="50" required>
 
@@ -158,13 +163,13 @@
                   <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required></textarea>
 
                   <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
-                  <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()">
+                  <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()" checked>
 
                   <label class="form-label" for="numLives">Número de vidas:</label>
                   <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="3" disabled>
 
                   <label class="form-label" for="showHints">¿Mostrar pistas?</label>
-                  <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" checked>
+                  <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()" checked>
 
                   <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
                   <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="3">
@@ -196,7 +201,6 @@
                   </form>
               </div>
               <?php } ?>
-          </div>
         </div>
     
         <div id="sala_consultar" class="content">
@@ -224,8 +228,7 @@
                     <th>Creada</th>
                     <th>Código de Sala</th>
                     <th>QR</th>
-                    <th></th>
-                    <th></th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -260,8 +263,8 @@
                             var qrcode = new QRCode(document.getElementById("qrcode"), opcionesQR);
                         </script>
                         </th>
-                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a></th>
-                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--delete" >Eliminar</a></th>
+                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -286,16 +289,125 @@
         </div>
     </div>
     <div class="palabras">
-        <div id="palabras_crear" class="content">
-        <h2>Contenido para crear palabras</h2>
-        <p>Este es el contenido que se mostrará cuando se seleccione la Opción 1.</p>
+    <div id="palabras_crear" class="content">
+    <div class="form-container">
+              <?php 
+              if(isset($_POST['submit_crear_palabra'])){
+
+                  $roomName = $_POST['roomName'];
+                  $roomDescription = $_POST['roomDescription'];
+                  $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on")? -1 : intval($_POST['numLives']);
+                  $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? 1 : 0;
+                  $clueafter = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? intval($_POST['errorNumber']) : -1;
+                  $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on")? 1 : 0 ;
+                  $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "on")? 1 : 0 ;
+                  $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
+                  $roomcode = '';
+                  do {
+                      $roomcode = makeRoomCode();
+                      $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
+                  } while (mysqli_num_rows($verifCode) != 0);
+
+                  $qrcode = "https://www.cbtis150.edu.mx/hangman/";
+                  
+                  $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
+                  
+                  if(mysqli_num_rows($insertCreate) !=0 ){
+                    echo "<div class='alert alert-danger' role='alert'>
+                    Error al crear la palabra
+                  </div>";
+                    echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
+                    <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
+                  </div>";
+                  }else{
+          
+                      mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
+                      
+                      echo "<div class='alert alert-success' role='alert'>
+                      Palabra creada correctamente
+                    </div>";
+                      echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
+                      <a href='./dashpage.php'><button type='button' class='btn btn-success'>Inico</button></a>
+                    </div>";
+                  
+          
+                  }
+
+              }else{
+              
+              ?>
+                  <h1>Crear Palabras</h1>
+
+                  <form id="gameForm" action="./dashpage.php" method="post">
+                  <label class="form-label" for="roomName">Nombre de la palabra:</label>
+                  <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required>
+
+                  <label class="form-label">Seleccione el tipo de verbo:</label>
+                  <select class="select-input" id="wordListSelect">
+                  <option value="list1">Regular</option>
+                  <option value="list2">Irregular</option>
+                  </select>
+
+                  <label class="form-label" for="wordClue">Pista de la palabra:</label>
+                  <textarea class="form-input form-textarea" id="clue" name="clue" maxlength="300" required></textarea>
+
+                  <label class="form-label" for="simplePastWord">Pasado simple de la palabra:</label>
+                  <input class="form-input" type="text" id="wordPast" name="wordPast" maxlength="50" required>
+
+                  <label class="form-label" for="egWord">Ejemplo de la palabra:</label>
+                  <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required></textarea>
+
+                  <input type="submit" class="form-button" name="submit_crear_palabra" value="Crear palabra" required>
+                  </form>
+              </div>
+              <?php } ?>
         </div>
     
         <div id="palabras_consultar" class="content">
-            <h2>Contenido para consultar palabras</h2>
-            <p>Este es el contenido que se mostrará cuando se seleccione la Opción 2.</p>
+            <h2>Tus palabras</h2>
+            <div class="contenido">
+
+            <?php 
+            $consulta_salas = mysqli_query($conexion,"SELECT * FROM words");
+                    
+            if ($consulta_salas->num_rows > 0) {
+            ?>
+
+            <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Palabra</th>
+                    <th>Tipo</th>
+                    <th>Pista</th>
+                    <th>Pasado simple</th>
+                    <th>Ejemplo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = mysqli_fetch_array($consulta_salas)): ?>
+                    <tr>
+                        <th><?= $row['id'] ?></th>
+                        <th><?= $row['word'] ?></th>
+                        <th><?= (($row['type'] == "I")? "Irregular" : "Regular") ?></th>
+                        <th><?= $row['clue'] ?></th>
+                        <th><?= $row['simplepast'] ?></th>
+                        <th><?= $row['example'] ?></th>
+                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--delete" >Eliminar</a></th>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+        <?php 
+            }else {
+                echo 'No hay palabras registradas.';
+            }
+            
+        ?>
+            </div>
         </div>
-    
         <div id="palabras_editar" class="content">
             <h2>Contenido para editar palabras</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
@@ -308,8 +420,6 @@
     </div>
 
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 <script>
     function toggleContent(contentId) {
       // Oculta los demás contenidos
@@ -330,6 +440,11 @@
     function toggleLivesInput() {
       var numLivesInput = document.getElementById("numLives");
       numLivesInput.disabled = document.getElementById("unlimitedLives").checked;
+    }
+
+    function toggleCluesInput(){
+      var cluesInputs = document.getElementById("showHints");
+      cluesInputs = document.getElementById("errorNumber").disabled;
     }
 
     function toggleWordList() {

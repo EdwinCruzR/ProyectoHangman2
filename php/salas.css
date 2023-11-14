@@ -1,18 +1,33 @@
 /* AQUI LO DE CREAR SALAS */
 
-.contenido{
-    margin: 0;
+.salas{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.palabras{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .contenido{
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
-  }
-  
-  
-  .form-container {
-    max-width: 600px;
-    width: 100%;
+  } */
+
+
+.form-container {
+  margin: 50px 0px 100px 0px;
+  border-radius: 5%;
+  padding: 30px;
+  background-color: rgb(223, 215, 215);
   }
   
   h1 {
@@ -64,7 +79,7 @@
   .word-list {
     display: none;
   }
-  
+
   /* AQUI ESTILO DE CONSULTAR SALAS */
     
     
