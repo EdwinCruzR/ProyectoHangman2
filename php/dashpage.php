@@ -169,10 +169,10 @@
                   <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="3" disabled>
 
                   <label class="form-label" for="showHints">¿Mostrar pistas?</label>
-                  <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()" checked>
+                  <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()"checked>
 
                   <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
-                  <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="3">
+                  <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="3" >
 
                   <label class="form-label" for="showFeedback">¿Mostrar retroalimentación?</label>
                   <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback" checked>
@@ -443,8 +443,12 @@
     }
 
     function toggleCluesInput(){
-      var cluesInputs = document.getElementById("showHints");
-      cluesInputs = document.getElementById("errorNumber").disabled;
+      var cluesInputs = document.getElementById("errorNumber");
+      if(document.getElementById("showHints").checked) {
+        cluesInputs.disabled=false;
+      } else {
+        cluesInputs.disabled=true;
+      }
     }
 
     function toggleWordList() {
