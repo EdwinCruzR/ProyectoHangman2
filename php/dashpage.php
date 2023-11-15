@@ -66,8 +66,6 @@
           <ul class="submenu dropdown-menu">
             <li><a href="#" onclick="toggleContent('sala_crear')">Crear</a></li>
             <li><a href="#" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
-            <li><a href="#" onclick="toggleContent('sala_editar')">Editar</a></li>
-            <li><a href="#" onclick="toggleContent('sala_eliminar')">Eliminar</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -77,8 +75,6 @@
           <ul class="submenu dropdown-menu">
             <li><a href="#" onclick="toggleContent('palabras_crear')">Crear</a></li>
             <li><a href="#" onclick="toggleContent('palabras_consultar')">Colsultar</a></li>
-            <li><a href="#" onclick="toggleContent('palabras_editar')">Editar</a></li>
-            <li><a href="#" onclick="toggleContent('palabras_eliminar')">Eliminar</a></li>
           </ul>
         </li>
         <li class="nav-item">
@@ -263,7 +259,7 @@
                             var qrcode = new QRCode(document.getElementById("qrcode"), opcionesQR);
                         </script>
                         </th>
-                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <th><a href="editarSala.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
                         <a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
@@ -278,16 +274,16 @@
             </div>
         </div>
     
-        <div id="sala_editar" class="content">
+        <!-- <div id="sala_editar" class="content">
             <h2>Contenido para editar salas</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div>
+        </div> -->
     
-        <div id="sala_eliminar" class="content">
+        <!-- <div id="sala_eliminar" class="content">
             <h2>Contenido para eliminar salas</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
         </div>
-    </div>
+    </div> -->
     <div class="palabras">
     <div id="palabras_crear" class="content">
     <div class="form-container">
@@ -408,7 +404,7 @@
         ?>
             </div>
         </div>
-        <div id="palabras_editar" class="content">
+        <!-- <div id="palabras_editar" class="content">
             <h2>Contenido para editar palabras</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
         </div>
@@ -416,7 +412,7 @@
         <div id="palabras_eliminar" class="content">
             <h2>Contenido para eliminar palabras</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div>
+        </div> -->
     </div>
 
 </main>
