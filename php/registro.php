@@ -98,7 +98,7 @@
         ?>
             <div class="formbg-inner padding-horizontal--48">
               <span class="padding-bottom--15">Crear una cuenta</span>
-              <form id="stripe-login" action="" method="post">
+              <form id="stripe-login" action="" method="post" onsubmit="return validateForm()">
                 <div class="field padding-bottom--24">
                 <label for="email">Email</label>
                     <input type="text" name="email" id="email" placeholder="ej. user1@hotmail.com" autocomplete="off" required>
@@ -117,16 +117,23 @@
                 </div>
                 <div class="field padding-bottom--24">
                     <label for="password">Contraseña</label>
-                    <input type="password" name="password" id="password"  placeholder="*******" autocomplete="off" required>
+                    <input type="password" name="password" id="password"  placeholder="*******" autocomplete="off" onkeyup="checkPasswordMatch()" required>
                 </div>
                 <div class="field padding-bottom--24">
+                    <label for="password">Confirmar contraseña</label>
+                    <input type="password" name="confirmPassword" id="confirmPassword"  placeholder="*******" autocomplete="off" onkeyup="checkPasswordMatch()" required>
+                </div>
+                <p id="passwordMatchMessage"></p>
+                <div class="field padding-bottom--24">
                 <label for="rol">Selecciona tu rol</label>
-                    <select name="rol" id="rol" required >
+                    <select name="rol" id="rol" onchange="validateSelect()" required >
+                        <option value="0">Selecciona una opción</option>
                         <option value="3">Alumno</option>
                         <option value="2">Docente</option>
                         <option value="4">Otro</option>
                     </select>
                 </div>
+                <p id="selectErrorMessage" style="color: red;"></p>
                 <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
                 </div>
                 <div class="field padding-bottom--24">
@@ -143,52 +150,39 @@
       </div>
     </div>
   </div>
-    <!-- <div class="container">
-        <div class="box form-box"> -->
+  <script>
+        function checkPasswordMatch() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            var message = document.getElementById("passwordMatchMessage");
 
+            if (password === confirmPassword) {
+              message.style.color = "green";
+              message.innerHTML = "Las contraseñas coinciden";
+              return true;
+            } else {
+              message.style.color = "red";
+              message.innerHTML = "Las contraseñas no coinciden";
+              return false;
+            }
+        }
         
+        function validateSelect() {
+            var selectElement = document.getElementById("rol");
+            var errorMessage = document.getElementById("selectErrorMessage");
 
-            <!-- <h1>Registrate</h1>
-            <form action="" method="post">
-
-                <div class="field input">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" placeholder="ej. user1@hotmail.com" autocomplete="off" required>
-                </div>
-                <div class="field input">
-                    <label for="text">Nombre</label>
-                    <input type="text" name="name" id="name" placeholder="ej. Juan" autocomplete="off" required>
-                </div>
-                <div class="field input">
-                    <label for="text">Apellidos</label>
-                    <input type="text" name="lastname" id="lastname" placeholder="ej.Perez Perez" autocomplete="off" required>
-                </div>
-                <div class="field input">
-                    <label for="text">Escuela</label>
-                    <input type="text" name="school" id="school" placeholder="ej. CBTis 150" autocomplete="off" required>
-                </div>
-                <div class="field input">
-                    <label for="password">Contraseña</label>
-                    <input type="password" name="password" id="password"  placeholder="*******" autocomplete="off" required>
-                </div>
-                <div class="field input">
-                    <label for="rol">Selecciona tu rol</label>
-                    <select name="rol" id="rol" required >
-                        <option value="3">Alumno</option>
-                        <option value="2">Docente</option>
-                        <option value="4">Otro</option>
-                    </select>
-                </div>
-                
-
-                <div class="field">
-                    <input type="submit" class="btn" name="submit" value="Registrate" required>
-                </div>
-                <div class="links">
-                    Ya tienes cuenta? <a href="./login.php">Inicia sesion</a>
-                </div>
-            </form>
-        </div> -->
+            if (selectElement.value === "0") {
+              errorMessage.innerHTML = "Por favor, selecciona tu rol.";
+              return false;
+            } else {
+              errorMessage.innerHTML = "";
+              return true;
+            }
+        }
         
+        function validateForm() {
+            return checkPasswordMatch() && validateSelect();
+        }
+    </script>
 </body>
 </html>
