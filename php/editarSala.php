@@ -25,7 +25,7 @@
 <div id="sala_editar" class="content">
             <h2>Contenido para editar salas</h2>
             <?php
-            $id = $_GET['id'];
+            $id = $_REQUEST['id'];
             $consulta_salas = mysqli_query($conexion, "SELECT * FROM room where id ='$id'");
                       
             while ($row = mysqli_fetch_array($consulta_salas)):
@@ -38,10 +38,10 @@
                   <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required value="<?= $row['description'] ?>"></textarea>
 
                   <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
-                  <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()" checked>
+                  <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()">
 
                   <label class="form-label" for="numLives">Número de vidas:</label>
-                  <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="3" disabled value="<?= $row['lives'] ?>">
+                  <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="<?= $row['lives'] ?>">
 
                   <label class="form-label" for="showHints">¿Mostrar pistas?</label>
                   <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()"checked >

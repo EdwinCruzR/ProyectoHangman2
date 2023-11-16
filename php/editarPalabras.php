@@ -1,11 +1,5 @@
 <?php 
-   session_start();
-
    include("../bd/conexion.php");
-   if(!isset($_SESSION['id'])){
-    header("Location: ../index.php");
-   }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +19,7 @@
 <div id="sala_palabras" class="content">
             <h2>Contenido para editar palabras</h2>
             <?php
-            $id = $_GET['id'];
+            $id = $_REQUEST['id'];
             $consulta_salas = mysqli_query($conexion, "SELECT * FROM words where id ='$id'");
                       
             while ($row = mysqli_fetch_array($consulta_salas)):
