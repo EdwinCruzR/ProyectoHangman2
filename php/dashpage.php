@@ -66,8 +66,6 @@
           <ul class="submenu dropdown-menu">
             <li><a href="#" onclick="toggleContent('sala_crear')">Crear</a></li>
             <li><a href="#" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
-            <li><a href="#" onclick="toggleContent('sala_editar')">Editar</a></li>
-            <li><a href="#" onclick="toggleContent('sala_eliminar')">Eliminar</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -77,8 +75,6 @@
           <ul class="submenu dropdown-menu">
             <li><a href="#" onclick="toggleContent('palabras_crear')">Crear</a></li>
             <li><a href="#" onclick="toggleContent('palabras_consultar')">Colsultar</a></li>
-            <li><a href="#" onclick="toggleContent('palabras_editar')">Editar</a></li>
-            <li><a href="#" onclick="toggleContent('palabras_eliminar')">Eliminar</a></li>
           </ul>
         </li>
         <li class="nav-item">
@@ -263,8 +259,8 @@
                             var qrcode = new QRCode(document.getElementById("qrcode"), opcionesQR);
                         </script>
                         </th>
-                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
-                        <a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--delete" >Eliminar</a></th>
+                        <th><a href="editarSala.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <a href="eliminarSala.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -278,15 +274,15 @@
             </div>
         </div>
     
-        <div id="sala_editar" class="content">
+        <!-- <div id="sala_editar" class="content">
             <h2>Contenido para editar salas</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div>
+        </div> -->
     
-        <div id="sala_eliminar" class="content">
+        <!-- <div id="sala_eliminar" class="content">
             <h2>Contenido para eliminar salas</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div>
+        </div> -->
     </div>
     <div class="palabras">
     <div id="palabras_crear" class="content">
@@ -294,23 +290,13 @@
               <?php 
               if(isset($_POST['submit_crear_palabra'])){
 
-                  $roomName = $_POST['roomName'];
-                  $roomDescription = $_POST['roomDescription'];
-                  $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on")? -1 : intval($_POST['numLives']);
-                  $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? 1 : 0;
-                  $clueafter = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? intval($_POST['errorNumber']) : -1;
-                  $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on")? 1 : 0 ;
-                  $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "on")? 1 : 0 ;
-                  $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
-                  $roomcode = '';
-                  do {
-                      $roomcode = makeRoomCode();
-                      $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
-                  } while (mysqli_num_rows($verifCode) != 0);
-
-                  $qrcode = "https://www.cbtis150.edu.mx/hangman/";
+                  $word = $_POST['wordName'];
+                  $type = $_POST[''];
+                  $clue = $_POST['clue'];
+                  $wordPast = $_POST['wordPast'];
+                  $eg = $_POST['eg'];
                   
-                  $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
+                  $insertCreate = mysqli_query($conexion,"INSERT INTO words (word, type, clue, simplepast, example, user_id) VALUES ('$word', '$type','$clue', '$wordPast', '$eg', '$id')");
                   
                   if(mysqli_num_rows($insertCreate) !=0 ){
                     echo "<div class='alert alert-danger' role='alert'>
@@ -319,19 +305,7 @@
                     echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
                     <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
                   </div>";
-                  }else{
-          
-                      mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
-                      
-                      echo "<div class='alert alert-success' role='alert'>
-                      Palabra creada correctamente
-                    </div>";
-                      echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-                      <a href='./dashpage.php'><button type='button' class='btn btn-success'>Inico</button></a>
-                    </div>";
-                  
-          
-                  }
+                  }                 
 
               }else{
               
@@ -394,8 +368,8 @@
                         <th><?= $row['clue'] ?></th>
                         <th><?= $row['simplepast'] ?></th>
                         <th><?= $row['example'] ?></th>
-                        <th><a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
-                        <a href="direccion.php?id=<?= $row['id'] ?>" class="users-table--delete" >Eliminar</a></th>
+                        <th><a href="editarPalabras.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <a href="eliminarPalabras.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -408,7 +382,7 @@
         ?>
             </div>
         </div>
-        <div id="palabras_editar" class="content">
+        <!-- <div id="palabras_editar" class="content">
             <h2>Contenido para editar palabras</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
         </div>
@@ -416,7 +390,7 @@
         <div id="palabras_eliminar" class="content">
             <h2>Contenido para eliminar palabras</h2>
             <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div>
+        </div> -->
     </div>
 
 </main>
