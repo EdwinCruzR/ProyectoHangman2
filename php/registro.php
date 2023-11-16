@@ -1,12 +1,4 @@
 
-<?php 
-   session_start();
-
-   include("../bd/conexion.php");
-   if(isset($_SESSION['id'])){
-    header("Location: ./dashpage.php");
-    }
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,6 +52,8 @@
         <div class="formbg-outer">
           <div class="formbg">
 <?php 
+
+include("../bd/conexion.php");
         if(isset($_POST['submit'])){
             $email = $_POST['email'];
             $name = $_POST['name'];

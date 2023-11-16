@@ -57,7 +57,7 @@
             <a class="nav-link" href="../arenagame.html">Jugar modo arena</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="">Unirse a sala</a>
+            <a class="nav-link " href="./unirseSala.php">Unirse a sala</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -125,7 +125,7 @@
                       $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
                   } while (mysqli_num_rows($verifCode) != 0);
 
-                  $qrcode = "https://www.cbtis150.edu.mx/hangman/";
+                  $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?r='. $roomcode;
                   
                   $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
                   
