@@ -25,22 +25,22 @@
             while ($row = mysqli_fetch_array($consulta_salas)):
             ?>
             <form id="gameForm" action="./dashpage.php" method="post">
-                  <label class="form-label" for="roomName">Nombre de la palabra:</label>
+                  <label class="form-label" for="wordName">Nombre de la palabra:</label>
                   <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required>
 
-                  <label class="form-label">Seleccione el tipo de verbo:</label>
-                  <select class="select-input" id="wordListSelect">
+                  <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
+                  <select class="select-input" id="typeListSelect">
                   <option value="list1">Regular</option>
                   <option value="list2">Irregular</option>
                   </select>
 
-                  <label class="form-label" for="wordClue">Pista de la palabra:</label>
+                  <label class="form-label" for="clue">Pista de la palabra:</label>
                   <textarea class="form-input form-textarea" id="clue" name="clue" maxlength="300" required></textarea>
 
-                  <label class="form-label" for="simplePastWord">Pasado simple de la palabra:</label>
+                  <label class="form-label" for="wordPast">Pasado simple de la palabra:</label>
                   <input class="form-input" type="text" id="wordPast" name="wordPast" maxlength="50" required>
 
-                  <label class="form-label" for="egWord">Ejemplo de la palabra:</label>
+                  <label class="form-label" for="eg">Ejemplo de la palabra:</label>
                   <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required></textarea>
 
                   <input type="submit" class="form-button" name="submit_crear_palabra" value="Crear palabra" required>

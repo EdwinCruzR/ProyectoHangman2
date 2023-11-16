@@ -11,6 +11,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./unirseSala.css">
+    
+    <link rel="stylesheet" href="./salas.css">
     <title>Unirse sala</title>
 </head>
 <body>
@@ -63,10 +66,13 @@
 
 
     <h1>Unirse Sala</h1>
-    <h2>Unete a una sala<?php echo $name ?></h2>
-        <form action="" method="POST">
-            <input type="text" name="roomcode" placeholder="ej. xyz7yz">
-            <input type="submit" value="unirse" name="unirse">
-        </form>
+    <h2>Unete a una sala <?php echo $name ?></h2>
+
+    <form action="" method="POST">
+
+    <label for="sala">Codigo de Sala:</label>
+    <input type="text" name="roomcode" placeholder="ej. xyz7yz" required>
+    <button type="submit" name="unirse">Unirse a la Sala</button>
+  </form>
 </body>
 </html>
