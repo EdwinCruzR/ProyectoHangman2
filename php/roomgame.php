@@ -1,6 +1,6 @@
 <?php 
    session_start();
-
+   
    include("../bd/conexion.php");
    if(!isset($_SESSION['id'])){
     header("Location: ./login.php");
@@ -10,8 +10,8 @@
 
 <!doctype html>
 <html lang="es">
-
-<head>
+    
+    <head>
     <title>Jugar en sala</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -29,7 +29,33 @@
     <header>
         <!-- place navbar here -->
     </header>
-    
+    <?php 
+        $room = $_GET['r'];
+        $id = $_SESSION['id'];
+        $query = mysqli_query($conexion,"SELECT * FROM users WHERE id=$id");
+        $queryRoom = mysqli_query($conexion,"SELECT * FROM room WHERE roomcode=$room");
+
+        while($result = mysqli_fetch_assoc($query)){
+            $name = $result['name'];
+            $lastname = $result['lastname'];
+            $email = $result['email'];
+            $school = $result['school'];
+            $avatar = $result['idavatar'];
+            $rol = $result['roles_id'];
+        }
+
+
+
+        while($resultroom = mysqli_fetch_assoc($queryRoom)){
+            $roomname = $resultroom['roomname'];
+            $description = $resultroom['description'];
+            $lives = $resultroom['lives'];
+            $clue = $resultroom['clue'];
+            $clueafter = $resultroom['clueafter'];
+            $feedback = $resultroom['feedback'];
+            $random = $resultroom['random'];
+        }
+    ?>
     <main>
         <div id="loading" class="row justify-content-center align-items-center g-2" style="height: 50vh;">
             <div class="spinner-border text-success" role="status">
@@ -50,6 +76,9 @@
                             <form action="javascript:void(0);" method="post" onsubmit="hangmanApp.aJugar();">
                                 <input required type="text" class="form-control" name="txtNombre" id="txtNombre"
                                     placeholder="">
+                                    
+                                    <input type="hidden" name="username" value="<?php $name ?>">
+                                    <input type="hidden" name="username" value="<?php $$id ?>">
                                 <label for="formId1">Ingresa tu nombre</label>
                         </div>
                     </div>
