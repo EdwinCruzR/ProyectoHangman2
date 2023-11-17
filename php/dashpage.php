@@ -64,8 +64,8 @@
             Salas
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="#" onclick="toggleContent('sala_crear')">Crear</a></li>
-            <li><a href="#" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
+            <li><a href="#sala_crear" onclick="toggleContent('sala_crear')">Crear</a></li>
+            <li><a href="#sala_consultar" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -186,7 +186,7 @@
                   </select>
 
                   <div class="word-list" id="wordList">
-                      <label class="form-label">Seleccione la lista de palabras:</label>
+                      <label class="form-label" for="wordListSelect">Seleccione la lista de palabras:</label>
                       <select class="select-input" id="wordListSelect">
                       <option value="list1">cocina</option>
                       <option value="list2">viajes</option>
@@ -235,7 +235,7 @@
                         <th><?= $row['description'] ?></th>
                         <th><?= $row['lives'] ?></th>
                         <th><?=  (($row['clue'] == 1)? "Si" : "No") ?></th>
-                        <th><?= $row['clueafter'] ?> intentos</th>
+                        <th><?php echo $row['clueafter'] ?> intentos</th>
                         <th><?= (($row['feedback'] == 1)? "Si" : "No")  ?></th>
                         <th><?= (($row['random'] == 1)? "Si" : "No") ?></th>
                         <th><?= (($row['isopen'] == 1)? "Si" : "No") ?></th>
@@ -313,22 +313,22 @@
                   <h1>Crear Palabras</h1>
 
                   <form id="gameForm" action="./dashpage.php" method="post">
-                  <label class="form-label" for="roomName">Nombre de la palabra:</label>
+                  <label class="form-label" for="wordName">Nombre de la palabra:</label>
                   <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required>
 
-                  <label class="form-label">Seleccione el tipo de verbo:</label>
-                  <select class="select-input" id="wordListSelect">
+                  <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
+                  <select class="select-input" id="typeListSelect">
                   <option value="list1">Regular</option>
                   <option value="list2">Irregular</option>
                   </select>
 
-                  <label class="form-label" for="wordClue">Pista de la palabra:</label>
+                  <label class="form-label" for="clue">Pista de la palabra:</label>
                   <textarea class="form-input form-textarea" id="clue" name="clue" maxlength="300" required></textarea>
 
-                  <label class="form-label" for="simplePastWord">Pasado simple de la palabra:</label>
+                  <label class="form-label" for="wordPast">Pasado simple de la palabra:</label>
                   <input class="form-input" type="text" id="wordPast" name="wordPast" maxlength="50" required>
 
-                  <label class="form-label" for="egWord">Ejemplo de la palabra:</label>
+                  <label class="form-label" for="eg">Ejemplo de la palabra:</label>
                   <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required></textarea>
 
                   <input type="submit" class="form-button" name="submit_crear_palabra" value="Crear palabra" required>
