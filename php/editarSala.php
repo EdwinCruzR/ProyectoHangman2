@@ -12,21 +12,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="./styledash.css">
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="./salas.css">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <!-- <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> -->
     <title>Editar</title>
 </head>
 <body>
 <div id="sala_editar" class="content">
             <h2>Contenido para editar salas</h2>
             <?php
-            $id = $_REQUEST['id'];
-            $consulta_salas = mysqli_query($conexion, "SELECT * FROM room where id ='$id'");
+            $id = $_GET['id'];
+            $consulta_salas = mysqli_query($conexion, "SELECT * FROM room where id='$id'");
                       
             while ($row = mysqli_fetch_array($consulta_salas)):
             ?>
@@ -47,7 +46,7 @@
                   <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()"checked >
 
                   <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
-                  <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="<?= $row['clueafter'] ?> " >
+                  <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="<?= $row['clueafter'] ?>">
 
                   <label class="form-label" for="showFeedback">¿Mostrar retroalimentación?</label>
                   <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback" checked>
@@ -65,7 +64,7 @@
                   </select>
 
                   <div class="word-list" id="wordList">
-                      <label class="form-label">Seleccione la lista de palabras:</label>
+                      <label class="form-label" for="wordListSelect">Seleccione la lista de palabras:</label>
                       <select class="select-input" id="wordListSelect">
                       <option value="list1">cocina</option>
                       <option value="list2">viajes</option>
