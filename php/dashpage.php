@@ -6,24 +6,6 @@
     header("Location: ../index.php");
    }
 
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="./styledash.css">
-    <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="./salas.css">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    <title>Dashboard</title>
-</head>
-<body>
-<?php
     $id = $_SESSION['id'];
     $query = mysqli_query($conexion,"SELECT * FROM users WHERE id=$id");
 
@@ -37,6 +19,23 @@
     }
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./styledash.css">
+    <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./salas.css">
+    <!-- Lo comente por que pense que daba algun error q no queria mostrar los formularios y las consultas y asi -->
+    <!-- <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> -->
+    <title>Dashboard</title>
+</head>
+<body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <div class="logo">
@@ -64,8 +63,8 @@
             Salas
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="#sala_crear" onclick="toggleContent('sala_crear')">Crear</a></li>
-            <li><a href="#sala_consultar" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
+            <li><a href="#" onclick="toggleContent('sala_crear')">Crear</a></li>
+            <li><a href="#" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
