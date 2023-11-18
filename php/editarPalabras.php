@@ -6,16 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="./styledash.css">
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="./salas.css">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./editar.css">
     <title>Editar</title>
 </head>
 <body>
+<main>
+<div class="palabras">
 <div id="sala_palabras" class="content">
             <h2>Contenido para editar palabras</h2>
             <?php
@@ -25,8 +22,9 @@
             while ($row = mysqli_fetch_array($consulta_salas)):
             ?>
             <form id="gameForm" action="./dashpage.php" method="post">
+            <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required value="<?= $row['word'] ?>" >
                   <label class="form-label" for="wordName">Nombre de la palabra:</label>
-                  <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required>
+                  <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required value="<?= $row['word'] ?>">
 
                   <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
                   <select class="select-input" id="typeListSelect">
@@ -35,18 +33,17 @@
                   </select>
 
                   <label class="form-label" for="clue">Pista de la palabra:</label>
-                  <textarea class="form-input form-textarea" id="clue" name="clue" maxlength="300" required></textarea>
+                  <textarea class="form-input form-textarea" id="clue" name="clue" maxlength="300" required><?= $row['clue'] ?></textarea>
 
                   <label class="form-label" for="wordPast">Pasado simple de la palabra:</label>
-                  <input class="form-input" type="text" id="wordPast" name="wordPast" maxlength="50" required>
+                  <input class="form-input" type="text" id="wordPast" name="wordPast" maxlength="50" required value="<?= $row['simplepast'] ?>">
 
                   <label class="form-label" for="eg">Ejemplo de la palabra:</label>
-                  <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required></textarea>
+                  <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required><?= $row['example'] ?></textarea>
 
-                  <input type="submit" class="form-button" name="submit_crear_palabra" value="Crear palabra" required>
+                  <input type="submit" class="form-button" name="submit_crear_palabra" value="Editar palabra" required>
                   </form>
             <?php endwhile; ?>
-            <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
 </div>
 <?php
 	
@@ -60,16 +57,18 @@
         
         $insertCreate = mysqli_query($conexion,"UPDATE words SET word='$word', type= '$type', clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$id");
         
-        if(mysqli_num_rows($insertCreate) !=0 ){
-          echo "<div class='alert alert-danger' role='alert'>
-          Error al editar la palabra
-        </div>";
-          echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-          <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
-        </div>";
-        }
+        if(!($querymodificar)){
+          echo "<script> alert('Error al editar'); </script>";
+          }else{
+              
+            
+            header("Location: ./dashpage.php");
+    echo "<script> alert('Se edito correctamente'); </script>";
+          }
 
     }
 ?>
+</div>
+</main>
 </body>
 </html>

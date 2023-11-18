@@ -12,15 +12,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styledash.css">
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="./salas.css">
-    <!-- <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> -->
+    <link rel="stylesheet" href="./editar.css">
     <title>Editar</title>
 </head>
 <body>
+<main>
+<div class="salas">
 <div id="sala_editar" class="content">
             <h2>Contenido para editar salas</h2>
             <?php
@@ -29,12 +27,12 @@
                       
             while ($row = mysqli_fetch_array($consulta_salas)):
             ?>
-            <form id="gameForm" action="./editarSala.php" method="post">
+            <form id="gameForm"  method="post">
                   <label class="form-label" for="roomName">Nombre de la sala:</label>
                   <input class="form-input" type="text" id="roomName" name="roomName" maxlength="50" required value="<?= $row['roomname'] ?>">
 
                   <label class="form-label" for="roomDescription">Descripción de la sala:</label>
-                  <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required value="<?= $row['description'] ?>"></textarea>
+                  <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required><?= $row['description'] ?></textarea>
 
                   <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
                   <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()">
@@ -74,7 +72,6 @@
                   <input type="submit" class="form-button" name="submit_editar_sala" value="Editar Sala" required>
             </form>
             <?php endwhile; ?>
-            <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
 </div>
 <?php
 	
@@ -91,26 +88,18 @@
       
     $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description= '$roomDescription', lives='$lives', clue='$clue', clueafter='$clueafter', feedback='$feedback', random='$random', isopen='$isopen' WHERE id=$id");
 
-    if(mysqli_num_rows($querymodificar) !=0 ){
-        echo "<div class='alert alert-danger' role='alert'>
-        Error al editar la sala
-      </div>";
-        echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-        <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
-      </div>";
+    if(!($querymodificar)){
+      echo "<script> alert('Error al editar'); </script>";
       }else{
           
-          echo "<div class='alert alert-success' role='alert'>
-          Sala editada correctamente
-        </div>";
-          echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-          <a href='./dashpage.php'><button type='button' class='btn btn-success'>Inico</button></a>
-        </div>";
-      
-
+        
+        header("Location: ./dashpage.php");
+echo "<script> alert('Se edito correctamente'); </script>";
       }
     
 }
 ?>
+</div>
+</main>
 </body>
 </html>

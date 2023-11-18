@@ -8,7 +8,7 @@ if(!isset($_SESSION['id'])){
  
 $cod = $_GET['id'];
  
-mysqli_query($conexion, "DELETE FROM word WHERE id=$cod");
+mysqli_query($conexion, "DELETE FROM words WHERE id=$cod");
  
 header("Location:dashpage.php");
 

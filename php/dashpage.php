@@ -62,8 +62,8 @@
             Salas
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="#" onclick="toggleContent('sala_crear')">Crear</a></li>
-            <li><a href="#" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
+            <li><a href="#sala_crear" onclick="toggleContent('sala_crear')">Crear</a></li>
+            <li><a href="#sala_consultar" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -71,8 +71,8 @@
           Palabras
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="#" onclick="toggleContent('palabras_crear')">Crear</a></li>
-            <li><a href="#" onclick="toggleContent('palabras_consultar')">Colsultar</a></li>
+            <li><a href="#palabras_crear" onclick="toggleContent('palabras_crear')">Crear</a></li>
+            <li><a href="#palabras_consultar" onclick="toggleContent('palabras_consultar')">Colsultar</a></li>
           </ul>
         </li>
         <li class="nav-item">

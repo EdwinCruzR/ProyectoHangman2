@@ -10,6 +10,6 @@ $cod = $_GET['id'];
  
 mysqli_query($conexion, "DELETE FROM room WHERE id=$cod");
  
-header("Location:dashpage.php");
+header("Location:dashpage.php#sala_consultar");
 
 ?>
