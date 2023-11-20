@@ -41,38 +41,35 @@
                 $isopen = mysqli_query($conexion, "SELECT isopen FROM room WHERE isopen = 1 AND roomcode='$roomcode'");
                 if(mysqli_num_rows($isopen) !=0 ){
                     // si esta abierta la sala entra a jugar
-                    ?>
-                    <a href="./roomgame.php?r=<?php echo $roomcode?>"><button class='btn'>Jugar</button>
-                    <?php
-                }else{
-                    // no esta abaierta la sala
-                    ?>
-                    <div class='message'>
-                        <p>La sala esta cerrada</p>
-                    </div> <br>
-                    <a href='unirseSala.php'><button class='btn'>Volver</button>
-                <?php
+                    header("Location: ./roomgame.php?r=" . $roomcode);
+                    exit();
+                } else {
+                    // La sala está cerrada
+                    $message = "La sala está cerrada";
                 }
-            }else{
-                ?>
-                    <div class='message'>
-                        <p>No encontro la sala</p>
-                    </div> <br>
-                    <a href='unirseSala.php'><button class='btn'>Volver</button>
-                <?php
+            } else {
+                // No se encontró la sala
+                $message = "No se encontró la sala";
             }
-        }   
+        } 
+        
+        $verifCode->close();
+        $isopen->close();
         ?>
 
-
-    <h1>Unirse Sala</h1>
     <h2>Unete a una sala <?php echo $name ?></h2>
 
-    <form action="" method="POST">
+    <?php if(isset($message)){ ?>
+        <div class='message'>
+            <p><?php echo $message; ?></p>
+        </div>
+        <br>
+    <?php } ?>
 
-    <label for="sala">Codigo de Sala:</label>
-    <input type="text" name="roomcode" placeholder="ej. xyz7yz" required>
-    <button type="submit" name="unirse">Unirse a la Sala</button>
-  </form>
+    <form action="" method="POST">
+        <label for="sala">Codigo de Sala:</label>
+        <input type="text" name="roomcode" placeholder="ej. xyz7yz" required>
+        <button type="submit" name="unirse">Unirse a la Sala</button>
+    </form>
 </body>
 </html>

@@ -32,29 +32,46 @@
     <?php 
         $room = $_GET['r'];
         $id = $_SESSION['id'];
-        $query = mysqli_query($conexion,"SELECT * FROM users WHERE id=$id");
-        $queryRoom = mysqli_query($conexion,"SELECT * FROM room WHERE roomcode=$room");
+        $queryUser = $conexion->prepare("SELECT * FROM users WHERE id = ?");
+        $queryUser->bind_param("i", $id);
+        $queryUser->execute();
+        $resultUser = $queryUser->get_result();
 
-        while($result = mysqli_fetch_assoc($query)){
-            $name = $result['name'];
-            $lastname = $result['lastname'];
-            $email = $result['email'];
-            $school = $result['school'];
-            $avatar = $result['idavatar'];
-            $rol = $result['roles_id'];
+        if ($resultUser->num_rows > 0) {
+            $rowUser = $resultUser->fetch_assoc();
+        
+            $name = $rowUser['name'];
+            $lastname = $rowUser['lastname'];
+            $email = $rowUser['email'];
+            $school = $rowUser['school'];
+            $avatar = $rowUser['idavatar'];
+            $rol = $rowUser['roles_id'];
         }
 
+        $queryUser->close();
 
+        $queryRoom = $conexion->prepare("SELECT * FROM room WHERE roomcode = ?");
+        $queryRoom->bind_param("s", $room);
+        $queryRoom->execute();
 
-        while($resultroom = mysqli_fetch_assoc($queryRoom)){
-            $roomname = $resultroom['roomname'];
-            $description = $resultroom['description'];
-            $lives = $resultroom['lives'];
-            $clue = $resultroom['clue'];
-            $clueafter = $resultroom['clueafter'];
-            $feedback = $resultroom['feedback'];
-            $random = $resultroom['random'];
+        $resultRoom = $queryRoom->get_result();
+
+        if ($resultRoom->num_rows > 0) {
+            $rowRoom = $resultRoom->fetch_assoc();
+
+            $roomname = $rowRoom['roomname'];
+            $description = $rowRoom['description'];
+            $lives = $rowRoom['lives'];
+            $clue = $rowRoom['clue'];
+            $clueafter = $rowRoom['clueafter'];
+            $feedback = $rowRoom['feedback'];
+            $random = $rowRoom['random'];
+        } else {
+            die('Error al conectar con la sala.');
         }
+
+        $queryRoom->close();
+
     ?>
     <main>
         <div id="loading" class="row justify-content-center align-items-center g-2" style="height: 50vh;">
@@ -69,17 +86,20 @@
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitleId">Jugador(a)</h5>
+                        <h5 class="modal-title" id="modalTitleId">Sala</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-floating mb-3">
                             <form action="javascript:void(0);" method="post" onsubmit="hangmanApp.aJugar();">
-                                <input required type="text" class="form-control" name="txtNombre" id="txtNombre"
-                                    placeholder="">
-                                    
+                                <label></label>
                                     <input type="hidden" name="username" value="<?php $name ?>">
-                                    <input type="hidden" name="username" value="<?php $$id ?>">
-                                <label for="formId1">Ingresa tu nombre</label>
+                                    <input type="hidden" name="username" value="<?php $id ?>">
+                                <label>Nombre</label>
+                                <label><?php $roomname ?></label>
+                                <label>Descripcion:</label>
+                                <label><?php $description ?></label>
+                                <label>Lives:</label>
+                                <label><?php $lives ?></label>
                         </div>
                     </div>
                     <div class="modal-footer">
