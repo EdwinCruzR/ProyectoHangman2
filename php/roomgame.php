@@ -5,7 +5,7 @@
    if(!isset($_SESSION['id'])){
     header("Location: ./login.php");
     }
-//    $roomcode = $_GET['r'];
+    $roomcode = $_GET['roomcode'];
 ?>
 
 <!doctype html>
@@ -30,7 +30,7 @@
         <!-- place navbar here -->
     </header>
     <?php 
-        $room = $_GET['r'];
+        $room = $roomcode;
         $id = $_SESSION['id'];
         $queryUser = $conexion->prepare("SELECT * FROM users WHERE id = ?");
         $queryUser->bind_param("i", $id);
@@ -92,14 +92,15 @@
                         <div class="form-floating mb-3">
                             <form action="javascript:void(0);" method="post" onsubmit="hangmanApp.aJugar();">
                                 <label></label>
-                                    <input type="hidden" name="username" value="<?php $name ?>">
-                                    <input type="hidden" name="username" value="<?php $id ?>">
+                                    <input type="hidden" name="username" value="<?php echo $name ?>">
+                                    <input type="hidden" name="id_user" value="<?php echo $id ?>">
+                                    <input type="hidden" name="id_room" value="<?php echo $room ?>">
                                 <label>Nombre</label>
-                                <label><?php $roomname ?></label>
+                                <label><?php echo $roomname ?></label>
                                 <label>Descripcion:</label>
-                                <label><?php $description ?></label>
+                                <label><?php echo $description ?></label>
                                 <label>Lives:</label>
-                                <label><?php $lives ?></label>
+                                <label><?php echo $lives ?></label>
                         </div>
                     </div>
                     <div class="modal-footer">

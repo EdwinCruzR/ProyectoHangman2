@@ -41,7 +41,7 @@
                 $isopen = mysqli_query($conexion, "SELECT isopen FROM room WHERE isopen = 1 AND roomcode='$roomcode'");
                 if(mysqli_num_rows($isopen) !=0 ){
                     // si esta abierta la sala entra a jugar
-                    header("Location: ./roomgame.php?r=" . $roomcode);
+                    header("Location: ./roomgame.php?roomcode=" . $roomcode);
                     exit();
                 } else {
                     // La sala está cerrada
@@ -53,8 +53,8 @@
             }
         } 
         
-        $verifCode->close();
-        $isopen->close();
+        // $verifCode->close();
+        // $isopen->close();
         ?>
 
     <h2>Unete a una sala <?php echo $name ?></h2>
