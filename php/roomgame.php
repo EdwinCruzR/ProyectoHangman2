@@ -264,9 +264,9 @@
             this.verboArray = new Array();
             this.datosjuego = new Array();
             this.puntos = 0;
-            this.urlApiWords = "./bd/apiwords.php";
-            this.urlApiGeneral = "./bd/apigeneral.php";
-            this.urlApiRoom = "./bd/apiroom.php";
+            this.urlApiWords = "../bd/apiwords.php";
+            this.urlApiGeneral = "../bd/apigeneral.php";
+            this.urlApiRoom = "../bd/apiroom.php";
             this.spinner = document.getElementById("loading");
 
             this.randomKey = (max) => {
