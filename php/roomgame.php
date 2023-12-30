@@ -93,14 +93,17 @@
                             <form action="javascript:void(0);" method="post" onsubmit="hangmanApp.aJugar();">
                                 <label></label>
                                     <input type="hidden" name="username" value="<?php echo $name ?>">
-                                    <input type="hidden" name="id_user" value="<?php echo $id ?>">
-                                    <input type="hidden" name="id_room" value="<?php echo $room ?>">
-                                <label>Nombre</label>
+                                    <input type="hidden" name="id_user" id="idUser" value="<?php echo $id ?>">
+                                    <input type="hidden" name="id_room" id="idRoom" value="<?php echo $room ?>">
+                                <br>
+                                <label>Nombre:</label>
                                 <label><?php echo $roomname ?></label>
+                                <br>
                                 <label>Descripcion:</label>
                                 <label><?php echo $description ?></label>
-                                <label>Lives:</label>
-                                <label><?php echo $lives ?></label>
+                                <br>
+                                <label>Vidas:</label>
+                                <label> <?php echo ($lives == -1)? 'ilimitadas': $lives ?></label>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -244,7 +247,8 @@
             this.divBotones = document.getElementById('divBotones');
             this.divAdivinaPasadoTipo = document.getElementById('divAdivinaPasadoTipo');
             this.resultTabla = document.getElementById('resultTabla');
-            this.nombre = document.getElementById('txtNombre').value;
+            this.idUser = document.getElementById('idUser').value;
+            this.idRoom = document.getElementById('idRoom').value;
             this.verboJuega = null;
             this.pasadoUsr = document.getElementById('txtPasado');
             this.tipoUsr = document.getElementsByName("tipoV");
@@ -476,7 +480,7 @@
             };
 
             this.insertarJuego = async () => {
-                var datosEnviar = { nombre: hangmanApp.nombre };
+                var datosEnviar = { idUser: hangmanApp.idUser, idRoom: hangmanApp.idRoom };
                 await fetch(this.urlApiArena + "?nuevo=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
@@ -516,7 +520,9 @@
             }
 
             this.aJugar = () => {
-                this.nombre = document.getElementById("txtNombre").value;
+                //this.nombre = document.getElementById("txtNombre").value;
+                this.idUser = document.getElementById("idUser").value;
+                this.idRoom = document.getElementById("idRoom").value;
                 modalNombre.hide();
                 hangmanApp.insertarJuego();
                 hangmanApp.leerVerbos();
