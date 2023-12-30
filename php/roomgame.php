@@ -266,7 +266,7 @@
             this.puntos = 0;
             this.urlApiWords = "./bd/apiwords.php";
             this.urlApiGeneral = "./bd/apigeneral.php";
-            this.urlApiArena = "./bd/apiarena.php";
+            this.urlApiRoom = "./bd/apiroom.php";
             this.spinner = document.getElementById("loading");
 
             this.randomKey = (max) => {
@@ -481,7 +481,7 @@
 
             this.insertarJuego = async () => {
                 var datosEnviar = { idUser: hangmanApp.idUser, idRoom: hangmanApp.idRoom };
-                await fetch(this.urlApiArena + "?nuevo=1", { method: "POST", body: JSON.stringify(datosEnviar) })
+                await fetch(this.urlApiRoom + "?nuevo=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
                         this.datosjuego.push(respuesta);
