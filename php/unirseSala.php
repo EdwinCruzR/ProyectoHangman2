@@ -11,9 +11,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./unirseSala.css">
+    <link rel="stylesheet" href="../assets/css/unirseSala.css">
     
-    <link rel="stylesheet" href="./salas.css">
+    <link rel="stylesheet" href="../assets/css/salas.css">
     <title>Unirse sala</title>
 </head>
 <body>

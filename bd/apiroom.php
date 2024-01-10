@@ -22,7 +22,7 @@ if (isset($_GET["insertar"])) {
 if (isset($_GET["nuevo"])) {
     $data = json_decode(file_get_contents("php://input"));
     $nombre = $data->nombre;
-    $sql = mysqli_query($conexion, "INSERT INTO arenagame(player) VALUES('$nombre')");
+    $sql = mysqli_query($conexion, "INSERT INTO roomgame(player) VALUES('$nombre')");
     $sql2 = mysqli_query($conexion, "SELECT * FROM arenagame WHERE id = (SELECT MAX(id) FROM arenagame)");
     $juego = mysqli_fetch_all($sql2, MYSQLI_ASSOC);
     echo json_encode($juego);
