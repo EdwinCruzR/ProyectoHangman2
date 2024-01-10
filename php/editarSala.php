@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="./editar.css">
+    <link rel="stylesheet" href="../assets/css/editar.css">
     <title>Editar</title>
 </head>
 <body>
