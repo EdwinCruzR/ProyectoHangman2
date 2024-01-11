@@ -107,55 +107,78 @@
               <?php 
               if(isset($_POST['submit_crear_sala'])){
 
-                  function makeRoomCode() {
-                      $roomcode = '';
-                      $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-                      for ($i = 0; $i < 6; $i++) {
-                          $roomcode .= $caracteres[rand(0, strlen($caracteres) - 1)];
-                      }
-                      return $roomcode;
-                  }
-
-
-                  $roomName = $_POST['roomName'];
-                  $roomDescription = $_POST['roomDescription'];
-                  $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on")? -1 : intval($_POST['numLives']);
-                  $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? 1 : 0;
-                  $clueafter = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? intval($_POST['errorNumber']) : -1;
-                  $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on")? 1 : 0 ;
-                  $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "on")? 1 : 0 ;
-                  $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
+                function makeRoomCode() {
                   $roomcode = '';
-                  do {
-                      $roomcode = makeRoomCode();
-                      $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
-                  } while (mysqli_num_rows($verifCode) != 0);
-
-                  $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?r='. $roomcode;
-                  // INSERT INTO `hangman`.`room` (`roomname`, `description`, `lives`, `clue`, `clueafter`, `feedback`, `random`, `isopen`, `hasstartdatetime`, `startdatetime`, `hasenddatetime`, `enddatetime`, `isgeneral`, `timestamp`, `roomcode`, `user_id`) VALUES ('hola', 'a', '1', b'2', b'3', b'1', b'1', b'1', b'0', b'1', b'1', b'1', b'1', b'1', b'verPro', b'1');
-                  $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
-                  
-                  if(mysqli_num_rows($insertCreate) !=0 ){
-                    echo "<div class='alert alert-danger' role='alert'>
-                    Error al crear la sala
-                  </div>";
-                    echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-                    <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
-                  </div>";
-                  }else{
+                  $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
           
-                      mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
-                      
-                      echo "<div class='alert alert-success' role='alert'>
-                      Sala creada correctamente
-                    </div>";
-                      echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-                      <a href='./dashpage.php'><button type='button' class='btn btn-success'>Inico</button></a>
-                    </div>";
-                  
-          
+                  for ($i = 0; $i < 6; $i++) {
+                      $roomcode .= $caracteres[rand(0, strlen($caracteres) - 1)];
                   }
+                  return $roomcode;
+                }
+            
+                $roomName = mysqli_real_escape_string($conexion, $_POST['roomName']);
+                $roomDescription = mysqli_real_escape_string($conexion, $_POST['roomDescription']);
+                $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on") ? -1 : intval($_POST['numLives']);
+                $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on") ? 1 : 0;
+                $clueafter = ($clue == 1) ? intval($_POST['errorNumber']) : -1;
+                $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on") ? 1 : 0;
+                $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "isOpen") ? 1 : 0;
+                $selectedStatus = isset($_POST["statusSource"]) ? $_POST["statusSource"] : "";
+                
+                switch ($selectedStatus) {
+                    case 'hasstartdatetime':
+                        $hasstartdatetime = 1;
+                        $hasenddatetime = 0;
+                        $timestampClose = NULL;
+                        $timestampOpen = mysqli_real_escape_string($conexion, $_POST["timestampOpen"]);
+                        break;
+            
+                    case 'hasenddatetime':
+                        $hasstartdatetime = 0;
+                        $hasenddatetime = 1;
+                        $timestampClose = mysqli_real_escape_string($conexion, $_POST["timestampClose"]);
+                        $timestampOpen = NULL;
+                        break;
+            
+                    case 'setTime':
+                        $hasstartdatetime = 1;
+                        $hasenddatetime = 1;
+                        $timestampOpen = mysqli_real_escape_string($conexion, $_POST["timestampOpen"]);
+                        $timestampClose = mysqli_real_escape_string($conexion, $_POST["timestampClose"]);
+                        break;
+            
+                    case 'WithoutH':
+                        $hasstartdatetime = 0;
+                        $hasenddatetime = 0;
+                        $timestampOpen = NULL;
+                        $timestampClose = NULL;
+                        break;
+                }
+            
+                $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "system") ? 1 : 0;
+                $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on") ? 1 : 0;
+                
+                $roomcode = '';
+                do {
+                    $roomcode = makeRoomCode();
+                    $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
+                } while (mysqli_num_rows($verifCode) != 0);
+            
+                $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?r=' . $roomcode;
+            
+                // Usa sentencias preparadas para prevenir inyección de SQL
+                $insertCreate = mysqli_prepare($conexion, "INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, hasstartdatetime, startdatetime, hasenddatetime, enddatetime, isgeneral, roomcode, qrstring, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                mysqli_stmt_bind_param($insertCreate, "ssiiiiiissssssis", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $id);
+                mysqli_stmt_execute($insertCreate);
+            
+                if(mysqli_stmt_affected_rows($insertCreate) === 0){
+                    echo 'Error en la creación de la sala: ' . mysqli_error($conexion);
+                } else {
+                    echo 'Sala creada correctamente';
+                    header("Location: dashpage.php");
+                    // exit;
+                }
 
               }else{
               
@@ -190,13 +213,18 @@
                   <!-- <label class="form-label" for="isOpen">¿Abierta?</label>
                   <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked> -->
 
-                  <label class="form-label" for="statusSource">Estado de entrada:</label>
-                  <select class="select-input" id="statusSource" name="statusSource" onchange="toggleRoomStatus()">
+                  <label class="form-label" for="isOpen">Estado de entrada:</label>
+                  <select class="select-input" id="isOpen" name="isOpen">
                       <option value="isOpen">Abierta</option>
                       <option value="isClose">Cerrada</option>
-                      <option value="hasstartdatetime">Establecer horario (solo entrada)</option>
-                      <option value="hasenddatetime">Establecer horario (solo cierre)</option>
-                      <option value="setTime">Establecer horario (entrada y cierre)</option>
+                  </select>
+
+                  <label class="form-label" for="statusSource">Establecer horario:</label>
+                  <select class="select-input" id="statusSource" name="statusSource" onchange="toggleRoomStatus()">
+                      <option value="WithoutH">Sin horario</option>
+                      <option value="hasstartdatetime">Solo entrada</option>
+                      <option value="hasenddatetime">Solo cierre</option>
+                      <option value="setTime">Entrada y cierre</option>
                   </select>
 
                   <div class="settimeopen" id="settimeopen">
@@ -233,7 +261,7 @@
             <div class="contenido">
 
             <?php 
-            $consulta_salas = mysqli_query($conexion,"SELECT * FROM room WHERE user_id=$id");
+            $consulta_salas = mysqli_query($conexion,"SELECT * FROM Room WHERE user_id=$id");
                     
             if ($consulta_salas->num_rows > 0) {
             ?>
@@ -250,6 +278,7 @@
                     <th>¿Mostrar Feedback?</th>
                     <th>¿Palabras Random?</th>
                     <th>¿Está Abierta?</th>
+                    <th>Fuente de palabras</th>
                     <th>Creada</th>
                     <th>Código de Sala</th>
                     <th>QR</th>
@@ -262,12 +291,13 @@
                         <th><?= $row['id'] ?></th>
                         <th><?= $row['roomname'] ?></th>
                         <th><?= $row['description'] ?></th>
-                        <th><?= $row['lives'] ?></th>
+                        <th><?= (($row['lives'] == -1)? "ilimitadas" : $row['lives'])     ?></th>
                         <th><?=  (($row['clue'] == 1)? "Si" : "No") ?></th>
                         <th><?php echo $row['clueafter'] ?> intentos</th>
                         <th><?= (($row['feedback'] == 1)? "Si" : "No")  ?></th>
                         <th><?= (($row['random'] == 1)? "Si" : "No") ?></th>
                         <th><?= (($row['isopen'] == 1)? "Si" : "No") ?></th>
+                        <th><?= (($row['isgeneral'] == 1)? "Sistema" : "Lista") ?></th>
                         <th><?= $row['timestamp'] ?></th>
                         <th><?= $row['roomcode'] ?></th>
                         <th>
@@ -569,10 +599,6 @@
           break;
         case "hasenddatetime":
           divClose.style.display = "block";
-          divOpen.style.display = "none";
-          break;
-        case "isOpen" || "isClose":
-          divClose.style.display = "none";
           divOpen.style.display = "none";
           break;
       }

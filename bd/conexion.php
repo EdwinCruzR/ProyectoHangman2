@@ -8,7 +8,7 @@ $conexion = new mysqli($servidor, $usuario, $contrasenia, $nombreBaseDatos);*/
 $servidor = "localhost";
 $usuario = "root";
 $contrasenia      = "";
-$nombreBaseDatos = "cbtised3_hangman";
+$nombreBaseDatos = "hangman";
 $conexion = new mysqli($servidor, $usuario, $contrasenia, $nombreBaseDatos);
 
 ?>
