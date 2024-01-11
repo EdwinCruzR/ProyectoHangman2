@@ -81,7 +81,10 @@
     resize: vertical;
   }
   
-  
+  .inp-settime{  
+    display: none;
+  }
+
   .word-list {
     display: none;
   }

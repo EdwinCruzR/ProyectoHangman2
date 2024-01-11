@@ -183,8 +183,23 @@
                   <label class="form-label" for="randomOrder">¿Orden de palabras aleatorio?</label>
                   <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder">
 
-                  <label class="form-label" for="isOpen">¿Abierta?</label>
-                  <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked>
+                  <!-- <label class="form-label" for="isOpen">¿Abierta?</label>
+                  <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked> -->
+
+                  <label class="form-label" for="statusSource">Estado de entrada:</label>
+                  <select class="select-input" id="statusSource" name="statusSource" onchange="toggleRoomStatus()">
+                      <option value="isOpen">Abierta</option>
+                      <option value="isClose">Cerrada</option>
+                      <option value="setTime">Establecer horario</option>
+                  </select>
+
+                  <div class="inp-settime" id="inp-settime">
+                    <label class="form-label" for="timestampOpen">Hora de apertura:</label>
+                    <input class="form-input" type="datetime-local" id="timestampOpen" name="timestampOpen" >
+
+                    <label class="form-label" for="timestampClose">Hora de cierre:</label>
+                    <input class="form-input" type="datetime-local" id="timestampClose" name="timestampClose" >
+                  </div>
 
                   <label class="form-label" for="wordSource">Palabras de la sala:</label>
                   <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
@@ -529,6 +544,15 @@
       } else {
         cluesInputs.disabled=true;
       }
+    }
+
+    function toggleRoomStatus() {
+      
+      var divIpt = document.getElementById("inp-settime");
+      var statusSource = document.getElementById("statusSource");
+      
+      // Muestra la lista de palabras solo cuando se selecciona "Palabras del docente"
+      divIpt.style.display = (statusSource.value === "setTime") ? "block" : "none";
     }
 
     function toggleWordList() {
