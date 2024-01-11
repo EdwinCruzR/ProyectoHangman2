@@ -38,7 +38,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <div class="logo">
-        <img src="../assets/img/hangman_logo_blue.png" alt="Logo">
+        <img src="../assets/img/stickman_admin.png" alt="Logo">
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
