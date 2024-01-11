@@ -43,14 +43,17 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="collapse navbar-collapse nav" id="navbarNavDropdown">
       <ul class="navbar-nav">
+      <div class="left">
         <li class="nav-item">
         <p class="nav-link scrollto">ADMINISTRADOR DOCENTE</p>
         </li>
         <li class="nav-item">
         <p class="nav-link ">¡Hola!, <?php echo $name ?></p>
-        </li>
+        </li>   
+      </div> 
+      <div class="right">   
         <li class="nav-item">
             <a class="nav-link" href="../arenagame.html">Jugar modo arena</a>
         </li>
@@ -89,7 +92,8 @@
         </li>
         <li class="nav-item">
         <a href="./cerrarsesion.php"> <button id="logout-btn">Cerrar sesión</button> </a>
-        </li>
+        </li>  
+      </div>  
       </ul>
     </div>
   </div>
