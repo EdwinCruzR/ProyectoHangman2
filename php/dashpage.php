@@ -571,7 +571,7 @@
           divClose.style.display = "block";
           divOpen.style.display = "none";
           break;
-        default
+        case "isOpen" || "isClose":
           divClose.style.display = "none";
           divOpen.style.display = "none";
           break;
