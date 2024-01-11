@@ -81,7 +81,10 @@
     resize: vertical;
   }
   
-  .inp-settime{  
+  .settimeclose{  
+    display: none;
+  }
+  .settimeopen{  
     display: none;
   }
 

@@ -129,7 +129,7 @@
                   } while (mysqli_num_rows($verifCode) != 0);
 
                   $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?r='. $roomcode;
-                  
+                  // INSERT INTO `hangman`.`room` (`roomname`, `description`, `lives`, `clue`, `clueafter`, `feedback`, `random`, `isopen`, `hasstartdatetime`, `startdatetime`, `hasenddatetime`, `enddatetime`, `isgeneral`, `timestamp`, `roomcode`, `user_id`) VALUES ('hola', 'a', '1', b'2', b'3', b'1', b'1', b'1', b'0', b'1', b'1', b'1', b'1', b'1', b'verPro', b'1');
                   $insertCreate = mysqli_query($conexion,"INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, roomcode, qrstring, user_id) VALUES ('$roomName', '$roomDescription', '$lives', '$clue', '$clueafter', '$feedback', '$random', '$isopen', '$roomcode', '$qrcode', '$id')");
                   
                   if(mysqli_num_rows($insertCreate) !=0 ){
@@ -190,17 +190,20 @@
                   <select class="select-input" id="statusSource" name="statusSource" onchange="toggleRoomStatus()">
                       <option value="isOpen">Abierta</option>
                       <option value="isClose">Cerrada</option>
-                      <option value="setTime">Establecer horario</option>
+                      <option value="hasstartdatetime">Establecer horario (solo entrada)</option>
+                      <option value="hasenddatetime">Establecer horario (solo cierre)</option>
+                      <option value="setTime">Establecer horario (entrada y cierre)</option>
                   </select>
 
-                  <div class="inp-settime" id="inp-settime">
+                  <div class="settimeopen" id="settimeopen">
                     <label class="form-label" for="timestampOpen">Hora de apertura:</label>
                     <input class="form-input" type="datetime-local" id="timestampOpen" name="timestampOpen" >
-
+                  </div>
+                  <div class="settimeclose" id="settimeclose">
                     <label class="form-label" for="timestampClose">Hora de cierre:</label>
                     <input class="form-input" type="datetime-local" id="timestampClose" name="timestampClose" >
                   </div>
-
+                    
                   <label class="form-label" for="wordSource">Palabras de la sala:</label>
                   <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
                       <option value="system">Palabras del sistema</option>
@@ -547,12 +550,28 @@
     }
 
     function toggleRoomStatus() {
-      
-      var divIpt = document.getElementById("inp-settime");
       var statusSource = document.getElementById("statusSource");
+      var divClose = document.getElementById("settimeclose");
+      var divOpen = document.getElementById("settimeopen");
       
-      // Muestra la lista de palabras solo cuando se selecciona "Palabras del docente"
-      divIpt.style.display = (statusSource.value === "setTime") ? "block" : "none";
+      switch (statusSource.value) {
+        case "setTime":
+          divClose.style.display = "block";
+          divOpen.style.display = "block";
+          break;
+        case "hasstartdatetime":
+          divOpen.style.display = "block";
+          divClose.style.display = "none";
+          break;
+        case "hasenddatetime":
+          divClose.style.display = "block";
+          divOpen.style.display = "none";
+          break;
+        default
+          divClose.style.display = "none";
+          divOpen.style.display = "none";
+          break;
+      }
     }
 
     function toggleWordList() {
