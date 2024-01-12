@@ -24,15 +24,13 @@
 <div id="sala_palabras" class="content">
             <h2>Contenido para editar palabras</h2>
             <?php
-            $idword = (int)$_REQUEST['id'];
-            var_dump($idword); // o echo $idword;
+            $id = $_GET['id'];
 
-
-            $consulta_word_up = mysqli_query($conexion, "SELECT * FROM words where id = $idword");
+            $consulta_word_up = mysqli_query($conexion, "SELECT * FROM words where id = $id");
 
             while ($row = mysqli_fetch_array($consulta_word_up)):
             ?>
-            <form id="gameForm" action="./editarPalabras.php" method="post">
+                  <form id="gameForm"  method="post">
             
                   <label class="form-label" for="wordName">Nombre de la palabra:</label>
                   <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required value="<?= $row['word'] ?>">
@@ -51,7 +49,7 @@
 
                   <label class="form-label" for="eg">Ejemplo de la palabra:</label>
                   <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required><?= $row['example'] ?></textarea>
-
+                  <input class="form-input" type="hidden" id="id" name="id" min="1" max="5" value="<?= $row['id'] ?>">
                   <input type="submit" class="form-button" name="submit_editar_palabra" value="Editar palabra" required>
                   </form>
             <?php endwhile; ?>
@@ -65,9 +63,10 @@
         $clue = $_POST['clue'];
         $wordPast = $_POST['wordPast'];
         $eg = $_POST['eg'];
+        $ID = $_post['id'];
         
       //   UPDATE words SET isactive = b'1', word = 'watafak' WHERE id = 17 AND user_id = 4;
-        $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word='$word', type= '$type', clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$idword AND user_id=$iduser");
+        $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word='$word', type= '$type', clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$id");
         
         if(!($insertUpdateWord)){
           echo "<script> alert('Error al editar'); </script>";

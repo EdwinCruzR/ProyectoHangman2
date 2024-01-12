@@ -426,7 +426,7 @@
                         <th><?= $row['clue'] ?></th>
                         <th><?= $row['simplepast'] ?></th>
                         <th><?= $row['example'] ?></th>
-                        <th><a href="editarPalabras.php?ic=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <th><a href="editarPalabras.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
                         <a href="eliminarPalabras.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
@@ -440,15 +440,6 @@
         ?>
             </div>
         </div>
-        <!-- <div id="palabras_editar" class="content">
-            <h2>Contenido para editar palabras</h2>
-            <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div>
-    
-        <div id="palabras_eliminar" class="content">
-            <h2>Contenido para eliminar palabras</h2>
-            <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div> -->
     </div>
 
     <div class="listas">

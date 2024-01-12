@@ -69,6 +69,7 @@
                       <option value="list3">guerra</option>
                       </select>
                   </div>
+                  <input class="form-input" type="hidden" id="id" name="id" min="1" max="5" value="<?= $row['id'] ?>">
                   <input type="submit" class="form-button" name="submit_editar_sala" value="Editar Sala" required>
             </form>
             <?php endwhile; ?>
@@ -85,7 +86,7 @@
     $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on")? 1 : 0 ;
     $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "on")? 1 : 0 ;
     $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
-      
+    $id= $_POST['id'];
     $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description= '$roomDescription', lives='$lives', clue='$clue', clueafter='$clueafter', feedback='$feedback', random='$random', isopen='$isopen' WHERE id=$id");
 
     if(!($querymodificar)){
@@ -101,5 +102,52 @@ echo "<script> alert('Se edito correctamente'); </script>";
 ?>
 </div>
 </main>
+<script>
+
+    function toggleLivesInput() {
+      var numLivesInput = document.getElementById("numLives");
+      numLivesInput.disabled = document.getElementById("unlimitedLives").checked;
+    }
+
+    function toggleCluesInput(){
+      var cluesInputs = document.getElementById("errorNumber");
+      if(document.getElementById("showHints").checked) {
+        cluesInputs.disabled=false;
+      } else {
+        cluesInputs.disabled=true;
+      }
+    }
+
+    function toggleRoomStatus() {
+      var statusSource = document.getElementById("statusSource");
+      var divClose = document.getElementById("settimeclose");
+      var divOpen = document.getElementById("settimeopen");
+      
+      if (divClose && divOpen) {
+        switch (statusSource.value) {
+          case "setTime":
+            divClose.style.display = "block";
+            divOpen.style.display = "block";
+            break;
+          case "hasstartdatetime":
+            divOpen.style.display = "block";
+            divClose.style.display = "none";
+            break;
+          case "hasenddatetime":
+            divClose.style.display = "block";
+            divOpen.style.display = "none";
+            break;
+        }
+      }
+    }
+
+    function toggleWordList() {
+      var wordList = document.getElementById("wordList");
+      var wordSource = document.getElementById("wordSource");
+      
+      // Muestra la lista de palabras solo cuando se selecciona "Palabras del docente"
+      wordList.style.display = (wordSource.value === "teacher") ? "block" : "none";
+    }
+  </script>
 </body>
 </html>
