@@ -168,7 +168,7 @@
                         </script>
                         </th>
                         <th><a href="editar.php?id=<?= $row['id'] ?>&select=sala" class="users-table--edit">Editar</a><br>
-                        <a href="eliminarSala.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
+                        <a href="eliminar.php?id=<?= $row['id'] ?>&select=sala" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -216,7 +216,7 @@
                         <th><?= $row['simplepast'] ?></th>
                         <th><?= $row['example'] ?></th>
                         <th><a href="editar.php?id=<?= $row['id'] ?>&select=palabra" class="users-table--edit">Editar</a><br>
-                        <a href="eliminarPalabras.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
+                        <a href="eliminar.php?id=<?= $row['id'] ?>&select=palabra" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -259,7 +259,7 @@
                         <th><?= $row['description'] ?></th>
                         <th><a href="editar.php?id=<?= $row['id'] ?>&select=lista" class="users-table--edit">Editar</a><br>
                         <th><a href="addWords.php?id=<?= $row['id'] ?>" class="users-table--edit">Añadir palabras</a><br>
-                        <a href="eliminarListas.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
+                        <a href="eliminar.php?id=<?= $row['id'] ?>&select=lista" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
