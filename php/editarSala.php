@@ -38,7 +38,7 @@
                   <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()">
 
                   <label class="form-label" for="numLives">Número de vidas:</label>
-                  <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="<?= $row['lives'] ?>">
+                  <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="<?= (($row['lives']>0)? $row['lives'] : "" )?>">
 
                   <label class="form-label" for="showHints">¿Mostrar pistas?</label>
                   <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()"checked >

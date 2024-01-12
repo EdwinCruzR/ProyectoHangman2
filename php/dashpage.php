@@ -331,16 +331,6 @@
         ?>
             </div>
         </div>
-    
-        <!-- <div id="sala_editar" class="content">
-            <h2>Contenido para editar salas</h2>
-            <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div> -->
-    
-        <!-- <div id="sala_eliminar" class="content">
-            <h2>Contenido para eliminar salas</h2>
-            <p>Este es el contenido que se mostrará cuando se seleccione la Opción 3.</p>
-        </div> -->
     </div>
     <div class="palabras">
     <div id="palabras_crear" class="content">
