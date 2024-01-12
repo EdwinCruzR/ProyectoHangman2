@@ -102,159 +102,6 @@
 
 <main>
     <div class="salas">
-        <div id="sala_crear" class="content">
-              <div class="form-container">
-              <?php 
-              if(isset($_POST['submit_crear_sala'])){
-
-                function makeRoomCode() {
-                  $roomcode = '';
-                  $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-          
-                  for ($i = 0; $i < 6; $i++) {
-                      $roomcode .= $caracteres[rand(0, strlen($caracteres) - 1)];
-                  }
-                  return $roomcode;
-                }
-            
-                $roomName = mysqli_real_escape_string($conexion, $_POST['roomName']);
-                $roomDescription = mysqli_real_escape_string($conexion, $_POST['roomDescription']);
-                $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on") ? -1 : intval($_POST['numLives']);
-                $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on") ? 1 : 0;
-                $clueafter = ($clue == 1) ? intval($_POST['errorNumber']) : -1;
-                $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on") ? 1 : 0;
-                $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "isOpen") ? 1 : 0;
-                $selectedStatus = isset($_POST["statusSource"]) ? $_POST["statusSource"] : "";
-                
-                switch ($selectedStatus) {
-                    case 'hasstartdatetime':
-                        $hasstartdatetime = 1;
-                        $hasenddatetime = 0;
-                        $timestampClose = NULL;
-                        $timestampOpen = mysqli_real_escape_string($conexion, $_POST["timestampOpen"]);
-                        break;
-            
-                    case 'hasenddatetime':
-                        $hasstartdatetime = 0;
-                        $hasenddatetime = 1;
-                        $timestampClose = mysqli_real_escape_string($conexion, $_POST["timestampClose"]);
-                        $timestampOpen = NULL;
-                        break;
-            
-                    case 'setTime':
-                        $hasstartdatetime = 1;
-                        $hasenddatetime = 1;
-                        $timestampOpen = mysqli_real_escape_string($conexion, $_POST["timestampOpen"]);
-                        $timestampClose = mysqli_real_escape_string($conexion, $_POST["timestampClose"]);
-                        break;
-            
-                    case 'WithoutH':
-                        $hasstartdatetime = 0;
-                        $hasenddatetime = 0;
-                        $timestampOpen = NULL;
-                        $timestampClose = NULL;
-                        break;
-                }
-            
-                $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "system") ? 1 : 0;
-                $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on") ? 1 : 0;
-                
-                $roomcode = '';
-                do {
-                    $roomcode = makeRoomCode();
-                    $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
-                } while (mysqli_num_rows($verifCode) != 0);
-            
-                $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?r=' . $roomcode;
-            
-                // Usa sentencias preparadas para prevenir inyección de SQL
-                $insertCreate = mysqli_prepare($conexion, "INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, hasstartdatetime, startdatetime, hasenddatetime, enddatetime, isgeneral, roomcode, qrstring, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                mysqli_stmt_bind_param($insertCreate, "ssiiiiiissssssss", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $id);
-                mysqli_stmt_execute($insertCreate);
-            
-                if(mysqli_stmt_affected_rows($insertCreate) === 0){
-                    echo 'Error en la creación de la sala: ' . mysqli_error($conexion);
-                } else {
-                    echo 'Sala creada correctamente';
-                    header("Location: dashpage.php");
-                    exit;
-                }
-
-              }else{
-              
-              ?>
-                  <h1>Crear Sala de Juego</h1>
-                  <form id="gameForm" method="post">
-                  <label class="form-label" for="roomName">Nombre de la sala:</label>
-                  <input class="form-input" type="text" id="roomName" name="roomName" maxlength="50" required>
-
-                  <label class="form-label" for="roomDescription">Descripción de la sala:</label>
-                  <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required></textarea>
-
-                  <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
-                  <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()" checked>
-
-                  <label class="form-label" for="numLives">Número de vidas:</label>
-                  <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="3" disabled>
-
-                  <label class="form-label" for="showHints">¿Mostrar pistas?</label>
-                  <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()"checked>
-
-                  <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
-                  <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="3" >
-
-                  <label class="form-label" for="showFeedback">¿Mostrar retroalimentación?</label>
-                  <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback" checked>
-
-                  <label class="form-label" for="randomOrder">¿Orden de palabras aleatorio?</label>
-                  <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder">
-        
-                  <!-- <label class="form-label" for="isOpen">¿Abierta?</label>
-                  <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked> -->
-
-                  <label class="form-label" for="isOpen">Estado de entrada:</label>
-                  <select class="select-input" id="isOpen" name="isOpen">
-                      <option value="isOpen">Abierta</option>
-                      <option value="isClose">Cerrada</option>
-                  </select>
-
-                  <label class="form-label" for="statusSource">Establecer horario:</label>
-                  <select class="select-input" id="statusSource" name="statusSource" onchange="toggleRoomStatus()">
-                      <option value="WithoutH">Sin horario</option>
-                      <option value="hasstartdatetime">Solo entrada</option>
-                      <option value="hasenddatetime">Solo cierre</option>
-                      <option value="setTime">Entrada y cierre</option>
-                  </select>
-
-                  <div class="settimeopen" id="settimeopen">
-                    <label class="form-label" for="timestampOpen">Hora de apertura:</label>
-                    <input class="form-input" type="datetime-local" id="timestampOpen" name="timestampOpen" >
-                  </div>
-                  <div class="settimeclose" id="settimeclose">
-                    <label class="form-label" for="timestampClose">Hora de cierre:</label>
-                    <input class="form-input" type="datetime-local" id="timestampClose" name="timestampClose" >
-                  </div>
-                    
-                  <label class="form-label" for="wordSource">Palabras de la sala:</label>
-                  <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
-                      <option value="system">Palabras del sistema</option>
-                      <option value="teacher">Palabras del docente</option>
-                  </select>
-
-                  <div class="word-list" id="wordList">
-                      <label class="form-label" for="wordListSelect">Seleccione la lista de palabras:</label>
-                      <select class="select-input" id="wordListSelect">
-                      <option value="list1">cocina</option>
-                      <option value="list2">viajes</option>
-                      <option value="list3">guerra</option>
-                      </select>
-                  </div>
-                  <input type="submit" class="form-button" name="submit_crear_sala" value="Crear Sala" required>
-                  </form>
-              </div>
-              <?php } ?>
-        </div>
-    
         <div id="sala_consultar" class="content">
             <h2>Tus salas</h2>
             <div class="contenido">
@@ -288,7 +135,7 @@
                 <?php 
                   $num = 0;
                   while ($row = mysqli_fetch_array($consulta_salas)): 
-                    $num = $num + 1;
+                  $num = $num + 1;
                   ?>
                     <tr>
                         <th><?= $row['id'] ?></th>
@@ -304,7 +151,7 @@
                         <th><?= $row['timestamp'] ?></th>
                         <th><?= $row['roomcode'] ?></th>
                         <th>
-                        <div id="qrcode"></div>
+                        <div id="qrcode-<?= $num ?>"></div>
 
                         <script>
                             var contenidoQR = '<?php echo $row['qrstring']; ?>';
