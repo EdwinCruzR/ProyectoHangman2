@@ -189,9 +189,9 @@
             <div class="contenido">
 
             <?php 
-            $consulta_salas = mysqli_query($conexion,"SELECT * FROM words WHERE user_id=$id AND isactive=1");
+            $consulta_words = mysqli_query($conexion,"SELECT * FROM words WHERE user_id=$id AND isactive=1");
                     
-            if ($consulta_salas->num_rows > 0) {
+            if ($consulta_words->num_rows > 0) {
             ?>
 
             <table>
@@ -207,7 +207,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = mysqli_fetch_array($consulta_salas)): ?>
+                <?php while ($row = mysqli_fetch_array($consulta_words)): ?>
                     <tr>
                         <th><?= $row['id'] ?></th>
                         <th><?= $row['word'] ?></th>
@@ -258,6 +258,7 @@
                         <th><?= $row['listname'] ?></th>
                         <th><?= $row['description'] ?></th>
                         <th><a href="editarListas.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <th><a href="addWords.php?id=<?= $row['id'] ?>" class="users-table--edit">Añadir palabras</a><br>
                         <a href="eliminarListas.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
@@ -273,68 +274,7 @@
         </div>
     </div>
 </main>
-<script>
-    function toggleContent(contentId) {
-      // Oculta los demás contenidos
-      var contents = document.querySelectorAll('.content');
-      contents.forEach(function (content) {
-        if (content.id !== contentId) {
-          content.classList.remove('visible');
-        }
-      });
-
-      // Muestra u oculta el contenido según su estado actual
-      var selectedContent = document.getElementById(contentId);
-      if (selectedContent) {
-        selectedContent.classList.toggle('visible');
-      }
-    }
-
-    function toggleLivesInput() {
-      var numLivesInput = document.getElementById("numLives");
-      numLivesInput.disabled = document.getElementById("unlimitedLives").checked;
-    }
-
-    function toggleCluesInput(){
-      var cluesInputs = document.getElementById("errorNumber");
-      if(document.getElementById("showHints").checked) {
-        cluesInputs.disabled=false;
-      } else {
-        cluesInputs.disabled=true;
-      }
-    }
-
-    function toggleRoomStatus() {
-      var statusSource = document.getElementById("statusSource");
-      var divClose = document.getElementById("settimeclose");
-      var divOpen = document.getElementById("settimeopen");
-      
-      if (divClose && divOpen) {
-        switch (statusSource.value) {
-          case "setTime":
-            divClose.style.display = "block";
-            divOpen.style.display = "block";
-            break;
-          case "hasstartdatetime":
-            divOpen.style.display = "block";
-            divClose.style.display = "none";
-            break;
-          case "hasenddatetime":
-            divClose.style.display = "block";
-            divOpen.style.display = "none";
-            break;
-        }
-      }
-    }
-
-    function toggleWordList() {
-      var wordList = document.getElementById("wordList");
-      var wordSource = document.getElementById("wordSource");
-      
-      // Muestra la lista de palabras solo cuando se selecciona "Palabras del docente"
-      wordList.style.display = (wordSource.value === "teacher") ? "block" : "none";
-    }
-  </script>
+<script src="../assets/js/dashpage.js"></script>
   
 </body>
 </html>

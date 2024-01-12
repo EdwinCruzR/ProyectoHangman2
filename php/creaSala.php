@@ -3,7 +3,7 @@
     include("../bd/conexion.php");
     if (!isset($_SESSION['id'])) {
         header("Location: ../index.php");
-        exit();  // Asegura que el script se detenga después de enviar las cabeceras
+        exit();
     }
     $id = $_SESSION['id'];
 ?>
@@ -156,12 +156,23 @@
                     <option value="teacher">Palabras del docente</option>
                 </select>
 
+                <?php 
+                $consulta_lists = mysqli_query($conexion,"SELECT * FROM lists WHERE user_id=$id"); 
+                ?>
+
                 <div class="word-list" id="wordList">
                     <label class="form-label" for="wordListSelect">Seleccione la lista de palabras:</label>
                     <select class="select-input" id="wordListSelect">
-                        <option value="list1">cocina</option>
-                        <option value="list2">viajes</option>
-                        <option value="list3">guerra</option>
+                        
+                    <?php
+                    if ($consulta_lists->num_rows > 0) {
+                        while ($row = mysqli_fetch_array($consulta_lists)){ ?>
+                            <option value="<?= $row['id'] ?>"><?= $row['listname'] ?></option>
+                        <?php } 
+                    }else {
+                        ?> <option value="sinLis">Sin listas disponibles</option> <?php
+                    }
+                    ?>
                     </select>
                 </div>
                 <input type="submit" class="form-button" name="submitBuiltRoom" id="submitBuiltRoom" value="Crear sala" required>
