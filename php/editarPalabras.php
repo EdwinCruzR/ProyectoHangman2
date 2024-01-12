@@ -49,7 +49,7 @@
 
                   <label class="form-label" for="eg">Ejemplo de la palabra:</label>
                   <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required><?= $row['example'] ?></textarea>
-                  <input class="form-input" type="hidden" id="id" name="id" min="1" max="5" value="<?= $row['id'] ?>">
+                  <input class="form-input" type="hidden" id="id" name="id"  value="<?= $row['id'] ?>">
                   <input type="submit" class="form-button" name="submit_editar_palabra" value="Editar palabra" required>
                   </form>
             <?php endwhile; ?>

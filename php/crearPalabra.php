@@ -60,13 +60,14 @@
                   
                   $insertCreate = mysqli_query($conexion,"INSERT INTO words (word, type, clue, simplepast, example, user_id) VALUES ('$word', '$type','$clue', '$wordPast', '$eg', '$iduser')");
                   
-                  /* if(mysqli_num_rows($insertCreate)){
-                    echo "<div class='alert alert-danger' role='alert'>
-                    Error al crear la palabra
-                  </div>";
-                  } else { */
-                    header("Location: dashpage.php");   
-                  /* }   */              
+                  if(!($insertCreate)){
+                    echo "<script> alert('Error al crear'); </script>";
+                    }else{
+                        
+                      
+                      header("Location: ./dashpage.php");
+              echo "<script> alert('Se creo correctamente'); </script>";
+                    }           
 
               }
               
