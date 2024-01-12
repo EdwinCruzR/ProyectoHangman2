@@ -35,7 +35,7 @@
                   <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required><?= $row['description'] ?></textarea>
 
                   <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
-                  <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()">
+                  <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()" <?= (($row['lives']== -1)? 'checked': '' )?> >
 
                   <label class="form-label" for="numLives">Número de vidas:</label>
                   <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="<?= (($row['lives']>0)? $row['lives'] : "" )?>">
@@ -104,9 +104,24 @@ echo "<script> alert('Se edito correctamente'); </script>";
 </main>
 <script>
 
+      var checkbox = document.getElementById('unlimitedLives');
+      var numLivesInput = document.getElementById('numLives');
+
+        if (checkbox.checked) {
+            numLivesInput.disabled = true;
+        } else {
+            numLivesInput.disabled = false;
+        }
+
     function toggleLivesInput() {
-      var numLivesInput = document.getElementById("numLives");
-      numLivesInput.disabled = document.getElementById("unlimitedLives").checked;
+      var checkbox = document.getElementById('unlimitedLives');
+      var numLivesInput = document.getElementById('numLives');
+
+        if (checkbox.checked) {
+            numLivesInput.disabled = true;
+        } else {
+            numLivesInput.disabled = false;
+        }
     }
 
     function toggleCluesInput(){

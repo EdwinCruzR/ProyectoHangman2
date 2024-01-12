@@ -169,7 +169,7 @@
             
                 // Usa sentencias preparadas para prevenir inyección de SQL
                 $insertCreate = mysqli_prepare($conexion, "INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, hasstartdatetime, startdatetime, hasenddatetime, enddatetime, isgeneral, roomcode, qrstring, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                mysqli_stmt_bind_param($insertCreate, "ssiiiiiissssssis", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $id);
+                mysqli_stmt_bind_param($insertCreate, "ssiiiiiissssssss", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $id);
                 mysqli_stmt_execute($insertCreate);
             
                 if(mysqli_stmt_affected_rows($insertCreate) === 0){
@@ -285,7 +285,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = mysqli_fetch_array($consulta_salas)): ?>
+                <?php 
+                  $num = 0;
+                  while ($row = mysqli_fetch_array($consulta_salas)): 
+                    $num = $num + 1;
+                  ?>
                     <tr>
                         <th><?= $row['id'] ?></th>
                         <th><?= $row['roomname'] ?></th>
@@ -299,21 +303,21 @@
                         <th><?= (($row['isgeneral'] == 1)? "Sistema" : "Lista") ?></th>
                         <th><?= $row['timestamp'] ?></th>
                         <th><?= $row['roomcode'] ?></th>
-                        <th id="qrcode">
+                        <th>
+                        <div id="qrcode"></div>
 
                         <script>
-                            // Contenido para el código QR
                             var contenidoQR = '<?php echo $row['qrstring']; ?>';
 
-                            // Configuración del código QR
-                            var opcionesQR = {
+                            var qrcode = new QRCode(document.getElementById("qrcode-<?= $num ?>"), {
                                 text: contenidoQR,
                                 width: 128,
-                                height: 128
-                            };
+                                height: 128,
+                                colorDark : "#000000",
+                                colorLight : "#ffffff",
+                                correctLevel : QRCode.CorrectLevel.L
+                            });
 
-                            // Genera el código QR en el contenedor con el id "qrcode"
-                            var qrcode = new QRCode(document.getElementById("qrcode"), opcionesQR);
                         </script>
                         </th>
                         <th><a href="editarSala.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
