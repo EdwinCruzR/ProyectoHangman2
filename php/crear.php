@@ -80,6 +80,7 @@ $iduser = $_SESSION['id'];
 
                 $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "system") ? 1 : 0;
                 $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on") ? 1 : 0;
+                $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;              
 
                 $roomcode = '';
                 do {
@@ -169,7 +170,8 @@ $iduser = $_SESSION['id'];
 
                             <div class="word-list" id="wordList">
                                 <label class="form-label" for="wordListSelect">Seleccione la lista de palabras:</label>
-                                <select class="select-input" id="wordListSelect">
+                                <select class="select-input" id="wordListSelect" name="wordListSelect">
+                                    <option value="0">Selecciona una lista</option>
                                     
                                 <?php
                                 if ($consulta_lists->num_rows > 0) {
@@ -177,7 +179,7 @@ $iduser = $_SESSION['id'];
                                         <option value="<?= $row['id'] ?>"><?= $row['listname'] ?></option>
                                     <?php } 
                                 }else {
-                                    ?> <option value="sinLis">Sin listas disponibles</option> <?php
+                                    ?> <option value="0">Sin listas disponibles</option> <?php
                                 }
                                 ?>
                                 </select>
