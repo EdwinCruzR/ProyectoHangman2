@@ -170,12 +170,14 @@ $iduser = $_SESSION['id'];
         mysqli_stmt_bind_param($insertCreate, "ssiiiiiissssssis", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $id);
         mysqli_stmt_execute($insertCreate);
 
-        /* if(mysqli_stmt_affected_rows($insertCreate) === 0){
-            echo 'Error en la creación de la sala: ' . mysqli_error($conexion);
-        } else { */
-            
-header("Location: ./dashpage.php", true);
-                    /*    } */
+        if(!($insertCreate)){
+            echo "<script> alert('Error al crear'); </script>";
+            }else{
+                
+              
+              header("Location: ./dashpage.php");
+      echo "<script> alert('Se creo correctamente'); </script>";
+            }     
 
     }
 

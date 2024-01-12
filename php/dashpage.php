@@ -83,7 +83,7 @@
           Listas
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="#listas_crear" onclick="toggleContent('listas_crear')">Crear</a></li>
+            <li><a href="./crearLista.php" >Crear</a></li>
             <li><a href="#listas_consultar" onclick="toggleContent('listas_consultar')">Colsultar</a></li>
           </ul>
         </li>
@@ -385,64 +385,13 @@
     </div>
 
     <div class="listas">
-    <div id="listas_crear" class="content">
-    <div class="form-container">
-              <?php 
-              if(isset($_POST['submit_crear_categoria'])){
-
-                  $word = $_POST['wordName'];
-                  $type = $_POST[''];
-                  $clue = $_POST['clue'];
-                  $wordPast = $_POST['wordPast'];
-                  $eg = $_POST['eg'];
-                  
-                  $insertCreate = mysqli_query($conexion,"INSERT INTO words (word, type, clue, simplepast, example, user_id) VALUES ('$word', '$type','$clue', '$wordPast', '$eg', '$id')");
-                  
-                  if(mysqli_num_rows($insertCreate) !=0 ){
-                    echo "<div class='alert alert-danger' role='alert'>
-                    Error al crear la palabra
-                  </div>";
-                    echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-                    <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
-                  </div>";
-                  }                 
-
-              }else{
-              
-              ?>
-                  <h1>Crear Lista</h1>
-
-                  <form id="gameForm" action="./dashpage.php" method="post">
-                  <label class="form-label" for="wordName">Nombre de la palabra:</label>
-                  <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required>
-
-                  <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
-                  <select class="select-input" id="typeListSelect">
-                  <option value="list1">Regular</option>
-                  <option value="list2">Irregular</option>
-                  </select>
-
-                  <label class="form-label" for="clue">Pista de la palabra:</label>
-                  <textarea class="form-input form-textarea" id="clue" name="clue" maxlength="300" required></textarea>
-
-                  <label class="form-label" for="wordPast">Pasado simple de la palabra:</label>
-                  <input class="form-input" type="text" id="wordPast" name="wordPast" maxlength="50" required>
-
-                  <label class="form-label" for="eg">Ejemplo de la palabra:</label>
-                  <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required></textarea>
-
-                  <input type="submit" class="form-button" name="submit_crear_palabra" value="Crear palabra" required>
-                  </form>
-              </div>
-              <?php } ?>
-        </div>
     
         <div id="listas_consultar" class="content">
             <h2>Tus listas</h2>
             <div class="contenido">
 
             <?php 
-            $consulta_salas = mysqli_query($conexion,"SELECT * FROM words");
+            $consulta_salas = mysqli_query($conexion,"SELECT * FROM lists");
                     
             if ($consulta_salas->num_rows > 0) {
             ?>
@@ -451,32 +400,25 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Palabra</th>
-                    <th>Tipo</th>
-                    <th>Pista</th>
-                    <th>Pasado simple</th>
-                    <th>Ejemplo</th>
-                    <th>Acciones</th>
+                    <th>Nombre de la lista</th>
+                    <th>Descripcion</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($row = mysqli_fetch_array($consulta_salas)): ?>
                     <tr>
                         <th><?= $row['id'] ?></th>
-                        <th><?= $row['word'] ?></th>
-                        <th><?= (($row['type'] == "I")? "Irregular" : "Regular") ?></th>
-                        <th><?= $row['clue'] ?></th>
-                        <th><?= $row['simplepast'] ?></th>
-                        <th><?= $row['example'] ?></th>
-                        <th><a href="editarPalabras.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
-                        <a href="eliminarPalabras.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
+                        <th><?= $row['listname'] ?></th>
+                        <th><?= $row['description'] ?></th>
+                        <th><a href="editarListas.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <a href="eliminarListas.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
         <?php 
             }else {
-                echo 'No hay palabras registradas.';
+                echo 'No hay Listas registradas.';
             }
             
         ?>

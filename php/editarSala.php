@@ -69,7 +69,7 @@
                       <option value="list3">guerra</option>
                       </select>
                   </div>
-                  <input class="form-input" type="hidden" id="id" name="id" min="1" max="5" value="<?= $row['id'] ?>">
+                  <input class="form-input" type="hidden" id="id" name="id"  value="<?= $row['id'] ?>">
                   <input type="submit" class="form-button" name="submit_editar_sala" value="Editar Sala" required>
             </form>
             <?php endwhile; ?>
