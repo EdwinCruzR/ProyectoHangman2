@@ -349,7 +349,7 @@
               if(isset($_POST['submit_crear_palabra'])){
 
                   $word = $_POST['wordName'];
-                  // $type = $_POST[''];
+                  $type = $_POST['typeListSelect'];
                   $clue = $_POST['clue'];
                   $wordPast = $_POST['wordPast'];
                   $eg = $_POST['eg'];
@@ -375,9 +375,9 @@
                   <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required>
 
                   <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
-                  <select class="select-input" id="typeListSelect">
-                  <option value="list1">Regular</option>
-                  <option value="list2">Irregular</option>
+                  <select class="select-input" id="typeListSelect" name="typeListSelect">
+                  <option value="R">Regular</option>
+                  <option value="I">Irregular</option>
                   </select>
 
                   <label class="form-label" for="clue">Pista de la palabra:</label>
@@ -400,7 +400,7 @@
             <div class="contenido">
 
             <?php 
-            $consulta_salas = mysqli_query($conexion,"SELECT * FROM words");
+            $consulta_salas = mysqli_query($conexion,"SELECT * FROM words WHERE user_id=$id AND isactive=1");
                     
             if ($consulta_salas->num_rows > 0) {
             ?>
@@ -426,7 +426,7 @@
                         <th><?= $row['clue'] ?></th>
                         <th><?= $row['simplepast'] ?></th>
                         <th><?= $row['example'] ?></th>
-                        <th><a href="editarPalabras.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <th><a href="editarPalabras.php?ic=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
                         <a href="eliminarPalabras.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>

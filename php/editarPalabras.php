@@ -1,5 +1,13 @@
 <?php 
+   session_start();
+
    include("../bd/conexion.php");
+   if(!isset($_SESSION['id'])){
+    header("Location: ../index.php");
+   }
+
+    $iduser = $_SESSION['id'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,20 +24,23 @@
 <div id="sala_palabras" class="content">
             <h2>Contenido para editar palabras</h2>
             <?php
-            $id = $_REQUEST['id'];
-            $consulta_salas = mysqli_query($conexion, "SELECT * FROM words where id ='$id'");
-                      
-            while ($row = mysqli_fetch_array($consulta_salas)):
+            $idword = (int)$_REQUEST['id'];
+            var_dump($idword); // o echo $idword;
+
+
+            $consulta_word_up = mysqli_query($conexion, "SELECT * FROM words where id = $idword");
+
+            while ($row = mysqli_fetch_array($consulta_word_up)):
             ?>
-            <form id="gameForm" action="./dashpage.php" method="post">
-            <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required value="<?= $row['word'] ?>" >
+            <form id="gameForm" action="./editarPalabras.php" method="post">
+            
                   <label class="form-label" for="wordName">Nombre de la palabra:</label>
                   <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required value="<?= $row['word'] ?>">
 
                   <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
-                  <select class="select-input" id="typeListSelect">
-                  <option value="list1">Regular</option>
-                  <option value="list2">Irregular</option>
+                  <select class="select-input" id="typeListSelect" name="typeListSelect">
+                  <option value="R">Regular</option>
+                  <option value="I">Irregular</option>
                   </select>
 
                   <label class="form-label" for="clue">Pista de la palabra:</label>
@@ -41,23 +52,24 @@
                   <label class="form-label" for="eg">Ejemplo de la palabra:</label>
                   <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required><?= $row['example'] ?></textarea>
 
-                  <input type="submit" class="form-button" name="submit_crear_palabra" value="Editar palabra" required>
+                  <input type="submit" class="form-button" name="submit_editar_palabra" value="Editar palabra" required>
                   </form>
             <?php endwhile; ?>
 </div>
 <?php
 	
-	if(isset($_POST['submit_crear_palabra'])){
+	if(isset($_POST['submit_editar_palabra'])){
 
         $word = $_POST['wordName'];
-        $type = $_POST[''];
+        $type = $_POST['typeListSelect'];
         $clue = $_POST['clue'];
         $wordPast = $_POST['wordPast'];
         $eg = $_POST['eg'];
         
-        $insertCreate = mysqli_query($conexion,"UPDATE words SET word='$word', type= '$type', clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$id");
+      //   UPDATE words SET isactive = b'1', word = 'watafak' WHERE id = 17 AND user_id = 4;
+        $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word='$word', type= '$type', clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$idword AND user_id=$iduser");
         
-        if(!($querymodificar)){
+        if(!($insertUpdateWord)){
           echo "<script> alert('Error al editar'); </script>";
           }else{
               
