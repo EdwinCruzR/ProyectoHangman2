@@ -81,12 +81,6 @@
     resize: vertical;
   }
   
-  .settimeclose{  
-    display: none;
-  }
-  .settimeopen{  
-    display: none;
-  }
 
   .word-list {
     display: none;

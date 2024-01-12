@@ -65,7 +65,7 @@
             Salas
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="./crearSala.php">Crear</a></li>
+            <li><a href="./creaSala.php">Crear</a></li>
             <li><a href="#sala_consultar" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
           </ul>
         </li>
