@@ -65,7 +65,7 @@
             Salas
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="#sala_crear" onclick="toggleContent('sala_crear')">Crear</a></li>
+            <li><a href="./crearSala.php">Crear</a></li>
             <li><a href="#sala_consultar" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
           </ul>
         </li>
@@ -74,7 +74,7 @@
           Palabras
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="#palabras_crear" onclick="toggleContent('palabras_crear')">Crear</a></li>
+            <li><a href="./crearPalabra.php" >Crear</a></li>
             <li><a href="#palabras_consultar" onclick="toggleContent('palabras_consultar')">Colsultar</a></li>
           </ul>
         </li>
@@ -184,7 +184,7 @@
               
               ?>
                   <h1>Crear Sala de Juego</h1>
-                  <form id="gameForm" action="./dashpage.php" method="post">
+                  <form id="gameForm" method="post">
                   <label class="form-label" for="roomName">Nombre de la sala:</label>
                   <input class="form-input" type="text" id="roomName" name="roomName" maxlength="50" required>
 
@@ -208,7 +208,7 @@
 
                   <label class="form-label" for="randomOrder">¿Orden de palabras aleatorio?</label>
                   <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder">
-
+        
                   <!-- <label class="form-label" for="isOpen">¿Abierta?</label>
                   <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked> -->
 
@@ -299,8 +299,7 @@
                         <th><?= (($row['isgeneral'] == 1)? "Sistema" : "Lista") ?></th>
                         <th><?= $row['timestamp'] ?></th>
                         <th><?= $row['roomcode'] ?></th>
-                        <th>
-                        <div id="qrcode"></div>
+                        <th id="qrcode">
 
                         <script>
                             // Contenido para el código QR
@@ -333,58 +332,7 @@
         </div>
     </div>
     <div class="palabras">
-    <div id="palabras_crear" class="content">
-    <div class="form-container">
-              <?php 
-              if(isset($_POST['submit_crear_palabra'])){
-
-                  $word = $_POST['wordName'];
-                  $type = $_POST['typeListSelect'];
-                  $clue = $_POST['clue'];
-                  $wordPast = $_POST['wordPast'];
-                  $eg = $_POST['eg'];
-                  
-                  $insertCreate = mysqli_query($conexion,"INSERT INTO words (word, type, clue, simplepast, example, user_id) VALUES ('$word', '$type','$clue', '$wordPast', '$eg', '$id')");
-                  
-                  if(mysqli_num_rows($insertCreate) !=0 ){
-                    echo "<div class='alert alert-danger' role='alert'>
-                    Error al crear la palabra
-                  </div>";
-                    echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-                    <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
-                  </div>";
-                  }                 
-
-              }else{
-              
-              ?>
-                  <h1>Crear Palabras</h1>
-
-                  <form id="gameForm" action="./dashpage.php" method="post">
-                  <label class="form-label" for="wordName">Nombre de la palabra:</label>
-                  <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required>
-
-                  <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
-                  <select class="select-input" id="typeListSelect" name="typeListSelect">
-                  <option value="R">Regular</option>
-                  <option value="I">Irregular</option>
-                  </select>
-
-                  <label class="form-label" for="clue">Pista de la palabra:</label>
-                  <textarea class="form-input form-textarea" id="clue" name="clue" maxlength="300" required></textarea>
-
-                  <label class="form-label" for="wordPast">Pasado simple de la palabra:</label>
-                  <input class="form-input" type="text" id="wordPast" name="wordPast" maxlength="50" required>
-
-                  <label class="form-label" for="eg">Ejemplo de la palabra:</label>
-                  <textarea class="form-input form-textarea" id="eg" name="eg" maxlength="300" required></textarea>
-
-                  <input type="submit" class="form-button" name="submit_crear_palabra" value="Crear palabra" required>
-                  </form>
-              </div>
-              <?php } ?>
-        </div>
-    
+  
         <div id="palabras_consultar" class="content">
             <h2>Tus palabras</h2>
             <div class="contenido">
