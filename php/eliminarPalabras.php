@@ -10,7 +10,7 @@ $iduser = $_SESSION['id'];
 
 $cod = $_GET['id'];
  
-mysqli_query($conexion, "UPDATE words SET isactive=0 WHERE id=$id AND user_id=$iduser");
+mysqli_query($conexion, "UPDATE words SET isactive=0 WHERE id=$id");
  
 header("Location:dashpage.php");
 
