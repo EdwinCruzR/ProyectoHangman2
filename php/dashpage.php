@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="../assets/css/salas.css">
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <title>Dashboard</title>
 </head>
 <body>
@@ -177,14 +177,13 @@
                 } else {
                     echo 'Sala creada correctamente';
                     header("Location: dashpage.php");
-                    // exit;
+                    exit;
                 }
 
               }else{
               
               ?>
                   <h1>Crear Sala de Juego</h1>
-
                   <form id="gameForm" action="./dashpage.php" method="post">
                   <label class="form-label" for="roomName">Nombre de la sala:</label>
                   <input class="form-input" type="text" id="roomName" name="roomName" maxlength="50" required>
@@ -350,7 +349,7 @@
               if(isset($_POST['submit_crear_palabra'])){
 
                   $word = $_POST['wordName'];
-                  $type = $_POST[''];
+                  // $type = $_POST[''];
                   $clue = $_POST['clue'];
                   $wordPast = $_POST['wordPast'];
                   $eg = $_POST['eg'];
@@ -588,19 +587,21 @@
       var divClose = document.getElementById("settimeclose");
       var divOpen = document.getElementById("settimeopen");
       
-      switch (statusSource.value) {
-        case "setTime":
-          divClose.style.display = "block";
-          divOpen.style.display = "block";
-          break;
-        case "hasstartdatetime":
-          divOpen.style.display = "block";
-          divClose.style.display = "none";
-          break;
-        case "hasenddatetime":
-          divClose.style.display = "block";
-          divOpen.style.display = "none";
-          break;
+      if (divClose && divOpen) {
+        switch (statusSource.value) {
+          case "setTime":
+            divClose.style.display = "block";
+            divOpen.style.display = "block";
+            break;
+          case "hasstartdatetime":
+            divOpen.style.display = "block";
+            divClose.style.display = "none";
+            break;
+          case "hasenddatetime":
+            divClose.style.display = "block";
+            divOpen.style.display = "none";
+            break;
+        }
       }
     }
 
