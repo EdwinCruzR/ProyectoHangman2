@@ -65,7 +65,7 @@
             Salas
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="./creaSala.php">Crear</a></li>
+            <li><a href="./crear.php?select=sala">Crear</a></li>
             <li><a href="#sala_consultar" onclick="toggleContent('sala_consultar')">Colsultar</a></li>
           </ul>
         </li>
@@ -74,7 +74,7 @@
           Palabras
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="./crearPalabra.php" >Crear</a></li>
+            <li><a href="./crear.php?select=palabra" >Crear</a></li>
             <li><a href="#palabras_consultar" onclick="toggleContent('palabras_consultar')">Colsultar</a></li>
           </ul>
         </li>
@@ -83,7 +83,7 @@
           Listas
           </a>
           <ul class="submenu dropdown-menu">
-            <li><a href="./crearLista.php" >Crear</a></li>
+            <li><a href="./crear.php?select=lista" >Crear</a></li>
             <li><a href="#listas_consultar" onclick="toggleContent('listas_consultar')">Colsultar</a></li>
           </ul>
         </li>
@@ -167,7 +167,7 @@
 
                         </script>
                         </th>
-                        <th><a href="editarSala.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <th><a href="editar.php?id=<?= $row['id'] ?>&select=sala" class="users-table--edit">Editar</a><br>
                         <a href="eliminarSala.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
@@ -215,7 +215,7 @@
                         <th><?= $row['clue'] ?></th>
                         <th><?= $row['simplepast'] ?></th>
                         <th><?= $row['example'] ?></th>
-                        <th><a href="editarPalabras.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <th><a href="editar.php?id=<?= $row['id'] ?>&select=palabra" class="users-table--edit">Editar</a><br>
                         <a href="eliminarPalabras.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
@@ -257,7 +257,7 @@
                         <th><?= $row['id'] ?></th>
                         <th><?= $row['listname'] ?></th>
                         <th><?= $row['description'] ?></th>
-                        <th><a href="editarListas.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a><br>
+                        <th><a href="editar.php?id=<?= $row['id'] ?>&select=lista" class="users-table--edit">Editar</a><br>
                         <th><a href="addWords.php?id=<?= $row['id'] ?>" class="users-table--edit">Añadir palabras</a><br>
                         <a href="eliminarListas.php?id=<?= $row['id'] ?>" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
