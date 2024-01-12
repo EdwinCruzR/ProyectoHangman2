@@ -258,7 +258,7 @@
                         <th><?= $row['listname'] ?></th>
                         <th><?= $row['description'] ?></th>
                         <th><a href="editar.php?id=<?= $row['id'] ?>&select=lista" class="users-table--edit">Editar</a><br>
-                        <th><a href="addWords.php?id=<?= $row['id'] ?>" class="users-table--edit">Añadir palabras</a><br>
+                        <th><a href="addWords.php?id=<?= $row['id'] ?>" class="users-table--edit">control de palabras</a><br>
                         <a href="eliminar.php?id=<?= $row['id'] ?>&select=lista" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
                     </tr>
                 <?php endwhile; ?>
