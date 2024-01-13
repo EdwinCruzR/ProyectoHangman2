@@ -290,7 +290,7 @@ $id = $_GET['id'];
                 <a href="#"><button type="button" class="btn btn-success regresar">Lista de palabras</button></a>
                 <a href="#"><button type="button" class="btn btn-success regresar">Palabras ordenadas </button></a>
                 <a href="#"><button type="button" class="btn btn-success regresar">Palabras que no le aparecieron</button></a>
-                <a href="#"><button type="button" class="btn btn-success regresar">Descargar PDF</button></a>
+                <a href="javascript:genPDF()"><button type="button" class="btn btn-success regresar">Descargar PDF</button></a>
             </div>
 
             <!-- Modales -->
