@@ -16,40 +16,96 @@ $id = $_GET['id'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/editar.css">
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <title>Tu sala</title>
     <style>
+        body {
+            width: 100%;
+            height: 100%;
+            --color: #E1E1E1;
+            background-color: #F3F3F3;
+            background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
+            background-size: 55px 55px;
+        }
+
+        .salas {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content {
+            margin: 50px 10px 100px 10px;
+            background-color: rgb(223, 215, 215);
+            border-radius: 5%;
+            padding: 30px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .regresar {
+            color: black;
+            margin: 20px 0px 0px 20px;
+        }
+
+        .regresar a {
+            width: 100%;
+            text-decoration: none;
+        }
+
         .contenedor-tablas {
             display: flex;
-            justify-content: space-between;
+            width: 100%;
+        }
+
+        .tabla1 {
+            width: 100%;
+            margin: 0px 5px 0px 5px;
+        }
+
+        .tabla2 {
+            width: 100%;
+            margin: 0px 5px 0px 5px;
         }
 
         .tabla {
             border-collapse: collapse;
-            width: 50%;
-            margin: 10px;
         }
 
-        thead {
-            background-color: grey;
+        th {
+            background-color: #474545;
         }
 
-        .tabla,
         th,
         td {
-            border: 1px solid black;
-            padding: 9px;
+            border: 1px solid #dddddd;
             text-align: left;
+            padding: 8px;
+        }
+
+        @media (max-width:600px) {
+            .contenedor-tablas {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .container2 {
+                position: relative;
+                overflow: auto;
+                white-space: nowrap;
+            }
         }
     </style>
 </head>
 
 <body>
-<a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
+    <a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
     <div class="salas">
         <div id="sala_editar" class="content">
             <h2>Tu sala</h2>
@@ -69,20 +125,20 @@ $id = $_GET['id'];
                     $hasenddatetime = $row['hasenddatetime'];
                     $enddatetime = $row['enddatetime'];
                 endwhile;
-                
+
                 $consulta_gameroom = mysqli_query($conexion, "SELECT * FROM gameroom where room_id='$roomid'");
                 $numero_filas_jugadores = mysqli_num_rows($consulta_gameroom);
 
                 $consulta_rhw = mysqli_query($conexion, "SELECT * FROM room_has_word where room_id='$roomid'");
                 $numero_filas_palabras = mysqli_num_rows($consulta_rhw);
-                
+
                 // while ($row = mysqli_fetch_array($consulta_salas)):
                 //     $roomcode = $row['roomcode'];
-
+                
                 // endwhile;
                 ?>
-                    <div class="tabla1">
-                    <table class="tabla">
+                <div class="tabla1">
+                    <table>
                         <caption>Info. Sala</caption>
                         <thead>
                             <tr>
@@ -93,7 +149,9 @@ $id = $_GET['id'];
                         <tbody>
                             <tr>
                                 <td>Codigo de sala</td>
-                                <td><?= $roomcode ?></td>
+                                <td>
+                                    <?= $roomcode ?>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Nombre</td>
@@ -103,27 +161,31 @@ $id = $_GET['id'];
                             </tr>
                             <tr>
                                 <td>Jugadores que participaron</td>
-                                <td><?= $numero_filas_jugadores ?></td>
+                                <td>
+                                    <?= $numero_filas_jugadores ?>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Numero de palabras</td>
-                                <td><?= $numero_filas_palabras ?></td>
+                                <td>
+                                    <?= $numero_filas_palabras ?>
+                                </td>
                             </tr>
                             <tr>
                                 <td>QR</td>
                                 <td>
-                                <div id="qrcode"></div>
-                                <script>
-                                    var contenidoQR = '<?= $qrstring ?>';
-                                    var qrcode = new QRCode(document.getElementById("qrcode"), {
-                                        text: contenidoQR,
-                                        width: 100,
-                                        height: 100,
-                                        colorDark : "#000000",
-                                        colorLight : "#ffffff",
-                                        correctLevel : QRCode.CorrectLevel.L
-                                    });
-                                </script>
+                                    <div id="qrcode"></div>
+                                    <script>
+                                        var contenidoQR = '<?= $qrstring ?>';
+                                        var qrcode = new QRCode(document.getElementById("qrcode"), {
+                                            text: contenidoQR,
+                                            width: 100,
+                                            height: 100,
+                                            colorDark: "#000000",
+                                            colorLight: "#ffffff",
+                                            correctLevel: QRCode.CorrectLevel.L
+                                        });
+                                    </script>
                                 </td>
                             </tr>
                             <tr>
@@ -164,125 +226,154 @@ $id = $_GET['id'];
                             </tr>
                         </tbody>
                     </table>
-                    </div>
+                </div>
 
-                    
 
-                    <div class="tabla2">
+
+                <div class="tabla2">
                     <!-- Segunda tabla -->
                     <div class="container2">
-                    <table class="tabla">
-                        <caption>Tabla de Posiciones</caption>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre</th>
-                                <th>Puntos</th>
-                                <th>Tiempo</th>
-                                <th>acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="players" class="table-group-divider">
-                            <?php 
-                            $posi = 0;
-                            $consulta_players = mysqli_query($conexion, "SELECT gameroom.*, users.name FROM gameroom JOIN users ON gameroom.user_id = users.id WHERE gameroom.room_id = 63 ORDER BY gameroom.score DESC");
-                            // $consulta_players = mysqli_query($conexion, "SELECT * FROM gameroom WHERE room_id = $roomid ORDER BY score DESC");
-                            while ($row = mysqli_fetch_array($consulta_players)):
-                                $posi++;
-                                $gameroomid = $row['id'];
-                                $idplayer = $row['user_id'];
-                                $nombre = $row['name'];
-                                $score = $row['score'];
-                                $tiempo = $row['totaltime'];
-                            ?>
-                            <tr>
-                                <td><?= $posi ?></td>
-                                <td><?= $nombre ?></td>
-                                <td><?= $score ?></td>
-                                <td><?= $tiempo ?></td>
-                                <td>
-                                    <!-- Agrega el botón para abrir el modal -->
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPalabras<?= $idplayer ?>">
-                                        Ver más
-                                    </button>
+                        <table class="tabla">
+                            <caption>Tabla de Posiciones</caption>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Puntos</th>
+                                    <th>Tiempo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="players" class="table-group-divider">
+                                <?php
+                                $posi = 0;
+                                $consulta_players = mysqli_query($conexion, "SELECT gameroom.*, users.name FROM gameroom JOIN users ON gameroom.user_id = users.id WHERE gameroom.room_id = 63 ORDER BY gameroom.score DESC");
+                                // $consulta_players = mysqli_query($conexion, "SELECT * FROM gameroom WHERE room_id = $roomid ORDER BY score DESC");
+                                while ($row = mysqli_fetch_array($consulta_players)):
+                                    $posi++;
+                                    $gameroomid = $row['id'];
+                                    $idplayer = $row['user_id'];
+                                    $nombre = $row['name'];
+                                    $score = $row['score'];
+                                    $tiempo = $row['totaltime'];
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <?= $posi ?>
+                                        </td>
+                                        <td>
+                                            <?= $nombre ?>
+                                        </td>
+                                        <td>
+                                            <?= $score ?>
+                                        </td>
+                                        <td>
+                                            <?= $tiempo ?>
+                                        </td>
+                                        <td>
+                                            <!-- Agrega el botón para abrir el modal -->
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#modalPalabras<?= $idplayer ?>">
+                                                Ver más
+                                            </button>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="modalPalabras<?= $idplayer ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Palabras de <?= $nombre ?></h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!-- a -->
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="modalPalabras<?= $idplayer ?>" tabindex="-1"
+                                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Palabras de
+                                                                <?= $nombre ?>
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!-- a -->
 
-                                                    <?php 
-                                                    $consulta_gameroomdetails = mysqli_query($conexion,"SELECT * FROM detailgameroom WHERE gameroom_id=$gameroomid");
-                                                            
-                                                    ?>
+                                                            <?php
+                                                            $consulta_gameroomdetails = mysqli_query($conexion, "SELECT * FROM detailgameroom WHERE gameroom_id=$gameroomid");
 
-                                                    <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <!-- <th>ID</th> -->
-                                                            <th>gameroom_id</th>
-                                                            <th>word_id</th>
-                                                            <th>guessed</th>
-                                                            <th>typecorrect</th>
-                                                            <th>pastcorrect</th>
-                                                            <th>timeperword</th>
-                                                            <th>pointsperword</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php 
-                                                        while ($row = mysqli_fetch_array($consulta_gameroomdetails)): 
-                                                        ?>
-                                                            <tr>
-                                                                <th><?= $row['gameroom_id'] ?></th>
-                                                                <th><?= $row['word_id'] ?></th>
-                                                                <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
+                                                            ?>
+
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <!-- <th>ID</th> -->
+                                                                        <th>gameroom_id</th>
+                                                                        <th>word_id</th>
+                                                                        <th>guessed</th>
+                                                                        <th>typecorrect</th>
+                                                                        <th>pastcorrect</th>
+                                                                        <th>timeperword</th>
+                                                                        <th>pointsperword</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <?php
+                                                                    while ($row = mysqli_fetch_array($consulta_gameroomdetails)):
+                                                                        ?>
+                                                                        <tr>
+                                                                            <th>
+                                                                                <?= $row['gameroom_id'] ?>
+                                                                            </th>
+                                                                            <th>
+                                                                                <?= $row['word_id'] ?>
+                                                                            </th>
+                                                                            <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
                                                                 para poner lo su tipo, pasado simple-->
-                                                                <th><?= $row['guessed'] ?></th>
-                                                                <th><?= $row['typecorrect'] ?></th>
-                                                                <th><?= $row['pastcorrect'] ?></th>
-                                                                <th><?= $row['timeperword'] ?></th>
-                                                                <th><?= $row['pointsperword'] ?></th>
-                                                            </tr>
-                                                        <?php endwhile; ?>
-                                                    </tbody>
-                                                </table>
+                                                                            <th>
+                                                                                <?= $row['guessed'] ?>
+                                                                            </th>
+                                                                            <th>
+                                                                                <?= $row['typecorrect'] ?>
+                                                                            </th>
+                                                                            <th>
+                                                                                <?= $row['pastcorrect'] ?>
+                                                                            </th>
+                                                                            <th>
+                                                                                <?= $row['timeperword'] ?>
+                                                                            </th>
+                                                                            <th>
+                                                                                <?= $row['pointsperword'] ?>
+                                                                            </th>
+                                                                        </tr>
+                                                                    <?php endwhile; ?>
+                                                                </tbody>
+                                                            </table>
 
-                                                    <!-- a -->
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                            <!-- a -->
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php 
-                            endwhile;
-                            ?>
-                        </tbody>
-                    </table>
+                                        </td>
+                                    </tr>
+                                <?php
+                                endwhile;
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
-                    </div>
-                    <a href="#"><button type="button" class="btn btn-success regresar">lista de palabras</button></a>
-                    <a href="#"><button type="button" class="btn btn-success regresar">palabras ordenadas </button></a>
-                    <a href="#"><button type="button" class="btn btn-success regresar">palabras que no le aparecieron</button></a>
-                    <a href="#"><button type="button" class="btn btn-success regresar">descargar PDF</button></a>
                 </div>
+                
             </div>
+                <a href="#"><button type="button" class="btn btn-success regresar">Lista de palabras</button></a>
+                <a href="#"><button type="button" class="btn btn-success regresar">Palabras ordenadas </button></a>
+                <a href="#"><button type="button" class="btn btn-success regresar">Palabras que no le aparecieron</button></a>
+                <a href="#"><button type="button" class="btn btn-success regresar">Descargar PDF</button></a>
+        </div>
 
     </div>
 
-    
+
 </body>
 
 </html>
