@@ -1,0 +1,23 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  th,
+  td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+  }
+
+  .checkbox{
+    position: relative;
+    margin-bottom: 20%;
+  }
