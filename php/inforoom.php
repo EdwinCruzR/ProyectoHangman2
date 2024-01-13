@@ -287,9 +287,10 @@ $id = $_GET['id'];
 
             </div>
             <div class="botones">
-                <a href="#"><button type="button" class="btn btn-success regresar">Lista de palabras</button></a>
-                <a href="#"><button type="button" class="btn btn-success regresar">Palabras ordenadas </button></a>
-                <a href="#"><button type="button" class="btn btn-success regresar">Palabras que no le aparecieron</button></a>
+                <a href="#" data-toggle="modal" data-target="#listaPalabrasModal"><button type="button" class="btn btn-success regresar">Lista de palabras</button></a>
+                <a href="#" data-toggle="modal" data-target="#PalabrasFalladas"><button type="button" class="btn btn-success regresar">Palabras falladas</button></a>
+                <a href="#" data-toggle="modal" data-target="#palabrasInactivas"><button type="button" class="btn btn-success regresar">Palabras inactivas</button></a>
+
                 <a href="javascript:genPDF()"><button type="button" class="btn btn-success regresar">Descargar PDF</button></a>
             </div>
 
