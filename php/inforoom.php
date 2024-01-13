@@ -15,93 +15,14 @@ $id = $_GET['id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets./css/inforoom.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <title>Tu sala</title>
-    <style>
-        body {
-            width: 100%;
-            height: 100%;
-            --color: #E1E1E1;
-            background-color: #F3F3F3;
-            background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
-            background-size: 55px 55px;
-        }
-
-        .salas {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .content {
-            margin: 50px 10px 100px 10px;
-            background-color: rgb(223, 215, 215);
-            border-radius: 5%;
-            padding: 30px;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .regresar {
-            color: black;
-            margin: 20px 0px 0px 20px;
-        }
-
-        .regresar a {
-            width: 100%;
-            text-decoration: none;
-        }
-
-        .contenedor-tablas {
-            display: flex;
-            width: 100%;
-        }
-
-        .tabla1 {
-            width: 100%;
-            margin: 0px 5px 0px 5px;
-        }
-
-        .tabla2 {
-            width: 100%;
-            margin: 0px 5px 0px 5px;
-        }
-
-        .tabla {
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: #474545;
-        }
-
-        th,
-        td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        @media (max-width:600px) {
-            .contenedor-tablas {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .container2 {
-                position: relative;
-                overflow: auto;
-                white-space: nowrap;
-            }
-        }
-    </style>
+    
 </head>
 
 <body>
@@ -365,10 +286,12 @@ $id = $_GET['id'];
                 </div>
                 
             </div>
+            <div class="botones">
                 <a href="#"><button type="button" class="btn btn-success regresar">Lista de palabras</button></a>
                 <a href="#"><button type="button" class="btn btn-success regresar">Palabras ordenadas </button></a>
                 <a href="#"><button type="button" class="btn btn-success regresar">Palabras que no le aparecieron</button></a>
                 <a href="#"><button type="button" class="btn btn-success regresar">Descargar PDF</button></a>
+            </div>
         </div>
 
     </div>
