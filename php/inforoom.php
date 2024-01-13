@@ -183,8 +183,88 @@ $id = $_GET['id'];
                             </tr>
                         </thead>
                         <tbody id="players" class="table-group-divider">
+                            <?php 
+                            $posi = 0;
+                            $consulta_players = mysqli_query($conexion, "SELECT gameroom.*, users.name FROM gameroom JOIN users ON gameroom.user_id = users.id WHERE gameroom.room_id = 63 ORDER BY gameroom.score DESC");
+                            // $consulta_players = mysqli_query($conexion, "SELECT * FROM gameroom WHERE room_id = $roomid ORDER BY score DESC");
+                            while ($row = mysqli_fetch_array($consulta_players)):
+                                $posi++;
+                                $gameroomid = $row['id'];
+                                $idplayer = $row['user_id'];
+                                $nombre = $row['name'];
+                                $score = $row['score'];
+                                $tiempo = $row['totaltime'];
+                            ?>
                             <tr>
-                                <td>dad</td>
+                                <td><?= $posi ?></td>
+                                <td><?= $nombre ?></td>
+                                <td><?= $score ?></td>
+                                <td><?= $tiempo ?></td>
+                                <td>
+                                    <!-- Agrega el botón para abrir el modal -->
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPalabras<?= $idplayer ?>">
+                                        Ver más
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modalPalabras<?= $idplayer ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Palabras de <?= $nombre ?></h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- a -->
+
+                                                    <?php 
+                                                    $consulta_gameroomdetails = mysqli_query($conexion,"SELECT * FROM detailgameroom WHERE gameroom_id=$gameroomid");
+                                                            
+                                                    ?>
+
+                                                    <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th>ID</th> -->
+                                                            <th>gameroom_id</th>
+                                                            <th>word_id</th>
+                                                            <th>guessed</th>
+                                                            <th>typecorrect</th>
+                                                            <th>pastcorrect</th>
+                                                            <th>timeperword</th>
+                                                            <th>pointsperword</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php 
+                                                        while ($row = mysqli_fetch_array($consulta_gameroomdetails)): 
+                                                        ?>
+                                                            <tr>
+                                                                <th><?= $row['gameroom_id'] ?></th>
+                                                                <th><?= $row['word_id'] ?></th>
+                                                                <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
+                                                                para poner lo su tipo, pasado simple-->
+                                                                <th><?= $row['guessed'] ?></th>
+                                                                <th><?= $row['typecorrect'] ?></th>
+                                                                <th><?= $row['pastcorrect'] ?></th>
+                                                                <th><?= $row['timeperword'] ?></th>
+                                                                <th><?= $row['pointsperword'] ?></th>
+                                                            </tr>
+                                                        <?php endwhile; ?>
+                                                    </tbody>
+                                                </table>
+
+                                                    <!-- a -->
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <?php 
                             endwhile;
