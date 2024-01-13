@@ -185,10 +185,11 @@ $id = $_GET['id'];
                         <tbody id="players" class="table-group-divider">
                             <?php 
                             $posi = 0;
-                            $consulta_players = mysqli_query($conexion, "SELECT * FROM gameroom JOIN users ON gameroom.user_id = users.id WHERE gameroom.room_id = $roomid ORDER BY score DESC");
+                            $consulta_players = mysqli_query($conexion, "SELECT gameroom.*, users.name FROM gameroom JOIN users ON gameroom.user_id = users.id WHERE gameroom.room_id = 63 ORDER BY gameroom.score DESC");
                             // $consulta_players = mysqli_query($conexion, "SELECT * FROM gameroom WHERE room_id = $roomid ORDER BY score DESC");
                             while ($row = mysqli_fetch_array($consulta_players)):
                                 $posi++;
+                                $gameroomid = $row['id'];
                                 $idplayer = $row['user_id'];
                                 $nombre = $row['name'];
                                 $score = $row['score'];
@@ -216,8 +217,46 @@ $id = $_GET['id'];
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <!-- Agrega aquí tu segunda tabla de palabras -->
-                                                    <!-- Por ejemplo, puedes hacer otra consulta y mostrar las palabras en una nueva tabla -->
+                                                    <!-- a -->
+
+                                                    <?php 
+                                                    $consulta_gameroomdetails = mysqli_query($conexion,"SELECT * FROM detailgameroom WHERE gameroom_id=$gameroomid");
+                                                            
+                                                    ?>
+
+                                                    <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th>ID</th> -->
+                                                            <th>gameroom_id</th>
+                                                            <th>word_id</th>
+                                                            <th>guessed</th>
+                                                            <th>typecorrect</th>
+                                                            <th>pastcorrect</th>
+                                                            <th>timeperword</th>
+                                                            <th>pointsperword</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php 
+                                                        while ($row = mysqli_fetch_array($consulta_gameroomdetails)): 
+                                                        ?>
+                                                            <tr>
+                                                                <th><?= $row['gameroom_id'] ?></th>
+                                                                <th><?= $row['word_id'] ?></th>
+                                                                <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
+                                                                para poner lo su tipo, pasado simple-->
+                                                                <th><?= $row['guessed'] ?></th>
+                                                                <th><?= $row['typecorrect'] ?></th>
+                                                                <th><?= $row['pastcorrect'] ?></th>
+                                                                <th><?= $row['timeperword'] ?></th>
+                                                                <th><?= $row['pointsperword'] ?></th>
+                                                            </tr>
+                                                        <?php endwhile; ?>
+                                                    </tbody>
+                                                </table>
+
+                                                    <!-- a -->
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -237,10 +276,13 @@ $id = $_GET['id'];
                     <a href="#"><button type="button" class="btn btn-success regresar">lista de palabras</button></a>
                     <a href="#"><button type="button" class="btn btn-success regresar">palabras ordenadas </button></a>
                     <a href="#"><button type="button" class="btn btn-success regresar">palabras que no le aparecieron</button></a>
+                    <a href="#"><button type="button" class="btn btn-success regresar">descargar PDF</button></a>
                 </div>
             </div>
 
     </div>
+
+    
 </body>
 
 </html>
