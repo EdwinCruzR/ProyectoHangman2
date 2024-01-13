@@ -80,6 +80,7 @@ $iduser = $_SESSION['id'];
 
                 $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "system") ? 1 : 0;
                 $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on") ? 1 : 0;
+                $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;              
 
                 $roomcode = '';
                 do {
@@ -93,11 +94,45 @@ $iduser = $_SESSION['id'];
                 mysqli_stmt_bind_param($insertCreate, "ssiiiiiissssssss", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $iduser);
                 mysqli_stmt_execute($insertCreate);
 
+                $consulta_nuevaID = mysqli_query($conexion, "SELECT id FROM room WHERE roomcode = '$roomcode'");
+                if($consulta_nuevaID) {
+                    if($row = mysqli_fetch_assoc($consulta_nuevaID)) {
+                        $nuevaID = $row['id'];
+                    }
+                    mysqli_free_result($consulta_nuevaID);
+                } else {
+                    echo "Error en la consulta de la nueva id: " . mysqli_error($conexion);
+                }
+                if($isgeneral == 1){
+                    $consultaWordsSystem = mysqli_query($conexion, "SELECT id FROM words WHERE user_id = 1");
+
+                    $wordsOfSsystem = array();
+                    while($row = mysqli_fetch_array($consultaWordsSystem)) {
+                        $wordsOfSsystem[] = $row['id'];
+                    }
+
+                    foreach($wordsOfSsystem as $idPalabra) {
+                        $insertRHW = mysqli_query($conexion, "INSERT INTO room_has_word (room_id, word_id) VALUES ($nuevaID, $idPalabra)");
+                    }
+                }else{
+                    $consultaWordsList = mysqli_query($conexion, "SELECT word_id FROM list_has_word WHERE list_id = $islist");
+                    
+                    $wordsOfList = array();
+                    while($row = mysqli_fetch_array($consultaWordsList)) {
+                        $wordsOfList[] = $row['word_id'];
+                    }
+                    
+                    foreach($wordsOfList as $idWord) {
+                        $insertRHW = mysqli_query($conexion, "INSERT INTO room_has_word (room_id, word_id) VALUES ($nuevaID, $idWord)");
+                    }
+                }
+
                 if(!($insertCreate)){
                     echo "<script> alert('Error al crear la sala'); </script>";
                 }else{
                     redirectToDashpage('Se creó correctamente');
                 }
+
             }
             ?>
             <div class="salas">
@@ -169,7 +204,8 @@ $iduser = $_SESSION['id'];
 
                             <div class="word-list" id="wordList">
                                 <label class="form-label" for="wordListSelect">Seleccione la lista de palabras:</label>
-                                <select class="select-input" id="wordListSelect">
+                                <select class="select-input" id="wordListSelect" name="wordListSelect">
+                                    <option value="0">Selecciona una lista</option>
                                     
                                 <?php
                                 if ($consulta_lists->num_rows > 0) {
@@ -177,7 +213,7 @@ $iduser = $_SESSION['id'];
                                         <option value="<?= $row['id'] ?>"><?= $row['listname'] ?></option>
                                     <?php } 
                                 }else {
-                                    ?> <option value="sinLis">Sin listas disponibles</option> <?php
+                                    ?> <option value="0">Sin listas disponibles</option> <?php
                                 }
                                 ?>
                                 </select>
