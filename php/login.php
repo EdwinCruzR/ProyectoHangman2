@@ -1,11 +1,11 @@
 <?php 
   session_start();
   include("../bd/conexion.php");
-  if (!isset($_SESSION['id'])) {
-      header("Location: ../index.php");
-  }else{
-      header("Location: ./dashpage.php");
+  if (isset($_SESSION['id'])) {
+    header("Location: ./dashpage.php");
   }
+      
+  
 
 ?>
 <!DOCTYPE html>
