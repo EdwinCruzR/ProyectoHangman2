@@ -32,6 +32,7 @@ $iduser = $_SESSION['id'];
             // pendiente saber si se va a eliminar sus registros en room_has_words cuando se elimine una sala
             $cod = $_GET['id'];
             mysqli_query($conexion, "DELETE FROM room WHERE id=$cod");
+            mysqli_query($conexion, "DELETE FROM room_has_word WHERE room_id=$cod");
             redirectToDashpage('Eliminado con exito');
             break;
         case 'lista':
