@@ -101,10 +101,10 @@
     
 
 <main>
-    <div class="salas">
+    <div class="salas_consultar">
         <div id="sala_consultar" class="content">
             <h2>Tus salas</h2>
-            <div class="contenido">
+            <div class="container">
 
             <?php 
             $consulta_salas = mysqli_query($conexion,"SELECT * FROM Room WHERE user_id=$id");
@@ -183,10 +183,9 @@
         </div>
     </div>
     <div class="palabras">
-  
         <div id="palabras_consultar" class="content">
             <h2>Tus palabras</h2>
-            <div class="contenido">
+            <div class="container2">
 
             <?php 
             $consulta_words = mysqli_query($conexion,"SELECT * FROM words WHERE user_id=$id AND isactive=1");
@@ -232,10 +231,9 @@
     </div>
 
     <div class="listas">
-    
         <div id="listas_consultar" class="content">
             <h2>Tus listas</h2>
-            <div class="contenido">
+            <div class="container3">
 
             <?php 
             $consulta_salas = mysqli_query($conexion,"SELECT * FROM lists");
@@ -248,7 +246,9 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre de la lista</th>
-                    <th>Descripcion</th>
+                    <th>Descripcion</th>          
+                    <th>Acciones</th>
+                    <th>Editar palabras de la lista</th>
                 </tr>
             </thead>
             <tbody>
@@ -257,10 +257,11 @@
                         <th><?= $row['id'] ?></th>
                         <th><?= $row['listname'] ?></th>
                         <th><?= $row['description'] ?></th>
-                        <th><a href="editar.php?id=<?= $row['id'] ?>&select=lista" class="users-table--edit">Editar</a><br>
-                        <th><a href="addWords.php?id=<?= $row['id'] ?>" class="users-table--edit">control de palabras</a><br>
+                        <th><a href="editar.php?id=<?= $row['id'] ?>&select=lista" class="users-table--edit">Editar</a></br>
                         <a href="eliminar.php?id=<?= $row['id'] ?>&select=lista" onClick="return confirm('¿Estás seguro de eliminar a <?php echo $row['id']; ?>')" class="users-table--delete" >Eliminar</a></th>
+                        <th><a href="addWords.php?id=<?= $row['id'] ?>" class="users-table--edit">Control de palabras</a></th>
                     </tr>
+
                 <?php endwhile; ?>
             </tbody>
         </table>

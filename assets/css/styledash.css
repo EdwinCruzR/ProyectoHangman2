@@ -110,4 +110,20 @@ li:hover .submenu {
   display: block;
 }
 
-
+@media (max-width:600px){
+  li {
+    margin-right: 0px;
+  }
+  .submenu {
+    padding: 0px 0px;
+  }
+  a:hover {
+    border-bottom: 0px solid #454444;
+  }
+  ul .left{
+    flex-direction: column;
+  }
+  ul .right{
+    flex-direction: column;
+  }
+}
