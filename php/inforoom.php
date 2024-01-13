@@ -529,14 +529,8 @@ $id = $_GET['id'];
     </div>
     
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
-    <!-- <script type="text/javascript" src="../assets/js/jspdf.min.js"></script> -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.js"></script>
     <script type="text/javascript">
-        /* var specialElementHandlers = {
-            '.no-export':function(element,renderer){
-                return true;
-            }
-        } */
         function genPDF() {
             var maintable =document.getElementById('tabla-de-posisciones')
             var doc = new jsPDF('p','pt','letter');
@@ -551,7 +545,7 @@ $id = $_GET['id'];
                         scale: scale_mobile,
                     },
                     callback:function(doc){
-                        doc.output('dataurlnewwindow',{filename:'Tabla_de_Posiciones.pdf'});
+                        doc.save('Tabla_de_Posiciones.pdf')
                     }
                 });
             }else{
@@ -562,30 +556,10 @@ $id = $_GET['id'];
                         scale: scale,
                     },
                     callback:function(doc){
-                        doc.output('dataurlnewwindow',{filename:'Tabla_de_Posiciones.pdf'});
+                        doc.save('Tabla_de_Posiciones.pdf')
                     }
                 }); 
             }
-            /* var doc = new jsPDF('p','pt','a4');
-            let source =document.getElementById('tabla-de-posisciones').innerHTML
-            var margins = {
-                top:10,
-                bottom:10,
-                left:10,
-                width:595
-            }
-            doc.fromHTML(
-                source,
-                margins.left,
-                margins.top,{
-                    "width":margins.width,
-                    "elementHandlers":specialElementHandlers
-                },
-                function (dispose) {
-                    doc.save("Tabla-de-Posiciones.pdf")
-                },margins) */
-
-
         }
     </script>
 </body>
