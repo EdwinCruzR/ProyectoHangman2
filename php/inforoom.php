@@ -147,6 +147,12 @@ $id = $_GET['id'];
                         <tbody id="players" class="table-group-divider">
                             <tr>
                                 <td>dad</td>
+                                <td>dad</td>
+                                <td>dad</td>
+                                <td>dad</td>
+                                <td>dad</td>
+                                <td>dad</td>
+                                
                             </tr>
                         </tbody>
                     </table>
