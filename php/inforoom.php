@@ -14,9 +14,13 @@ $id = $_GET['id'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/editar.css">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <title>Tu sala</title>
     <style>
         .contenedor-tablas {
@@ -196,8 +200,31 @@ $id = $_GET['id'];
                                 <td><?= $score ?></td>
                                 <td><?= $tiempo ?></td>
                                 <td>
-                                    <a href="#" class="users-table--more" >Ver mas</a>
-                                    <!-- aqui que muesre un modal con otra tabla de palabras  -->
+                                    <!-- Agrega el botón para abrir el modal -->
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPalabras<?= $idplayer ?>">
+                                        Ver más
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modalPalabras<?= $idplayer ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Palabras de <?= $nombre ?></h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Agrega aquí tu segunda tabla de palabras -->
+                                                    <!-- Por ejemplo, puedes hacer otra consulta y mostrar las palabras en una nueva tabla -->
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <?php 
