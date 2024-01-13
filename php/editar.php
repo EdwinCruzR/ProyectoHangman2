@@ -18,6 +18,7 @@ $iduser = $_SESSION['id'];
         <title>Editar</title>
     </head>
     <body>
+    <a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
     <?php
     function redirectToDashpage($successMessage) {
         echo "<script> alert('$successMessage'); </script>";

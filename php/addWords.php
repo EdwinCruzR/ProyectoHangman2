@@ -47,10 +47,12 @@ if (isset($_POST['submit_editar_lista'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../assets/bootstrap/themes/sketchy/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/editar.css">
+    <link rel="stylesheet" href="../assets/css/addWords.css">
     <title>Añadir Palabras</title>
 </head>
 
 <body>
+<a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
     <div class="listas">
         <div id="listas_crear" class="content">
             <div class="form-container">
@@ -84,7 +86,7 @@ if (isset($_POST['submit_editar_lista'])) {
                                     <th><?= (($row['type'] == "I")? "Irregular" : "Regular") ?></th>
                                     <th><?= $row['simplepast'] ?></th>
                                     <td>
-                                        <input type="checkbox" id="word_<?= $idWord ?>" name="selected_words[]" value="<?= $idWord ?>" <?= $checked ?> >
+                                        <input class="checkbox" type="checkbox" id="word_<?= $idWord ?>" name="selected_words[]" value="<?= $idWord ?>" <?= $checked ?> >
                                     </td>
                                 </tr>
                             <?php

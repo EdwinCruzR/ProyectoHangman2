@@ -18,6 +18,7 @@ $iduser = $_SESSION['id'];
         <title>crear</title>
     </head>
     <body>
+    <a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
     <?php
     function redirectToDashpage($successMessage) {
         header("Location: ./dashpage.php");
@@ -316,7 +317,7 @@ $iduser = $_SESSION['id'];
             break;
             
         default:
-            echo "no existe";
+            header("Location: ../404.html");
             break;
     }
 ?>
