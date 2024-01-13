@@ -50,6 +50,17 @@ body {
     margin: 0px 5px 0px 5px;
 }
 
+.tabla3 {
+    position: relative;
+    width: 100%;
+}
+
+.container3 {
+    position: relative;
+    overflow: auto;
+    white-space: nowrap;
+}
+
 .tabla {
     border-collapse: collapse;
 }

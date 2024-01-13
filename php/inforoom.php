@@ -219,8 +219,8 @@ $id = $_GET['id'];
                                                             $consulta_gameroomdetails = mysqli_query($conexion, "SELECT * FROM detailgameroom WHERE gameroom_id=$gameroomid");
 
                                                             ?>
-
-                                                            <table>
+                                                            <div class="container3">
+                                                            <table class="tabla3">
                                                                 <thead>
                                                                     <tr>
                                                                         <!-- <th>ID</th> -->
@@ -265,7 +265,7 @@ $id = $_GET['id'];
                                                                     <?php endwhile; ?>
                                                                 </tbody>
                                                             </table>
-
+                                                            </div>
                                                             <!-- a -->
                                                         </div>
                                                         <div class="modal-footer">
