@@ -168,7 +168,7 @@ $id = $_GET['id'];
                             <tbody id="players" class="table-group-divider">
                                 <?php
                                 $posi = 0;
-                                $consulta_players = mysqli_query($conexion, "SELECT gameroom.*, users.name FROM gameroom JOIN users ON gameroom.user_id = users.id WHERE gameroom.room_id = $roomcode ORDER BY gameroom.score DESC");
+                                $consulta_players = mysqli_query($conexion, "SELECT gameroom.*, users.name FROM gameroom JOIN users ON gameroom.user_id = users.id WHERE gameroom.room_id = $roomid ORDER BY gameroom.score DESC");
                                 // $consulta_players = mysqli_query($conexion, "SELECT * FROM gameroom WHERE room_id = $roomid ORDER BY score DESC");
                                 while ($row = mysqli_fetch_array($consulta_players)):
                                     $posi++;
