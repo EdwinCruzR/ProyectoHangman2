@@ -4,8 +4,6 @@
   if (isset($_SESSION['id'])) {
     header("Location: ./dashpage.php");
   }
-      
-  
 
 ?>
 <!DOCTYPE html>
