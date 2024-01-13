@@ -289,10 +289,239 @@ $id = $_GET['id'];
             <div class="botones">
                 <a href="#"><button type="button" class="btn btn-success regresar">Lista de palabras</button></a>
                 <a href="#"><button type="button" class="btn btn-success regresar">Palabras ordenadas </button></a>
-                <a href="#"><button type="button" class="btn btn-success regresar">Palabras que no le
-                        aparecieron</button></a>
-                <a href="javascript:genPDF()"><button type="button" class="btn btn-success regresar">Descargar
-                        PDF</button></a>
+                <a href="#"><button type="button" class="btn btn-success regresar">Palabras que no le aparecieron</button></a>
+                <a href="#"><button type="button" class="btn btn-success regresar">Descargar PDF</button></a>
+            </div>
+
+            <!-- Modales -->
+            <div class="modal fade" id="listaPalabrasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Lista de palabras </h5>
+                        </div>
+                            <div class="modal-body">
+                                <!-- a -->
+
+                                <?php
+                                $comsultaRhw = mysqli_query($conexion, "SELECT word_id FROM room_has_word WHERE room_id=$roomid");
+
+                                $wordsRhw = array();
+                                while($row = mysqli_fetch_array($comsultaRhw)) {
+                                    $wordsRhw[] = $row['word_id'];
+                                }
+                                ?>
+                                <div class="container3">
+                                <table class="tabla3">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ID</th> -->
+                                            <th>id</th>
+                                            <th>word</th>
+                                            <th>tipo</th>
+                                            <th>pista</th>
+                                            <th>pasado</th>
+                                            <th>ejemplo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    foreach($wordsRhw as $idWord) {
+                                        $insertRHW = mysqli_query($conexion, "SELECT * FROM words WHERE id=$idWord");
+                                        while ($row = mysqli_fetch_array($insertRHW)):
+                                        ?>
+                                        <tr>
+                                            <th>
+                                                <?= $row['id'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['word'] ?>
+                                            </th>
+                                            <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
+                                        para poner lo su tipo, pasado simple-->
+                                            <th>
+                                                <?= $row['type'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['clue'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['simplepast'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['example'] ?>
+                                            </th>
+                                        </tr>
+                                    <?php 
+                                        endwhile; 
+                                    }
+                                    ?>
+                                    
+                                </tbody>
+                            </table>
+                            </div>
+                            <!-- a -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="PalabrasFalladas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Fails</h5>
+                            <h6 class="modal-title" id="exampleModalLabel">Mas fallada a la menos fallada</h6>
+                        </div>
+                            <div class="modal-body">
+                                <!-- a -->
+
+                                <?php
+                                $comsultaRhw = mysqli_query($conexion, "SELECT word_id FROM room_has_word WHERE room_id=$roomid");
+
+                                $wordsRhw = array();
+                                while($row = mysqli_fetch_array($comsultaRhw)) {
+                                    $wordsRhw[] = $row['word_id'];
+                                }
+                                ?>
+                                <div class="container3">
+                                <table class="tabla3">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ID</th> -->
+                                            <th>id</th>
+                                            <th>word</th>
+                                            <th>tipo</th>
+                                            <th>pista</th>
+                                            <th>pasado</th>
+                                            <th>ejemplo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    foreach($wordsRhw as $idWord) {
+                                        $insertRHW = mysqli_query($conexion, "SELECT * FROM words WHERE id=$idWord");
+                                        while ($row = mysqli_fetch_array($insertRHW)):
+                                        ?>
+                                        <tr>
+                                            <th>
+                                                <?= $row['id'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['word'] ?>
+                                            </th>
+                                            <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
+                                        para poner lo su tipo, pasado simple-->
+                                            <th>
+                                                <?= $row['type'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['clue'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['simplepast'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['example'] ?>
+                                            </th>
+                                        </tr>
+                                    <?php 
+                                        endwhile; 
+                                    }
+                                    ?>
+                                    
+                                </tbody>
+                            </table>
+                            </div>
+                            <!-- a -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="palabrasInactivas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Inactividad</h5>
+                            <h6 class="modal-title" id="exampleModalLabel">Mas inactiva a la menos inactiva</h6>
+                        </div>
+                            <div class="modal-body">
+                                <!-- a -->
+
+                                <?php
+                                $comsultaRhw = mysqli_query($conexion, "SELECT word_id FROM room_has_word WHERE room_id=$roomid");
+
+                                $wordsRhw = array();
+                                while($row = mysqli_fetch_array($comsultaRhw)) {
+                                    $wordsRhw[] = $row['word_id'];
+                                }
+                                ?>
+                                <div class="container3">
+                                <table class="tabla3">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ID</th> -->
+                                            <th>id</th>
+                                            <th>word</th>
+                                            <th>tipo</th>
+                                            <th>pista</th>
+                                            <th>pasado</th>
+                                            <th>ejemplo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    foreach($wordsRhw as $idWord) {
+                                        $insertRHW = mysqli_query($conexion, "SELECT * FROM words WHERE id=$idWord");
+                                        while ($row = mysqli_fetch_array($insertRHW)):
+                                        ?>
+                                        <tr>
+                                            <th>
+                                                <?= $row['id'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['word'] ?>
+                                            </th>
+                                            <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
+                                        para poner lo su tipo, pasado simple-->
+                                            <th>
+                                                <?= $row['type'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['clue'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['simplepast'] ?>
+                                            </th>
+                                            <th>
+                                                <?= $row['example'] ?>
+                                            </th>
+                                        </tr>
+                                    <?php 
+                                        endwhile; 
+                                    }
+                                    ?>
+                                    
+                                </tbody>
+                            </table>
+                            </div>
+                            <!-- a -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
