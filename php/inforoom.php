@@ -22,7 +22,7 @@ $id = $_GET['id'];
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <title>Tu sala</title>
-    
+
 </head>
 
 <body>
@@ -153,7 +153,7 @@ $id = $_GET['id'];
 
                 <div class="tabla2">
                     <!-- Segunda tabla -->
-                    <div class="container2">
+                    <div class="container2" id="tabla-de-posisciones" >
                         <table class="tabla">
                             <caption>Tabla de Posiciones</caption>
                             <thead>
@@ -220,51 +220,51 @@ $id = $_GET['id'];
 
                                                             ?>
                                                             <div class="container3">
-                                                            <table class="tabla3">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <!-- <th>ID</th> -->
-                                                                        <th>gameroom_id</th>
-                                                                        <th>word_id</th>
-                                                                        <th>guessed</th>
-                                                                        <th>typecorrect</th>
-                                                                        <th>pastcorrect</th>
-                                                                        <th>timeperword</th>
-                                                                        <th>pointsperword</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <?php
-                                                                    while ($row = mysqli_fetch_array($consulta_gameroomdetails)):
-                                                                        ?>
+                                                                <table class="tabla3">
+                                                                    <thead>
                                                                         <tr>
-                                                                            <th>
-                                                                                <?= $row['gameroom_id'] ?>
-                                                                            </th>
-                                                                            <th>
-                                                                                <?= $row['word_id'] ?>
-                                                                            </th>
-                                                                            <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
-                                                                para poner lo su tipo, pasado simple-->
-                                                                            <th>
-                                                                                <?= $row['guessed'] ?>
-                                                                            </th>
-                                                                            <th>
-                                                                                <?= $row['typecorrect'] ?>
-                                                                            </th>
-                                                                            <th>
-                                                                                <?= $row['pastcorrect'] ?>
-                                                                            </th>
-                                                                            <th>
-                                                                                <?= $row['timeperword'] ?>
-                                                                            </th>
-                                                                            <th>
-                                                                                <?= $row['pointsperword'] ?>
-                                                                            </th>
+                                                                            <!-- <th>ID</th> -->
+                                                                            <th>gameroom_id</th>
+                                                                            <th>word_id</th>
+                                                                            <th>guessed</th>
+                                                                            <th>typecorrect</th>
+                                                                            <th>pastcorrect</th>
+                                                                            <th>timeperword</th>
+                                                                            <th>pointsperword</th>
                                                                         </tr>
-                                                                    <?php endwhile; ?>
-                                                                </tbody>
-                                                            </table>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php
+                                                                        while ($row = mysqli_fetch_array($consulta_gameroomdetails)):
+                                                                            ?>
+                                                                            <tr>
+                                                                                <th>
+                                                                                    <?= $row['gameroom_id'] ?>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <?= $row['word_id'] ?>
+                                                                                </th>
+                                                                                <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
+                                                                para poner lo su tipo, pasado simple-->
+                                                                                <th>
+                                                                                    <?= $row['guessed'] ?>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <?= $row['typecorrect'] ?>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <?= $row['pastcorrect'] ?>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <?= $row['timeperword'] ?>
+                                                                                </th>
+                                                                                <th>
+                                                                                    <?= $row['pointsperword'] ?>
+                                                                                </th>
+                                                                            </tr>
+                                                                        <?php endwhile; ?>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                             <!-- a -->
                                                         </div>
@@ -277,26 +277,87 @@ $id = $_GET['id'];
                                             </div>
                                         </td>
                                     </tr>
-                                <?php
+                                    <?php
                                 endwhile;
                                 ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                
+
             </div>
             <div class="botones">
                 <a href="#"><button type="button" class="btn btn-success regresar">Lista de palabras</button></a>
                 <a href="#"><button type="button" class="btn btn-success regresar">Palabras ordenadas </button></a>
-                <a href="#"><button type="button" class="btn btn-success regresar">Palabras que no le aparecieron</button></a>
-                <a href="#"><button type="button" class="btn btn-success regresar">Descargar PDF</button></a>
+                <a href="#"><button type="button" class="btn btn-success regresar">Palabras que no le
+                        aparecieron</button></a>
+                <a href="javascript:genPDF()"><button type="button" class="btn btn-success regresar">Descargar
+                        PDF</button></a>
             </div>
         </div>
 
     </div>
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <!-- <script type="text/javascript" src="../assets/js/jspdf.min.js"></script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.js"></script>
+    <script type="text/javascript">
+        /* var specialElementHandlers = {
+            '.no-export':function(element,renderer){
+                return true;
+            }
+        } */
+        function genPDF() {
+            var maintable =document.getElementById('tabla-de-posisciones')
+            var doc = new jsPDF('p','pt','letter');
+            var margin = 20;
+            var scale = (doc.internal.pageSize.width - margin * 2) /document.body.clientWidth;
+            var scale_movile = (doc.internal.pageSize.width - margin * 2) /document.body.getBoundingClientRect();
+            if(/Andorid|webOS|IPhone|IPad/i.test(navigator.userAgent)){
+                doc.html(maintable, {
+                    x:margin,
+                    y:margin,
+                    html2canvas:{
+                        scale: scale_mobile,
+                    },
+                    callback:function(doc){
+                        doc.output('dataurlnewwindow',{filename:'Tabla_de_Posiciones.pdf'});
+                    }
+                });
+            }else{
+                doc.html(maintable, {
+                    x:margin,
+                    y:margin,
+                    html2canvas:{
+                        scale: scale,
+                    },
+                    callback:function(doc){
+                        doc.output('dataurlnewwindow',{filename:'Tabla_de_Posiciones.pdf'});
+                    }
+                }); 
+            }
+            /* var doc = new jsPDF('p','pt','a4');
+            let source =document.getElementById('tabla-de-posisciones').innerHTML
+            var margins = {
+                top:10,
+                bottom:10,
+                left:10,
+                width:595
+            }
+            doc.fromHTML(
+                source,
+                margins.left,
+                margins.top,{
+                    "width":margins.width,
+                    "elementHandlers":specialElementHandlers
+                },
+                function (dispose) {
+                    doc.save("Tabla-de-Posiciones.pdf")
+                },margins) */
 
 
+        }
+    </script>
 </body>
 
 </html>
