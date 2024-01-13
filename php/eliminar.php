@@ -29,10 +29,22 @@ $iduser = $_SESSION['id'];
 
     switch ($opcion) {
         case 'sala':
-            // pendiente saber si se va a eliminar sus registros en room_has_words cuando se elimine una sala
             $cod = $_GET['id'];
-            mysqli_query($conexion, "DELETE FROM room WHERE id=$cod");
+
+            $consultaGRId =  mysqli_query($conexion, "SELECT id FROM gameroom WHERE room_id=$cod");
+
+            $idsGR = array();
+            while($row = mysqli_fetch_array($consultaGRId)) {
+                $idsGR[] = $row['id'];
+            }
+
+            foreach($idsGR as $idSGR) {
+                mysqli_query($conexion, "DELETE FROM detailgameroom WHERE gameroom_id=$idSGR");
+            }
+            
+            mysqli_query($conexion, "DELETE FROM gameroom WHERE room_id=$cod");
             mysqli_query($conexion, "DELETE FROM room_has_word WHERE room_id=$cod");
+            mysqli_query($conexion, "DELETE FROM room WHERE id=$cod");
             redirectToDashpage('Eliminado con exito');
             break;
         case 'lista':

@@ -17,6 +17,7 @@
     <title>Unirse sala</title>
 </head>
 <body>
+
     
     <?php   
     $id = $_SESSION['id'];
@@ -70,6 +71,7 @@
         <label for="sala">Codigo de Sala:</label>
         <input type="text" name="roomcode" placeholder="ej. xyz7yz" required>
         <button type="submit" name="unirse">Unirse a la Sala</button>
+        <a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
     </form>
 </body>
 </html>
