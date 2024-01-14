@@ -76,6 +76,12 @@ td {
     padding: 8px;
 }
 
+.content .timestamp{
+    position:relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
 @media (max-width:600px) {
     .contenedor-tablas {
         display: flex;
@@ -87,5 +93,8 @@ td {
         overflow: auto;
         white-space: nowrap;
     }
-    
+    .botones{
+        display: flex;
+        flex-wrap: wrap;
+    }
 }

@@ -27,10 +27,15 @@ $id = $_GET['id'];
 
 <body>
     <a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
-    <div class="salas">
+    <div class="salas" id="tabla-de-posisciones">
         <div id="sala_editar" class="content">
             <h2>Tu sala</h2>
+            <div class="timestamp">
+                <h4 id="timestamp"></h4>
+            </div>
+            
             <div class="contenedor-tablas">
+                
                 <!-- Primera tabla -->
                 <?php
                 $consulta_salas = mysqli_query($conexion, "SELECT * FROM room where id='$id'");
@@ -153,7 +158,7 @@ $id = $_GET['id'];
 
                 <div class="tabla2">
                     <!-- Segunda tabla -->
-                    <div class="container2" id="tabla-de-posisciones" >
+                    <div class="container2"  >
                         <table class="tabla">
                             <caption>Tabla de Posiciones</caption>
                             <thead>
@@ -532,6 +537,9 @@ $id = $_GET['id'];
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.js"></script>
     <script type="text/javascript">
         function genPDF() {
+            const timestamp = new Date();
+            let mostrar =document.getElementById('timestamp');
+            mostrar.innerHTML= timestamp.getHours()+" "+timestamp.getMinutes()+" "+timestamp.getSeconds();
             var maintable =document.getElementById('tabla-de-posisciones')
             var doc = new jsPDF('p','pt','letter');
             var margin = 20;
@@ -560,7 +568,10 @@ $id = $_GET['id'];
                     }
                 }); 
             }
+            
         }
+
+        
     </script>
 </body>
 
