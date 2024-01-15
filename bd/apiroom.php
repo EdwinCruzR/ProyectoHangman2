@@ -6,18 +6,38 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 include("conexion.php");
 
-if (isset($_GET["insertar"])) {
+
+
+//* Lectura de todos los verbos
+if (isset($_GET["rulesLeer"])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nombre = $data->nombre;
-    $tsI = $data->tsI;
-    $tsF = $data->tsF;
-    $puntos = $data->puntos;
-    $totaltime = $data->totaltime;
-    $sql = mysqli_query($conexion, "INSERT INTO arenagame (player, score, totaltime, timestampstart, timestampend)
-    VALUES('$nombre','$puntos','$totaltime', '$tsI', '$tsF') ");
-    echo json_encode(["success" => 1]);
-    exit();
+    $idRoom = (int) $data->idRoom;
+
+    $query = "SELECT * FROM room WHERE id = $idRoom";
+    $sql = mysqli_query($conexion, $query);
+    if (mysqli_num_rows($sql) > 0) {
+        $rules = mysqli_fetch_all($sql, MYSQLI_ASSOC);
+        echo json_encode($rules);
+    } else {
+        echo json_encode([["success" => 0]]);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if (isset($_GET["nuevo"])) {
     $data = json_decode(file_get_contents("php://input"));

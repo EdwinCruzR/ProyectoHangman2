@@ -273,6 +273,40 @@
                 return Math.floor(Math.random() * max);
             }
 
+            
+            ////////////////// New changes ///////////////////////
+            // se necesita el id de la sala.
+            this.leerReglas = () => {
+                var datosEnviar = { idRoom: hangmanApp.idRoom };
+                await fetch(this.urlApiRoom + "?rulesLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
+                    .then(respuesta => respuesta.json())
+                    .then((respuesta) => {
+                        respuesta.map(
+                            function (regla, index, array) {
+                                hangmanApp.verbos.push(regla);
+                            }
+                        );
+                    })
+                    .then(respuesta => {
+                        this.iniciar();
+                    })
+                    .catch(console.log());
+            };
+
+            this.insertarJuego = async () => {
+                var datosEnviar = { idUser: hangmanApp.idUser, idRoom: hangmanApp.idRoom };
+                await fetch(this.urlApiRoom + "?nuevo=1", { method: "POST", body: JSON.stringify(datosEnviar) })
+                    .then(respuesta => respuesta.json())
+                    .then((respuesta) => {
+                        this.datosjuego.push(respuesta);
+                    })
+                    .finally(respuesta => {
+                    })
+                    .catch(console.log);
+            };
+            ///////////////////////////////////////////
+
+
             this.leerVerbos = () => {
                 fetch(this.urlApiWords + "?wrdLeer=1")
                     .then(respuesta => respuesta.json())
@@ -288,6 +322,8 @@
                     })
                     .catch(console.log());
             };
+
+
 
             this.seleccionaVerbo = () => {
                 let n = hangmanApp.verbos.length;

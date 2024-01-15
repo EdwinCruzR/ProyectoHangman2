@@ -294,7 +294,7 @@ $id = $_GET['id'];
             <div class="botones">
                 <a href="#" data-toggle="modal" data-target="#listaPalabrasModal"><button type="button"
                         class="btn btn-success regresar">Lista de palabras</button></a>
-                <a href="#" data-toggle="modal" data-target="#PalabrasFalladas"><button type="button"
+                <a href="#" data-toggle="modal" data-target="#MenuPalabrasFalladas"><button type="button"
                         class="btn btn-success regresar">Palabras falladas</button></a>
                 <a href="#" data-toggle="modal" data-target="#palabrasInactivas"><button type="button"
                         class="btn btn-success regresar">Palabras inactivas</button></a>
@@ -380,31 +380,48 @@ $id = $_GET['id'];
                 </div>
             </div>
 
-            <div class="modal fade" id="PalabrasFalladas" tabindex="-1" role="dialog"
+            <div class="modal fade" id="MenuPalabrasFalladas" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Fails</h5>
+                            <h6 class="modal-title" id="exampleModalLabel">Selecciona el criterio</h6>
+                        </div>
+                        <div class="modal-body">
+                            <a href="#" data-toggle="modal" data-target="#FailsType" data-dismiss="modal"><button type="button"
+                            class="btn btn-success regresar"> << tipo >> </button></a>
+                            
+                            <a href="#" data-toggle="modal" data-target="#FailsPast" data-dismiss="modal"><button type="button"
+                            class="btn btn-success regresar"> << pasado >></button></a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="FailsType" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Fails Type</h5>
                             <h6 class="modal-title" id="exampleModalLabel">Mas fallada a la menos fallada</h6>
                         </div>
                         <div class="modal-body">
                             <!-- a -->
 
                             <?php
-                            $comsultaRhw = mysqli_query($conexion, "SELECT word_id FROM room_has_word WHERE room_id=$roomid");
-
-                            $wordsRhw = array();
-                            while ($row = mysqli_fetch_array($comsultaRhw)) {
-                                $wordsRhw[] = $row['word_id'];
-                            }
+                            $comsultaRhw = mysqli_query($conexion, "SELECT words.*, room_has_word.typefails FROM words JOIN room_has_word ON words.id = room_has_word.word_id WHERE room_has_word.room_id = $roomid ORDER BY room_has_word.typefails DESC");
                             ?>
                             <div class="container3">
                                 <table class="tabla3">
                                     <thead>
                                         <tr>
                                             <!-- <th>ID</th> -->
-                                            <th>id</th>
+                                            <th>veces fallada</th>
                                             <th>word</th>
                                             <th>tipo</th>
                                             <th>pista</th>
@@ -414,13 +431,12 @@ $id = $_GET['id'];
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($wordsRhw as $idWord) {
-                                            $insertRHW = mysqli_query($conexion, "SELECT * FROM words WHERE id=$idWord");
+                                            $insertRHW = mysqli_query($conexion, "SELECT words.*, room_has_word.typefails FROM words JOIN room_has_word ON words.id = room_has_word.word_id WHERE room_has_word.room_id = $roomid ORDER BY room_has_word.typefails DESC");
                                             while ($row = mysqli_fetch_array($insertRHW)):
                                                 ?>
                                                 <tr>
                                                     <th>
-                                                        <?= $row['id'] ?>
+                                                        <?= $row['typefails'] ?>
                                                     </th>
                                                     <th>
                                                         <?= $row['word'] ?>
@@ -442,7 +458,6 @@ $id = $_GET['id'];
                                                 </tr>
                                             <?php
                                             endwhile;
-                                        }
                                         ?>
 
                                     </tbody>
@@ -456,7 +471,75 @@ $id = $_GET['id'];
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="FailsPast" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Fails Type</h5>
+                            <h6 class="modal-title" id="exampleModalLabel">Mas fallada a la menos fallada</h6>
+                        </div>
+                        <div class="modal-body">
+                            <!-- a -->
 
+                            <?php
+                            $comsultaRhw = mysqli_query($conexion, "SELECT words.*, room_has_word.pastfails FROM words JOIN room_has_word ON words.id = room_has_word.word_id WHERE room_has_word.room_id = $roomid ORDER BY room_has_word.pastfails DESC");
+                            ?>
+                            <div class="container3">
+                                <table class="tabla3">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ID</th> -->
+                                            <th>veces fallada</th>
+                                            <th>word</th>
+                                            <th>tipo</th>
+                                            <th>pista</th>
+                                            <th>pasado</th>
+                                            <th>ejemplo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            $insertRHW = mysqli_query($conexion, "SELECT words.*, room_has_word.pastfails FROM words JOIN room_has_word ON words.id = room_has_word.word_id WHERE room_has_word.room_id = $roomid ORDER BY room_has_word.pastfails DESC");
+                                            while ($row = mysqli_fetch_array($insertRHW)):
+                                                ?>
+                                                <tr>
+                                                    <th>
+                                                        <?= $row['pastfails'] ?>
+                                                    </th>
+                                                    <th>
+                                                        <?= $row['word'] ?>
+                                                    </th>
+                                                    <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
+                                        para poner lo su tipo, pasado simple-->
+                                                    <th>
+                                                        <?= $row['type'] ?>
+                                                    </th>
+                                                    <th>
+                                                        <?= $row['clue'] ?>
+                                                    </th>
+                                                    <th>
+                                                        <?= $row['simplepast'] ?>
+                                                    </th>
+                                                    <th>
+                                                        <?= $row['example'] ?>
+                                                    </th>
+                                                </tr>
+                                            <?php
+                                            endwhile;
+                                        ?>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- a -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="palabrasInactivas" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -469,19 +552,14 @@ $id = $_GET['id'];
                             <!-- a -->
 
                             <?php
-                            $comsultaRhw = mysqli_query($conexion, "SELECT word_id FROM room_has_word WHERE room_id=$roomid");
-
-                            $wordsRhw = array();
-                            while ($row = mysqli_fetch_array($comsultaRhw)) {
-                                $wordsRhw[] = $row['word_id'];
-                            }
+                            $comsultaRhw = mysqli_query($conexion, "SELECT words.*, room_has_word.used FROM words JOIN room_has_word ON words.id = room_has_word.word_id WHERE room_has_word.room_id = $roomid ORDER BY room_has_word.used ASC");
                             ?>
                             <div class="container3">
                                 <table class="tabla3">
                                     <thead>
                                         <tr>
                                             <!-- <th>ID</th> -->
-                                            <th>id</th>
+                                            <th>veces usada</th>
                                             <th>word</th>
                                             <th>tipo</th>
                                             <th>pista</th>
@@ -491,13 +569,12 @@ $id = $_GET['id'];
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($wordsRhw as $idWord) {
-                                            $insertRHW = mysqli_query($conexion, "SELECT * FROM words WHERE id=$idWord");
+                                            $insertRHW = mysqli_query($conexion, "SELECT words.*, room_has_word.used FROM words JOIN room_has_word ON words.id = room_has_word.word_id WHERE room_has_word.room_id = $roomid ORDER BY room_has_word.used ASC");
                                             while ($row = mysqli_fetch_array($insertRHW)):
                                                 ?>
                                                 <tr>
                                                     <th>
-                                                        <?= $row['id'] ?>
+                                                        <?= $row['used'] ?>
                                                     </th>
                                                     <th>
                                                         <?= $row['word'] ?>
@@ -519,7 +596,6 @@ $id = $_GET['id'];
                                                 </tr>
                                             <?php
                                             endwhile;
-                                        }
                                         ?>
 
                                     </tbody>
@@ -533,6 +609,8 @@ $id = $_GET['id'];
                     </div>
                 </div>
             </div>
+
+            
         </div>
 
     </div>
