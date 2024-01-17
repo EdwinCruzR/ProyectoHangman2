@@ -11,10 +11,10 @@ include("conexion.php");
 //* Lectura de todos los verbos
 if (isset($_GET["rulesLeer"])) {
     $data = json_decode(file_get_contents("php://input"));
-    $idRoom = (int) $data->idRoom;
+    $roomcode = $data->roomcode;
 
-    $query = "SELECT * FROM room WHERE id = $idRoom";
-    $sql = mysqli_query($conexion, $query);
+    // $query = "SELECT * FROM room WHERE roomcode = '$roomcode'";
+    $sql = mysqli_query($conexion, "SELECT * FROM room WHERE roomcode = '$roomcode'");
     if (mysqli_num_rows($sql) > 0) {
         $rules = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         echo json_encode($rules);
@@ -23,31 +23,24 @@ if (isset($_GET["rulesLeer"])) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if (isset($_GET["nuevo"])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nombre = $data->nombre;
+    $userid = $data->userid;
+
+    "INSERT INTO gameroom (user_id, room_id) VALUES ()"
+    $sql = mysqli_query($conexion, "INSERT INTO roomgame(player) VALUES('$nombre')");
+
+
     $sql = mysqli_query($conexion, "INSERT INTO roomgame(player) VALUES('$nombre')");
     $sql2 = mysqli_query($conexion, "SELECT * FROM arenagame WHERE id = (SELECT MAX(id) FROM arenagame)");
     $juego = mysqli_fetch_all($sql2, MYSQLI_ASSOC);
     echo json_encode($juego);
     exit();
 }
+
+
+
+
 if (isset($_GET["fin"])) {
     $data = json_decode(file_get_contents("php://input"));
     $id = (int) $data->id;
