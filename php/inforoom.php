@@ -390,10 +390,10 @@ $id = $_GET['id'];
                         </div>
                         <div class="modal-body">
                             <a href="#" data-toggle="modal" data-target="#FailsType" data-dismiss="modal"><button type="button"
-                            class="btn btn-success regresar"> << tipo >> </button></a>
+                            class="btn btn-success regresar"> << Tipo >> </button></a>
                             
                             <a href="#" data-toggle="modal" data-target="#FailsPast" data-dismiss="modal"><button type="button"
-                            class="btn btn-success regresar"> << pasado >></button></a>
+                            class="btn btn-success regresar"> << Pasado >></button></a>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -476,7 +476,7 @@ $id = $_GET['id'];
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Fails Type</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Fails Past</h5>
                             <h6 class="modal-title" id="exampleModalLabel">Mas fallada a la menos fallada</h6>
                         </div>
                         <div class="modal-body">
