@@ -26,19 +26,35 @@ if (isset($_GET["rulesLeer"])) {
 if (isset($_GET["nuevo"])) {
     $data = json_decode(file_get_contents("php://input"));
     $userid = $data->userid;
+    $roomid = $data->roomid;
 
-    "INSERT INTO gameroom (user_id, room_id) VALUES ()"
-    $sql = mysqli_query($conexion, "INSERT INTO roomgame(player) VALUES('$nombre')");
-
-
-    $sql = mysqli_query($conexion, "INSERT INTO roomgame(player) VALUES('$nombre')");
-    $sql2 = mysqli_query($conexion, "SELECT * FROM arenagame WHERE id = (SELECT MAX(id) FROM arenagame)");
-    $juego = mysqli_fetch_all($sql2, MYSQLI_ASSOC);
+    $sql = mysqli_query($conexion, "INSERT INTO gameroom (user_id, room_id) VALUES ($userid, $roomid)");
+    $sql2 = mysqli_query($conexion, "SELECT * FROM gameroom WHERE room_id= $roomid AND user_id = $userid");
+    if (mysqli_num_rows($sql2) > 0) {
+        $juego = mysqli_fetch_all($sql2, MYSQLI_ASSOC);
     echo json_encode($juego);
+    } else {
+        echo json_encode([["success" => 0]]);
+    }
     exit();
 }
 
-
+if (isset($_GET["detail"])) {
+    $data = json_decode(file_get_contents("php://input"));
+    $gameroomid = $data->gameroomid;
+    $wordid = $data->wordid;
+    $verbo = $data->verbAdivinado;
+    $tipo = $data->tipo;
+    $pasado = $data->pasado;
+    $sql = mysqli_query($conexion, "INSERT INTO detailgameroom( gameroom_id, word_id, guessed, typecorrect, pastcorrect) VALUES ($gameroomid, $wordid, $verbo, $tipo, $pasado)");
+    if (mysqli_num_rows($sql) > 0) {
+        $juego = mysqli_fetch_all($sql2, MYSQLI_ASSOC);
+        echo json_encode($juego);
+    } else {
+        echo json_encode([["success" => 0]]);
+    }
+    exit();
+}
 
 
 if (isset($_GET["fin"])) {

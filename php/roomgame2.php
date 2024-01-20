@@ -72,7 +72,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <form action="javascript:void(0);" method="post" onsubmit="hangmanApp.aJugar();">
+                            <form action="javascript:void(0);" method="post" onsubmit="hangmanApp.leerReglas();">
                                 <div class="vidas">
                                     <p id="roomname"></p>
                                     <p id="description"></p>
@@ -233,6 +233,10 @@
             this.randomWords = false;
             this.systemWords = true;
             this.idroom = 0;
+            this.idgameroom = 0;
+            this.wassguess = 0;
+            this.wastype = 0;
+            this.waspast = 0;
             this.perdioLasVidas = false;
             this.seRindio = false;
             this.errores = 0;
@@ -253,9 +257,9 @@
             }
             
 
-            this.leerVerbos = () => {
+            this.leerVerbos = async () => {
                 var datosEnviar = { roomid: hangmanApp.idroom };
-                await fetch(this.urlApiRoom + "?wrdRoomLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
+                await fetch(this.urlApiWords + "?wrdRoomLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
                         respuesta.map(
@@ -275,25 +279,36 @@
                 await fetch(this.urlApiRoom + "?rulesLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
-                        // console.log(respuesta);
+                        console.log(respuesta[0].id);
+                        hangmanApp.idroom = respuesta[0].id;
                         hangmanApp.vidas = respuesta[0].lives;
                         hangmanApp.pistaDespuesDe = respuesta[0].clueafter;
                         hangmanApp.isfeedback = (respuesta[0].feedback == 1 ? true : false);
                         hangmanApp.randomWords = (respuesta[0].random == 1 ? true : false);
                         hangmanApp.systemWords = (respuesta[0].isgeneral == 1 ? true : false);
-                        hangmanApp.idroom = respuesta[0].id;
                     })
                     .finally(respuesta => {
                     })
                     .catch(console.log());
+                    hangmanApp.aJugar();
             };
 
             this.seleccionaVerbo = () => {
-                let n = hangmanApp.verbos.length;
-                let key = this.randomKey(n);
-                verbo = hangmanApp.verbos[key];
-                hangmanApp.verbos.splice(key, 1);
-                return verbo;
+                if (hangmanApp.verbos.length == 0) {
+                    hangmanApp.terminar();
+                }else{
+                    if(hangmanApp.randomWords){
+                        let n = hangmanApp.verbos.length;
+                        let key = this.randomKey(n);
+                        verbo = hangmanApp.verbos[key];
+                        hangmanApp.verbos.splice(key, 1);
+                        return verbo;
+                    }else{
+                        verbo = hangmanApp.verbos[0];
+                        hangmanApp.verbos.splice(0, 1);
+                        return verbo;
+                    }
+                }
             };
 
             this.iniciar = () => {
@@ -392,6 +407,10 @@
                                 hangmanApp.spanPista.classList.add("visible");
                             }
                             if (hangmanApp.errores == 6) {
+                                hangmanApp.wassguess = 0;
+                                hangmanApp.wastype = 0;
+                                hangmanApp.waspast = 0;
+                                hangmanApp.datailgameroom();
                                 hangmanApp.creaFeedback();
                                 hangmanApp.vidas--;
                                 hangmanApp.perdio();
@@ -426,6 +445,11 @@
                     }
                 }
                 hangmanApp.creaFeedback();
+                hangmanApp.wastype = (tipoTest === tipoOk ? 1 : 0);
+                hangmanApp.waspast = (pasadoTest === pasadoOk ? 1 : 0);
+                hangmanApp.wassguess = 1;
+                hangmanApp.datailgameroom();
+
 
                 if (tipoTest === tipoOk && pasadoTest === pasadoOk) {
                     hangmanApp.gano();
@@ -478,12 +502,28 @@
                 this.resultTabla.innerHTML = resultado;
             };
 
+            this.datailgameroom = async () => {
+                var datosEnviar = {gameroomid: hangmanApp.idgameroom ,wordid: hangmanApp.verboJuega["id"] ,verbAdivinado: hangmanApp.wassguess,  tipo : hangmanApp.wastype, pasado : hangmanApp.waspast };
+                await fetch(this.urlApiRoom + "?detail=1", { method: "POST", body: JSON.stringify(datosEnviar) })
+                    .then(respuesta => respuesta.json())
+                    .then((respuesta) => {
+                        console.log(respuesta);
+                        
+
+                        // this.datosjuego.push(respuesta);
+                    })
+                    .finally(respuesta => {
+                    })
+                    .catch(console.log);
+            };
+
             this.insertarJuego = async () => {
-                var datosEnviar = { userid : <?= $id ?>, roomid : <?= $ ?> };
+                var datosEnviar = { userid : <?= $id ?>, roomid : hangmanApp.idroom };
                 await fetch(this.urlApiRoom + "?nuevo=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
-                        this.datosjuego.push(respuesta);
+                        hangmanApp.idgameroom = respuesta[0].id;
+                        // this.datosjuego.push(respuesta);
                     })
                     .finally(respuesta => {
                     })
@@ -503,11 +543,12 @@
                 hangmanApp.spanPista.classList.remove("quitar");
                 hangmanApp.spanVidas.classList.add("quitar");
                 hangmanApp.divBotones.classList.add("quitar");
-                idSend = hangmanApp.datosjuego[0][0]["id"];
+
+                // idSend = hangmanApp.datosjuego[0][0]["id"];
                 rindioSend = (hangmanApp.seRindio) ? 1 : 0;
                 puntosSend = (hangmanApp.seRindio) ? 0 : this.puntos;
 
-                var datosEnviar = { id: idSend, puntos: puntosSend, rindio: rindioSend };
+                var datosEnviar = { id: hangmanApp.idgameroom, puntos: puntosSend, rindio: rindioSend };
                 await fetch(this.urlApiArena + "?fin=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
@@ -521,7 +562,6 @@
             this.aJugar = () => {
                 modalNombre.hide();
                 hangmanApp.insertarJuego();
-                hangmanApp.leerReglas();
                 hangmanApp.leerVerbos();
             };
 
