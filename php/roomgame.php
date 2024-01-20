@@ -6,13 +6,13 @@
     header("Location: ./login.php");
     }
     $roomcode = $_GET['roomcode'];
+    $id = $_SESSION['id'];
 ?>
-
 <!doctype html>
 <html lang="es">
-    
-    <head>
-    <title>Jugar en sala</title>
+
+<head>
+    <title>Jugar en Sala</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,42 +22,39 @@
     <link rel="stylesheet" href="../assets/css/arenagame.css">
     <!-- Bootstrap JavaScript Libraries -->
     <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
+    <script>
+        leerReglas = async () => {
+            var datosEnviar = { roomcode: '<?= $roomcode ?>' };
+            await fetch("../bd/apiroom.php?rulesLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
+                .then(respuesta => respuesta.json())
+                .then((respuesta) => {
+                    // console.log(respuesta);
+                    const datoname = respuesta[0].roomname;
+                    const datodescription = respuesta[0].description;
+                    const datolives = respuesta[0].lives;
+                    const datoclueafter = respuesta[0].clueafter;
+                    let name = document.getElementById('roomname');
+                    name.innerHTML ="Nombre de la sala: " + datoname;
+                    let descriptiom = document.getElementById('description');
+                    descriptiom.innerHTML ="Descripcion: " + datodescription;
+                    let vidas = document.getElementById('vidas');
+                    vidas.innerHTML ="Vidas: " + (datolives === -1 ? "Ilimitadas" : datolives);
+                    let clueafter = document.getElementById('clueafter');
+                    clueafter.innerHTML ="Pistas despues de: " + datoclueafter + " intentos";
+                    
+                })
+                .finally(respuesta => {
+                })
+                .catch(console.log());
+        };
+    </script>
 </head>
 
-<body>
+<body onload="leerReglas();">
 
     <header>
         <!-- place navbar here -->
     </header>
-    <?php 
-        $room = $roomcode;
-        $id = $_SESSION['id'];
-
-        $queryUser->close();
-
-        $queryRoom = $conexion->prepare("SELECT * FROM room WHERE roomcode = ?");
-        $queryRoom->bind_param("s", $room);
-        $queryRoom->execute();
-
-        $resultRoom = $queryRoom->get_result();
-
-        if ($resultRoom->num_rows > 0) {
-            $rowRoom = $resultRoom->fetch_assoc();
-
-            $roomname = $rowRoom['roomname'];
-            $description = $rowRoom['description'];
-            $lives = $rowRoom['lives'];
-            $clue = $rowRoom['clue'];
-            $clueafter = $rowRoom['clueafter'];
-            $feedback = $rowRoom['feedback'];
-            $random = $rowRoom['random'];
-        } else {
-            die('Error al conectar con la sala.');
-        }
-
-        $queryRoom->close();
-
-    ?>
     <main>
         <div id="loading" class="row justify-content-center align-items-center g-2" style="height: 50vh;">
             <div class="spinner-border text-success" role="status">
@@ -71,29 +68,23 @@
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitleId">Sala</h5>
+                        <h5 class="modal-title" id="modalTitleId">Datos Sala</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <form action="javascript:void(0);" method="post" onsubmit="hangmanApp.aJugar();">
-                                <label></label>
-                                    <input type="hidden" name="username" value="<?php echo $name ?>">
-                                    <input type="hidden" name="id_user" id="idUser" value="<?php echo $id ?>">
-                                    <input type="hidden" name="id_room" id="idRoom" value="<?php echo $room ?>">
-                                <br>
-                                <label>Nombre:</label>
-                                <label><?php echo $roomname ?></label>
-                                <br>
-                                <label>Descripcion:</label>
-                                <label><?php echo $description ?></label>
-                                <br>
-                                <label>Vidas:</label>
-                                <label> <?php echo ($lives == -1)? 'ilimitadas': $lives ?></label>
+                            <form action="javascript:void(0);" method="post" onsubmit="hangmanApp.leerReglas();">
+                                <div class="vidas">
+                                    <p id="roomname"></p>
+                                    <p id="description"></p>
+                                    <p id="vidas"></p>
+                                    <p id="clueafter"></p>
+                                </div>    
                         </div>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            onclick="window.location='index.html'">Cancelar</button>
+                            onclick="window.location='dashpage.php'">Cancelar</button>
                         <button type="submit" class="btn btn-primary">¡Jugar!</button>
                     </div>
                     </form>
@@ -232,13 +223,20 @@
             this.divBotones = document.getElementById('divBotones');
             this.divAdivinaPasadoTipo = document.getElementById('divAdivinaPasadoTipo');
             this.resultTabla = document.getElementById('resultTabla');
-            this.idUser = document.getElementById('idUser').value;
-            this.idRoom = document.getElementById('idRoom').value;
+            //this.nombre = document.getElementById('txtNombre').value;
             this.verboJuega = null;
             this.pasadoUsr = document.getElementById('txtPasado');
             this.tipoUsr = document.getElementsByName("tipoV");
-            this.vidas = 3;
-            this.pistaDespuesDe = 3;
+            this.vidas = 0;
+            this.pistaDespuesDe = 0;
+            this.isfeedback = true;
+            this.randomWords = false;
+            this.systemWords = true;
+            this.idroom = 0;
+            this.idgameroom = 0;
+            this.wassguess = 0;
+            this.wastype = 0;
+            this.waspast = 0;
             this.perdioLasVidas = false;
             this.seRindio = false;
             this.errores = 0;
@@ -257,29 +255,11 @@
             this.randomKey = (max) => {
                 return Math.floor(Math.random() * max);
             }
-
             
-            ////////////////// New changes ///////////////////////
-            // se necesita el id de la sala.
-            this.leerReglas = () => {
-                var datosEnviar = { idRoom: hangmanApp.idRoom };
-                await fetch(this.urlApiRoom + "?rulesLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
-                    .then(respuesta => respuesta.json())
-                    .then((respuesta) => {
-                        const data = await response.json();
-                        const dato3 = respuesta[2];
-                        console.log('vidas 3:', dato3);
-                    })
-                    .then(respuesta => {
-                        this.iniciar();
-                    })
-                    .catch(console.log());
-            };
-            ///////////////////////////////////////////
 
-
-            this.leerVerbos = () => {
-                fetch(this.urlApiWords + "?wrdLeer=1")
+            this.leerVerbos = async () => {
+                var datosEnviar = { roomid: hangmanApp.idroom };
+                await fetch(this.urlApiWords + "?wrdRoomLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
                         respuesta.map(
@@ -294,14 +274,41 @@
                     .catch(console.log());
             };
 
-
+            this.leerReglas = async () => {
+                var datosEnviar = { roomcode: '<?= $roomcode ?>' };
+                await fetch(this.urlApiRoom + "?rulesLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
+                    .then(respuesta => respuesta.json())
+                    .then((respuesta) => {
+                        console.log(respuesta[0].id);
+                        hangmanApp.idroom = respuesta[0].id;
+                        hangmanApp.vidas = respuesta[0].lives;
+                        hangmanApp.pistaDespuesDe = respuesta[0].clueafter;
+                        hangmanApp.isfeedback = (respuesta[0].feedback == 1 ? true : false);
+                        hangmanApp.randomWords = (respuesta[0].random == 1 ? true : false);
+                        hangmanApp.systemWords = (respuesta[0].isgeneral == 1 ? true : false);
+                    })
+                    .finally(respuesta => {
+                    })
+                    .catch(console.log());
+                    hangmanApp.aJugar();
+            };
 
             this.seleccionaVerbo = () => {
-                let n = hangmanApp.verbos.length;
-                let key = this.randomKey(n);
-                verbo = hangmanApp.verbos[key];
-                hangmanApp.verbos.splice(key, 1);
-                return verbo;
+                if (hangmanApp.verbos.length == 0) {
+                    hangmanApp.terminar();
+                }else{
+                    if(hangmanApp.randomWords){
+                        let n = hangmanApp.verbos.length;
+                        let key = this.randomKey(n);
+                        verbo = hangmanApp.verbos[key];
+                        hangmanApp.verbos.splice(key, 1);
+                        return verbo;
+                    }else{
+                        verbo = hangmanApp.verbos[0];
+                        hangmanApp.verbos.splice(0, 1);
+                        return verbo;
+                    }
+                }
             };
 
             this.iniciar = () => {
@@ -400,6 +407,10 @@
                                 hangmanApp.spanPista.classList.add("visible");
                             }
                             if (hangmanApp.errores == 6) {
+                                hangmanApp.wassguess = 0;
+                                hangmanApp.wastype = 0;
+                                hangmanApp.waspast = 0;
+                                hangmanApp.datailgameroom();
                                 hangmanApp.creaFeedback();
                                 hangmanApp.vidas--;
                                 hangmanApp.perdio();
@@ -434,6 +445,14 @@
                     }
                 }
                 hangmanApp.creaFeedback();
+                hangmanApp.wastype = tipoTest === tipoOk ? 1 : 0;
+                hangmanApp.waspast = pasadoTest === pasadoOk ? 1 : 0;
+                hangmanApp.wassguess = 1;
+                console.log(hangmanApp.wastype);
+                console.log(hangmanApp.waspast);
+                console.log(hangmanApp.wassguess);
+                hangmanApp.datailgameroom();
+
 
                 if (tipoTest === tipoOk && pasadoTest === pasadoOk) {
                     hangmanApp.gano();
@@ -486,12 +505,28 @@
                 this.resultTabla.innerHTML = resultado;
             };
 
+            this.datailgameroom = async () => {
+                var datosEnviar = {gameroomid: hangmanApp.idgameroom ,wordid: hangmanApp.verboJuega["id"] ,verbAdivinado: hangmanApp.wassguess,  tipo : hangmanApp.wastype, pasado : hangmanApp.waspast };
+                await fetch(this.urlApiRoom + "?detail=1", { method: "POST", body: JSON.stringify(datosEnviar) })
+                    .then(respuesta => respuesta.json())
+                    .then((respuesta) => {
+                        console.log(respuesta);
+                        
+
+                        // this.datosjuego.push(respuesta);
+                    })
+                    .finally(respuesta => {
+                    })
+                    .catch(console.log);
+            };
+
             this.insertarJuego = async () => {
-                var datosEnviar = { idUser: hangmanApp.idUser, idRoom: hangmanApp.idRoom };
+                var datosEnviar = { userid : <?= $id ?>, roomid : hangmanApp.idroom };
                 await fetch(this.urlApiRoom + "?nuevo=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
-                        this.datosjuego.push(respuesta);
+                        hangmanApp.idgameroom = respuesta[0].id;
+                        // this.datosjuego.push(respuesta);
                     })
                     .finally(respuesta => {
                     })
@@ -511,11 +546,12 @@
                 hangmanApp.spanPista.classList.remove("quitar");
                 hangmanApp.spanVidas.classList.add("quitar");
                 hangmanApp.divBotones.classList.add("quitar");
-                idSend = hangmanApp.datosjuego[0][0]["id"];
+
+                // idSend = hangmanApp.datosjuego[0][0]["id"];
                 rindioSend = (hangmanApp.seRindio) ? 1 : 0;
                 puntosSend = (hangmanApp.seRindio) ? 0 : this.puntos;
 
-                var datosEnviar = { id: idSend, puntos: puntosSend, rindio: rindioSend };
+                var datosEnviar = { id: hangmanApp.idgameroom, puntos: puntosSend, rindio: rindioSend };
                 await fetch(this.urlApiArena + "?fin=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
@@ -527,13 +563,9 @@
             }
 
             this.aJugar = () => {
-                //this.nombre = document.getElementById("txtNombre").value;
-                this.idUser = document.getElementById("idUser").value;
-                this.idRoom = document.getElementById("idRoom").value;
                 modalNombre.hide();
                 hangmanApp.insertarJuego();
                 hangmanApp.leerVerbos();
-                hangmanApp.leerReglas();
             };
 
             this.rendir = () => {

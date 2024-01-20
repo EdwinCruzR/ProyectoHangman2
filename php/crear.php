@@ -89,7 +89,7 @@ $iduser = $_SESSION['id'];
                     $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
                 } while (mysqli_num_rows($verifCode) != 0);
 
-                $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?r='.$roomcode;
+                $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?roomcode='.$roomcode;
 
                 $insertCreate = mysqli_prepare($conexion, "INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, hasstartdatetime, startdatetime, hasenddatetime, enddatetime, isgeneral, roomcode, qrstring, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 mysqli_stmt_bind_param($insertCreate, "ssiiiiiissssssss", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $iduser);

@@ -25,11 +25,6 @@
 
     while($result = mysqli_fetch_assoc($query)){
         $name = $result['name'];
-        $lastname = $result['lastname'];
-        $email = $result['email'];
-        $school = $result['school'];
-        $avatar = $result['idavatar'];
-        $rol = $result['roles_id'];
     }
 
         if(isset($_POST['unirse'])){
@@ -42,7 +37,7 @@
                 $isopen = mysqli_query($conexion, "SELECT isopen FROM room WHERE isopen = 1 AND roomcode='$roomcode'");
                 if(mysqli_num_rows($isopen) !=0 ){
                     // si esta abierta la sala entra a jugar
-                    header("Location: ./roomgame2.php?roomcode=" . $roomcode);
+                    header("Location: ./roomgame.php?roomcode=" . $roomcode);
                     exit();
                 } else {
                     // La sala está cerrada
