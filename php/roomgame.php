@@ -38,7 +38,7 @@
                     let descriptiom = document.getElementById('description');
                     descriptiom.innerHTML ="Descripcion: " + datodescription;
                     let vidas = document.getElementById('vidas');
-                    vidas.innerHTML ="Vidas: " + (datolives === -1 ? "Ilimitadas" : datolives);
+                    vidas.innerHTML ="Vidas: " + (datolives == 0 ? "Ilimitadas" : datolives);
                     let clueafter = document.getElementById('clueafter');
                     clueafter.innerHTML ="Pistas despues de: " + datoclueafter + " intentos";
                     
@@ -103,12 +103,6 @@
                     <div class="modal-body">
                         <div class="table-responsive">
                             <table class="table table-primary">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Dato</th>
-                                        <th scope="col">Valor</th>
-                                    </tr>
-                                </thead>
                                 <tbody id="resultTabla">
                                 </tbody>
                             </table>
@@ -483,7 +477,17 @@
             };
 
             this.creaFeedback = () => {
-                resultado = "<tr>" +
+                if(!(hangmanApp.isfeedback)){
+                    resultado = "";
+                } else{
+                resultado = 
+                    "<thead>"+
+                    "<tr>" +
+                    "<th scope='col'>Dato</th>"+
+                    "<th scope='col'>Valor</th>"+
+                    "</tr>"+
+                    "</thead>"+
+                    "<tr>" +
                     "<td>Verbo:</td>" +
                     "<td>" + this.verboJuega["word"].toLowerCase() + "</td>" +
                     "</tr>" +
@@ -499,6 +503,7 @@
                     "<td>Ejemplo:</td>" +
                     "<td>" + this.verboJuega["example"] + "</td>" +
                     "</tr>";
+                }
                 this.resultTabla.innerHTML = resultado;
             };
 

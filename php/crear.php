@@ -45,9 +45,9 @@ $iduser = $_SESSION['id'];
 
                 $roomName = $_POST['roomName'];
                 $roomDescription = $_POST['roomDescription'];
-                $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on") ? -1 : intval($_POST['numLives']);
+                $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on") ? 0 : intval($_POST['numLives']);
                 $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on") ? 1 : 0;
-                $clueafter = ($clue == 1) ? intval($_POST['errorNumber']) : -1;
+                $clueafter = ($clue == 1) ? intval($_POST['errorNumber']) : 0;
                 $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on") ? 1 : 0;
                 $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "isOpen") ? 1 : 0;
                 $selectedStatus = isset($_POST["statusSource"]) ? $_POST["statusSource"] : "";
