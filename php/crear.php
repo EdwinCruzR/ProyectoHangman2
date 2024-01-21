@@ -300,11 +300,11 @@ $iduser = $_SESSION['id'];
             <?php 
             if(isset($_POST['submit_crear_palabra'])){
 
-                $word = $_POST['wordName'];
-                $type = $_POST['typeListSelect'];
-                $clue = $_POST['clue'];
-                $wordPast = $_POST['wordPast'];
-                $eg = $_POST['eg'];
+                $word =  mb_convert_case($_POST['wordName'], MB_CASE_UPPER, "UTF-8");
+                $type = mb_convert_case($_POST['typeListSelect'], MB_CASE_UPPER, "UTF-8"); 
+                $clue = mb_convert_case($_POST['clue'], MB_CASE_UPPER, "UTF-8");
+                $wordPast = mb_convert_case($_POST['wordPast'], MB_CASE_UPPER, "UTF-8"); 
+                $eg = mb_convert_case($_POST['eg'], MB_CASE_UPPER, "UTF-8");
 
                 $insertCreate = mysqli_query($conexion,"INSERT INTO words (word, type, clue, simplepast, example, user_id) VALUES ('$word', '$type','$clue', '$wordPast', '$eg', '$iduser')");
                 
