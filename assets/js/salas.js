@@ -26,19 +26,19 @@ function toggleRoomStatus() {
 
     if (divClose && divOpen) {
         switch (statusSource.value) {
-            case "setTime":
+            case "3":
                 divClose.style.display = "block";
                 divOpen.style.display = "block";
                 break;
-            case "hasstartdatetime":
+            case "1":
                 divOpen.style.display = "block";
                 divClose.style.display = "none";
                 break;
-            case "hasenddatetime":
+            case "2":
                 divClose.style.display = "block";
                 divOpen.style.display = "none";
                 break;
-            case "WithoutH":
+            case "0":
                 divClose.style.display = "none";
                 divOpen.style.display = "none";
                 break;
@@ -51,5 +51,5 @@ function toggleWordList() {
     var wordSource = document.getElementById("wordSource");
 
     // Muestra la lista de palabras solo cuando se selecciona "Palabras del docente"
-    wordList.style.display = (wordSource.value === "teacher") ? "block" : "none";
+    wordList.style.display = (wordSource.value === "1") ? "block" : "none";
 }
