@@ -317,7 +317,7 @@
                 hangmanApp.aciertos = 0;
                 hangmanApp.intentos = 6;
                 //hangmanApp.spanIntentos.innerHTML = hangmanApp.intentos;
-                hangmanApp.spanVidas.innerHTML = "♥".repeat(hangmanApp.vidas);
+                hangmanApp.spanVidas.innerHTML = (hangmanApp.vidas==-1)? "Ilimitadas" : "♥".repeat(hangmanApp.vidas);
                 hangmanApp.verboArray = hangmanApp.verboJuega["word"].split("");
                 hangmanApp.verboDashes = [].concat(hangmanApp.verboArray);
                 hangmanApp.verboDashes.fill("_");
@@ -406,7 +406,7 @@
                                 hangmanApp.waspast = 0;
                                 hangmanApp.datailgameroom();
                                 hangmanApp.creaFeedback();
-                                hangmanApp.vidas--;
+                                //hangmanApp.vidas--;
                                 hangmanApp.perdio();
                             }
                         }
@@ -481,7 +481,7 @@
                     resultado = "";
                 } else{
                 resultado = 
-                    "<thead>"+
+                "<thead>"+
                     "<tr>" +
                     "<th scope='col'>Dato</th>"+
                     "<th scope='col'>Valor</th>"+
