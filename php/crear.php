@@ -53,25 +53,25 @@ $iduser = $_SESSION['id'];
                 $selectedStatus = isset($_POST["statusSource"]) ? $_POST["statusSource"] : "";
 
                 switch ($selectedStatus) {
-                    case 'hasstartdatetime':
+                    case '1':
                         $hasstartdatetime = 1;
                         $hasenddatetime = 0;
                         $timestampClose = NULL;
                         $timestampOpen = $_POST["timestampOpen"];
                         break;
-                    case 'hasenddatetime':
+                    case '2':
                         $hasstartdatetime = 0;
                         $hasenddatetime = 1;
                         $timestampClose = $_POST["timestampClose"];
                         $timestampOpen = NULL;
                         break;
-                    case 'setTime':
+                    case '3':
                         $hasstartdatetime = 1;
                         $hasenddatetime = 1;
                         $timestampOpen = $_POST["timestampOpen"];
                         $timestampClose = $_POST["timestampClose"];
                         break;
-                    case 'WithoutH':
+                    case '0':
                         $hasstartdatetime = 0;
                         $hasenddatetime = 0;
                         $timestampOpen = NULL;
@@ -79,10 +79,10 @@ $iduser = $_SESSION['id'];
                         break;
                 }
 
-                $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "system") ? 1 : 0;
+                $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "0") ? 1 : 0;
                 $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on") ? 1 : 0;
                 $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;              
-
+                echo $isgeneral;
                 $roomcode = '';
                 do {
                     $roomcode = makeRoomCode();
@@ -92,7 +92,7 @@ $iduser = $_SESSION['id'];
                 $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?roomcode='.$roomcode;
 
                 $insertCreate = mysqli_prepare($conexion, "INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, hasstartdatetime, startdatetime, hasenddatetime, enddatetime, isgeneral, roomcode, qrstring, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                mysqli_stmt_bind_param($insertCreate, "ssiiiiiissssssss", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $iduser);
+                mysqli_stmt_bind_param($insertCreate, "ssiiiiiiisisissi", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $iduser);
                 mysqli_stmt_execute($insertCreate);
 
                 $consulta_nuevaID = mysqli_query($conexion, "SELECT id FROM room WHERE roomcode = '$roomcode'");
@@ -178,10 +178,10 @@ $iduser = $_SESSION['id'];
 
                             <label class="form-label" for="statusSource">Establecer horario:</label>
                             <select class="select-input" id="statusSource" name="statusSource" onchange="toggleRoomStatus()">
-                                <option value="WithoutH">Sin horario</option>
-                                <option value="hasstartdatetime">Solo entrada</option>
-                                <option value="hasenddatetime">Solo cierre</option>
-                                <option value="setTime">Entrada y cierre</option>
+                                <option value="0">Sin horario</option>
+                                <option value="1">Solo entrada</option>
+                                <option value="2">Solo cierre</option>
+                                <option value="3">Entrada y cierre</option>
                             </select>
 
                             <div class="settimeopen" id="settimeopen">
@@ -195,8 +195,8 @@ $iduser = $_SESSION['id'];
 
                             <label class="form-label" for="wordSource">Palabras de la sala:</label>
                             <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
-                                <option value="system">Palabras del sistema</option>
-                                <option value="teacher">Palabras del docente</option>
+                                <option value="0">Palabras del sistema</option>
+                                <option value="1">Palabras del docente</option>
                             </select>
 
                             <?php 
