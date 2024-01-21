@@ -213,7 +213,7 @@
                     <tr>
                         <th><?= $row['id'] ?></th>
                         <th><?= $row['word'] ?></th>
-                        <th><?= (($row['type'] == "I")? "Irregular" : "Regular") ?></th>
+                        <th><?= (($row['type'] == "I")? "IRREGULAR" : "REGULAR") ?></th>
                         <th><?= $row['clue'] ?></th>
                         <th><?= $row['simplepast'] ?></th>
                         <th><?= $row['example'] ?></th>
