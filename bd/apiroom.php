@@ -61,14 +61,9 @@ if (isset($_GET["fin"])) {
     echo $puntos;
     echo $rindio;
     mysqli_query($conexion, "UPDATE gameroom SET score = $puntos , timestampend = CURRENT_TIMESTAMP, totaltime = TIMEDIFF( timestampend , timestampstart) WHERE id = $idgr");
-    // mysqli_query($conexion, "UPDATE gameroom SET score = $puntos , timestampend = CURRENT_TIMESTAMP, totaltime = TIMEDIFF( timestampend , timestampstart) WHERE id = $idgr");
-    // $sql2 = mysqli_query($conexion, "UPDATE gameroom SET totaltime = TIMEDIFF( timestampend , timestampstart) WHERE id = $idgr");
     echo json_encode([["success" => 1]]);
     exit();
 }
-
-
-
 
 if (isset($_GET["tablaGeneral"])) {
     $sql = mysqli_query($conexion, "SELECT * FROM arenagame ORDER by score DESC, totaltime ASC");
