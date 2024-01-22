@@ -21,7 +21,7 @@ $iduser = $_SESSION['id'];
     <a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
     <?php
     function redirectToDashpage($successMessage) {
-        echo "<script> alert('$successMessage'); </script>";
+        
         header("Location: ./dashpage.php");
         exit();
     }
@@ -47,26 +47,25 @@ $iduser = $_SESSION['id'];
                         <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required><?= $row['description'] ?></textarea>
 
                         <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
-                        <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()" <?= (($row['lives']== -1)? 'checked': '' )?> >
+                        <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()" >
 
                         <label class="form-label" for="numLives">Número de vidas:</label>
-                        <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="<?= (($row['lives']>0)? $row['lives'] : "" )?>">
+                        <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="<?= (($row['lives'] > 0) ? $row['lives'] : '' )?>">
 
                         <label class="form-label" for="showHints">¿Mostrar pistas?</label>
-                        <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()"checked >
+                        <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()" >
 
                         <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
                         <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="<?= $row['clueafter'] ?>">
 
                         <label class="form-label" for="showFeedback">¿Mostrar retroalimentación?</label>
-                        <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback" checked>
+                        <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback">
 
                         <label class="form-label" for="randomOrder">¿Orden de palabras aleatorio?</label>
                         <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder">
 
                         <label class="form-label" for="isOpen">¿Abierta?</label>
-                        <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen" checked>
-
+                        <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen">
                         <label class="form-label" for="wordSource">Palabras de la sala:</label>
                         <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
                             <option value="system">Palabras del sistema</option>
@@ -84,6 +83,23 @@ $iduser = $_SESSION['id'];
                         <input class="form-input" type="hidden" id="id" name="id"  value="<?= $row['id'] ?>">
                         <input type="submit" class="form-button" name="submit_editar_sala" value="Editar Sala" required>
                     </form>
+                    <script>
+                        
+                        var checkboxUnlimitedLives = document.getElementById('unlimitedLives');
+                        checkboxUnlimitedLives.checked = <?= (($row['lives']== -1)? true: false )?>;
+
+                        var checkboxShowHints = document.getElementById('showHints');
+                        checkboxShowHints.checked = <?= (($row['clue']== 1)? true: false )?>;
+
+                        var checkboxRandomOrder = document.getElementById('randomOrder');
+                        checkboxRandomOrder.checked = <?= (($row['random']== 1)? true: false )?>;
+                        
+                        var checkShowFB = document.getElementById('showFeedback');
+                        checkShowFB.checked = <?= (($row['feedback']== 1)? true: false )?>;
+
+                        var checkIsopen = document.getElementById('isOpen');
+                        checkIsopen.checked = <?= (($row['isopen']== 1)? true: false )?>;
+                    </script>
                     <?php 
                     endwhile; 
                     ?>
@@ -101,11 +117,11 @@ $iduser = $_SESSION['id'];
                     $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
                     $id= $_POST['id'];
                     $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description= '$roomDescription', lives='$lives', clue='$clue', clueafter='$clueafter', feedback='$feedback', random='$random', isopen='$isopen' WHERE id=$id");
-
+                    echo $_POST["isOpen"];
                     if(!($querymodificar)){
                     echo "<script> alert('Error al editar'); </script>";
                     }else{
-                        redirectToDashpage('Se edito correctamente');
+                        // redirectToDashpage('Se edito correctamente');
                     }
                 
                 }
