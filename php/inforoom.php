@@ -221,21 +221,19 @@ $id = $_GET['id'];
                                                             <!-- a -->
 
                                                             <?php
-                                                            $consulta_gameroomdetails = mysqli_query($conexion, "SELECT * FROM detailgameroom WHERE gameroom_id=$gameroomid");
+                                                            $consulta_gameroomdetails = mysqli_query($conexion, "SELECT detailgameroom.*, words.word FROM detailgameroom JOIN words ON detailgameroom.word_id = words.id WHERE detailgameroom.gameroom_id = $gameroomid ORDER BY detailgameroom.pointsperword DESC");
 
                                                             ?>
                                                             <div class="container3">
                                                                 <table class="tabla3">
                                                                     <thead>
                                                                         <tr>
-                                                                            <!-- <th>ID</th> -->
-                                                                            <th>gameroom_id</th>
-                                                                            <th>word_id</th>
-                                                                            <th>guessed</th>
-                                                                            <th>typecorrect</th>
-                                                                            <th>pastcorrect</th>
-                                                                            <th>timeperword</th>
-                                                                            <th>pointsperword</th>
+                                                                            <th>word</th>
+                                                                            <th>adivinada</th>
+                                                                            <th>tipo</th>
+                                                                            <th>pasado</th>
+                                                                            <th>tiempo invertido</th>
+                                                                            <th>puntos acumulados</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -244,10 +242,7 @@ $id = $_GET['id'];
                                                                             ?>
                                                                             <tr>
                                                                                 <th>
-                                                                                    <?= $row['gameroom_id'] ?>
-                                                                                </th>
-                                                                                <th>
-                                                                                    <?= $row['word_id'] ?>
+                                                                                    <?= $row['word'] ?>
                                                                                 </th>
                                                                                 <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
                                                                 para poner lo su tipo, pasado simple-->
@@ -390,10 +385,10 @@ $id = $_GET['id'];
                         </div>
                         <div class="modal-body">
                             <a href="#" data-toggle="modal" data-target="#FailsType" data-dismiss="modal"><button type="button"
-                            class="btn btn-success regresar"> << Tipo >> </button></a>
+                            class="btn btn-success regresar">Tipo</button></a>
                             
                             <a href="#" data-toggle="modal" data-target="#FailsPast" data-dismiss="modal"><button type="button"
-                            class="btn btn-success regresar"> << Pasado >></button></a>
+                            class="btn btn-success regresar">Pasado</button></a>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
