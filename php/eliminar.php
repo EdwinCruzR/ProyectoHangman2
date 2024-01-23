@@ -3,7 +3,7 @@ session_start();
 
 include("../bd/conexion.php");
 if (!isset($_SESSION['id'])) {
-    header("Location: ../index.php");
+    header("Location: ../index.html");
 }
 $iduser = $_SESSION['id'];
 ?>
@@ -49,11 +49,24 @@ $iduser = $_SESSION['id'];
             break;
         case 'lista':
             $cod = $_GET['id'];
+
+            $consultaWDId =  mysqli_query($conexion, "SELECT word_id FROM list_has_word WHERE list_id=$cod");
+            if(mysqli_num_rows($consultaWDId) !=0){
+                $idsWR = array();
+                while($row = mysqli_fetch_array($consultaWDId)) {
+                    $idsWR[] = $row['id'];
+                }
+
+                foreach($idsGR as $idSGR) {
+                    mysqli_query($conexion, "DELETE FROM room_has_word WHERE word_id=$idSGR");
+                }
+            }
+            mysqli_query($conexion, "DELETE FROM list_has_word WHERE list_id=$cod");
             mysqli_query($conexion, "DELETE FROM lists WHERE id=$cod");
             redirectToDashpage('Eliminado con exito');
             break;
         case 'palabra':
-            $cod = $_GET['id'];
+
             mysqli_query($conexion, "UPDATE words SET isactive=0 WHERE id=$cod");
             redirectToDashpage('Eliminado con exito');
 

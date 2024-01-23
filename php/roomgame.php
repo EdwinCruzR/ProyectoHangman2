@@ -273,7 +273,7 @@
                 await fetch(this.urlApiRoom + "?rulesLeer=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
-                        console.log(respuesta[0].id);
+                        // console.log(respuesta[0].id);
                         hangmanApp.idroom = respuesta[0].id;
                         hangmanApp.vidas = respuesta[0].lives;
                         hangmanApp.pistaDespuesDe = respuesta[0].clueafter;
@@ -522,9 +522,6 @@
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
                         hangmanApp.idgameroom = respuesta[0].id;
-                        console.log(respuesta[0].id);
-                        hangmanApp.idgameroom = respuesta[0].id;
-                        // this.datosjuego.push(respuesta);
                     })
                     .finally(respuesta => {
                     })
@@ -548,16 +545,12 @@
                 // idSend = hangmanApp.datosjuego[0][0]["id"];
                 rindioSend = (hangmanApp.seRindio) ? 1 : 0;
                 puntosSend = (hangmanApp.seRindio) ? 0 : this.puntos;
-                console.log('id game room '+hangmanApp.idgameroom);
-                console.log(puntosSend);
-                console.log(rindioSend);
 
                 var datosEnviar = { idgr: hangmanApp.idgameroom, puntos: puntosSend, rindio: rindioSend };  
                 await fetch(this.urlApiRoom + "?fin=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
-                        console.log('hubo respuesta');
-                        // window.location = "tablageneral.html";
+                        window.location = "tablaroom.php?r=" + hangmanApp.idroom;
                     })
                     .finally(respuesta => {
                     })

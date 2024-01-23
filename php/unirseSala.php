@@ -31,13 +31,20 @@
 
             $roomcode = $_POST['roomcode'];
             
-            $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
+            $verifCode = mysqli_query($conexion, "SELECT id FROM room WHERE roomcode='$roomcode'");
+            while($result2 = mysqli_fetch_assoc($verifCode)){
+                $roomid = $result2['id'];
+            }
 
             if(mysqli_num_rows($verifCode) !=0 ){
                 $isopen = mysqli_query($conexion, "SELECT isopen FROM room WHERE isopen = 1 AND roomcode='$roomcode'");
                 if(mysqli_num_rows($isopen) !=0 ){
-                    // si esta abierta la sala entra a jugar
-                    header("Location: ./roomgame.php?roomcode=" . $roomcode);
+                    $existwords = mysqli_query($conexion, "SELECT * FROM room_has_word WHERE room_id = $roomid");
+                    if(mysqli_num_rows($existwords) !=0){
+                        $message = "La sala no tiene palabras seleccionas";
+                    }else{
+                        header("Location: ./roomgame.php?roomcode=" . $roomcode);
+                    }
                     exit();
                 } else {
                     // La sala está cerrada

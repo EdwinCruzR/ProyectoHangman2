@@ -3,7 +3,7 @@ session_start();
 
 include("../bd/conexion.php");
 if (!isset($_SESSION['id'])) {
-    header("Location: ../index.php");
+    header("Location: ../index.html");
 }
 $iduser = $_SESSION['id'];
 $id = $_GET['id'];

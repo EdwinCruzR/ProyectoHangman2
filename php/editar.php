@@ -3,7 +3,8 @@ session_start();
 
 include("../bd/conexion.php");
 if (!isset($_SESSION['id'])) {
-    header("Location: ../index.php");
+    header("Location: ../index.html");
+    exit;
 }
 $iduser = $_SESSION['id'];
 ?>
@@ -20,12 +21,6 @@ $iduser = $_SESSION['id'];
     <body>
     <a href="./dashpage.php"><button type="button" class="btn btn-danger regresar">Regresar</button></a>
     <?php
-    function redirectToDashpage($successMessage) {
-        
-        header("Location: ./dashpage.php");
-        exit();
-    }
-
     $opcion = isset($_GET['select']) ? $_GET['select'] : null;
 
     switch ($opcion) {
@@ -47,59 +42,59 @@ $iduser = $_SESSION['id'];
                         <textarea class="form-input form-textarea" id="roomDescription" name="roomDescription" maxlength="300" required><?= $row['description'] ?></textarea>
 
                         <label class="form-label" for="unlimitedLives">¿Vidas ilimitadas?</label>
-                        <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()" >
+                        <input class="checkbox-input" type="checkbox" id="unlimitedLives" name="unlimitedLives" onclick="toggleLivesInput()" <?= (($row['lives']== -1)? 'checked': '')?> >
 
                         <label class="form-label" for="numLives">Número de vidas:</label>
                         <input class="form-input" type="number" id="numLives" name="numLives" min="1" max="10" value="<?= (($row['lives'] > 0) ? $row['lives'] : '' )?>">
 
                         <label class="form-label" for="showHints">¿Mostrar pistas?</label>
-                        <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()" >
+                        <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()" <?= (($row['clue'] == 1)? 'checked': '')?> >
 
                         <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
-                        <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="<?= $row['clueafter'] ?>">
+                        <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="<?= (($row['clueafter'] < 0)? '': $row['clueafter']) ?>">
 
                         <label class="form-label" for="showFeedback">¿Mostrar retroalimentación?</label>
-                        <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback">
+                        <input class="checkbox-input" type="checkbox" id="showFeedback" name="showFeedback" <?= (($row['feedback']== 1)? 'checked': '')?> >
 
                         <label class="form-label" for="randomOrder">¿Orden de palabras aleatorio?</label>
-                        <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder">
+                        <input class="checkbox-input" type="checkbox" id="randomOrder" name="randomOrder" <?= (($row['random']== 1)? 'checked': '')?> >
 
-                        <label class="form-label" for="isOpen">¿Abierta?</label>
-                        <input class="checkbox-input" type="checkbox" id="isOpen" name="isOpen">
+                        <label class="form-label" for="isOpen">Estado de entrada:</label>
+                            <select class="select-input" id="isOpen" name="isOpen">
+                                <option value="isOpen">Abierta</option>
+                                <option value="isClose">Cerrada</option>
+                            </select>
+                        
+
                         <label class="form-label" for="wordSource">Palabras de la sala:</label>
-                        <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
-                            <option value="system">Palabras del sistema</option>
-                            <option value="teacher">Palabras del docente</option>
+                        <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()" value="1">
+                            <option value="0" <?= (($row['isgeneral']== 1)? 'selected': '')?> >Palabras del sistema</option>
+                            <option value="1" <?= (($row['isgeneral']== 0)? 'selected': '')?>>Palabras del docente</option>
                         </select>
+                        <?php 
+                            $consulta_lists = mysqli_query($conexion,"SELECT * FROM lists WHERE user_id=$iduser"); 
+                        ?>
 
                         <div class="word-list" id="wordList">
                             <label class="form-label" for="wordListSelect">Seleccione la lista de palabras:</label>
-                            <select class="select-input" id="wordListSelect">
-                                <option value="list1">cocina</option>
-                                <option value="list2">viajes</option>
-                                <option value="list3">guerra</option>
+                            <select class="select-input" id="wordListSelect" name="wordListSelect">
+                                <option value="0" selected >Selecciona una lista</option>
+                                
+                            <?php
+                            if ($consulta_lists->num_rows > 0) {
+                                while ($row = mysqli_fetch_array($consulta_lists)){ ?>
+                                    <option value="<?= $row['id'] ?>"><?= $row['listname'] ?></option>
+                                <?php } 
+                            }else {
+                                ?> <option value="0">Sin listas disponibles</option> <?php
+                            }
+                            ?>
                             </select>
                         </div>
+                        
                         <input class="form-input" type="hidden" id="id" name="id"  value="<?= $row['id'] ?>">
                         <input type="submit" class="form-button" name="submit_editar_sala" value="Editar Sala" required>
                     </form>
-                    <script>
-                        
-                        var checkboxUnlimitedLives = document.getElementById('unlimitedLives');
-                        checkboxUnlimitedLives.checked = <?= (($row['lives']== -1)? true: false )?>;
-
-                        var checkboxShowHints = document.getElementById('showHints');
-                        checkboxShowHints.checked = <?= (($row['clue']== 1)? true: false )?>;
-
-                        var checkboxRandomOrder = document.getElementById('randomOrder');
-                        checkboxRandomOrder.checked = <?= (($row['random']== 1)? true: false )?>;
-                        
-                        var checkShowFB = document.getElementById('showFeedback');
-                        checkShowFB.checked = <?= (($row['feedback']== 1)? true: false )?>;
-
-                        var checkIsopen = document.getElementById('isOpen');
-                        checkIsopen.checked = <?= (($row['isopen']== 1)? true: false )?>;
-                    </script>
                     <?php 
                     endwhile; 
                     ?>
@@ -113,15 +108,45 @@ $iduser = $_SESSION['id'];
                     $clue = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? 1 : 0;
                     $clueafter = (isset($_POST["showHints"]) && $_POST["showHints"] == "on")? intval($_POST['errorNumber']) : -1;
                     $feedback = (isset($_POST["showFeedback"]) && $_POST["showFeedback"] == "on")? 1 : 0 ;
-                    $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "on")? 1 : 0 ;
+                    $isopen = (isset($_POST["isOpen"]) && $_POST["isOpen"] == "isOpen")? 1 : 0 ;
                     $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
+
+                    $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "0") ? 1 : 0;
+                    $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;
+
                     $id= $_POST['id'];
                     $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description= '$roomDescription', lives='$lives', clue='$clue', clueafter='$clueafter', feedback='$feedback', random='$random', isopen='$isopen' WHERE id=$id");
-                    echo $_POST["isOpen"];
+                    $consultaDeleteCtt = mysqli_query($conexion, "DELETE FROM room_has_word WHERE room_id = $id");
+                    if($isgeneral == 1){
+                        $consultaWordsSystem = mysqli_query($conexion, "SELECT id FROM words WHERE user_id = 1");
+    
+                        $wordsOfSsystem = array();
+                        while($row = mysqli_fetch_array($consultaWordsSystem)) {
+                            $wordsOfSsystem[] = $row['id'];
+                        }
+    
+                        foreach($wordsOfSsystem as $idPalabra) {
+                            $insertRHW = mysqli_query($conexion, "INSERT INTO room_has_word (room_id, word_id) VALUES ($id, $idPalabra)");
+                        }
+                    }else{
+                        $consultaWordsList = mysqli_query($conexion, "SELECT word_id FROM list_has_word WHERE list_id = $islist");
+                        
+                        $wordsOfList = array();
+                        while($row = mysqli_fetch_array($consultaWordsList)) {
+                            $wordsOfList[] = $row['word_id'];
+                        }
+                        
+                        foreach($wordsOfList as $idWord) {
+                            $insertRHW = mysqli_query($conexion, "INSERT INTO room_has_word (room_id, word_id) VALUES ($id, $idWord)");
+                        }
+                    }
+                    
+                    
                     if(!($querymodificar)){
                     echo "<script> alert('Error al editar'); </script>";
                     }else{
-                        // redirectToDashpage('Se edito correctamente');
+                        echo '<script>window.location.href = "./dashpage.php";</script>';
+                        exit;
                     }
                 
                 }
@@ -168,7 +193,9 @@ $iduser = $_SESSION['id'];
                 if(!($insertUpdateWord)){
                     echo "<script> alert('Error al editar'); </script>";
                 }else{
-                    redirectToDashpage('Se edito correctamente');
+                    
+                    echo '<script>window.location.href = "./dashpage.php";</script>';
+                    exit;
                 }
             }
             break;
@@ -226,7 +253,8 @@ $iduser = $_SESSION['id'];
                     if(!($insertUpdateWord)){
                         echo "<script> alert('Error al editar'); </script>";
                     }else{
-                        redirectToDashpage('Se edito correctamente');
+                        echo '<script>window.location.href = "./dashpage.php";</script>';
+                        exit;
                     }
                 }
             ?>
@@ -235,11 +263,15 @@ $iduser = $_SESSION['id'];
             break;
         default:
             echo "no existe";
-            //crear el error 404 jsjsjs
+            header("Location: ../404.html");
+            exit;
             break;
     }
 ?>
 <script>
+    var wordList = document.getElementById("wordList");
+    wordList.style.display = "none";
+
     var checkbox = document.getElementById('unlimitedLives');
       var numLivesInput = document.getElementById('numLives');
 
@@ -300,6 +332,6 @@ $iduser = $_SESSION['id'];
       wordList.style.display = (wordSource.value === "teacher") ? "block" : "none";
     }
 </script>
-<!-- <script src="../assets/js/editarsalas.js"></script> -->
+<!-- <script src="../assets/js/salas.js"></script> -->
 </body>
 </html>

@@ -3,7 +3,7 @@ session_start();
 
 include("../bd/conexion.php");
 if (!isset($_SESSION['id'])) {
-    header("Location: ../index.php");
+    header("Location: ../index.html");
 }
 $iduser = $_SESSION['id'];
 ?>
@@ -82,7 +82,7 @@ $iduser = $_SESSION['id'];
                 $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "0") ? 1 : 0;
                 $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on") ? 1 : 0;
                 $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;              
-                echo $isgeneral;
+                // echo $isgeneral;
                 $roomcode = '';
                 do {
                     $roomcode = makeRoomCode();

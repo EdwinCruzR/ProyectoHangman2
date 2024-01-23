@@ -65,8 +65,10 @@ if (isset($_GET["fin"])) {
     exit();
 }
 
-if (isset($_GET["tablaGeneral"])) {
-    $sql = mysqli_query($conexion, "SELECT * FROM arenagame ORDER by score DESC, totaltime ASC");
+if (isset($_GET["tablaSala"])) {
+    $data = json_decode(file_get_contents("php://input"));
+    $roomid = $data->idrm;
+    $sql = mysqli_query($conexion, "SELECT gameroom.*, users.name FROM gameroom JOIN users ON gameroom.user_id = users.id WHERE gameroom.room_id = $roomid ORDER BY gameroom.score DESC");
     if (mysqli_num_rows($sql) > 0) {
         $tabla = mysqli_fetch_all($sql, MYSQLI_ASSOC);
         echo json_encode($tabla);
