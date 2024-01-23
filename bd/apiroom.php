@@ -57,9 +57,6 @@ if (isset($_GET["fin"])) {
     $idgr = $data->idgr;
     $puntos = $data->puntos;
     $rindio = $data->rindio;
-    echo $idgr;
-    echo $puntos;
-    echo $rindio;
     mysqli_query($conexion, "UPDATE gameroom SET score = $puntos , timestampend = CURRENT_TIMESTAMP, totaltime = TIMEDIFF( timestampend , timestampstart) WHERE id = $idgr");
     echo json_encode([["success" => 1]]);
     exit();
