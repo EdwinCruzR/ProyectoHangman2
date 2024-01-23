@@ -228,7 +228,7 @@ $id = $_GET['id'];
                                                                 <table class="tabla3">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>word</th>
+                                                                            <th>palabra</th>
                                                                             <th>adivinada</th>
                                                                             <th>tipo</th>
                                                                             <th>pasado</th>
@@ -247,13 +247,13 @@ $id = $_GET['id'];
                                                                                 <!-- al momento de pasar el mouse encima del th de word id que salga una tablita de 2 x 2 
                                                                 para poner lo su tipo, pasado simple-->
                                                                                 <th>
-                                                                                    <?= $row['guessed'] ?>
+                                                                                    <?= (($row['guessed'] == 1) ? "Si" : "No") ?>
                                                                                 </th>
                                                                                 <th>
-                                                                                    <?= $row['typecorrect'] ?>
+                                                                                    <?= (($row['typecorrect'] == 1) ? "Correcto" : "Incorrecto") ?>
                                                                                 </th>
                                                                                 <th>
-                                                                                    <?= $row['pastcorrect'] ?>
+                                                                                    <?= (($row['pastcorrect'] == 1) ? "Correcto" : "Incorrecto") ?>
                                                                                 </th>
                                                                                 <th>
                                                                                     <?= $row['timeperword'] ?>

@@ -231,6 +231,7 @@
             this.wassguess = 0;
             this.wastype = 0;
             this.waspast = 0;
+            this.pointsAcum = 0;
             this.perdioLasVidas = false;
             this.seRindio = false;
             this.errores = 0;
@@ -358,6 +359,7 @@
                                     hangmanApp.verboDashes[ind] = car;
                                     hangmanApp.aciertos++;
                                     hangmanApp.puntos += 10;
+                                    hangmanApp.pointsAcum += 10;
                                     hangmanApp.spanPuntos.innerHTML = hangmanApp.puntos;
                                 }
                                 ind++;
@@ -373,6 +375,7 @@
                             hangmanApp.intentos--;
                             hangmanApp.errores++;
                             hangmanApp.puntos -= 1;
+                            hangmanApp.pointsAcum -= 1;
                             hangmanApp.spanPuntos.innerHTML = hangmanApp.puntos;
                             //hangmanApp.spanIntentos.innerHTML = hangmanApp.intentos;
                             switch (hangmanApp.intentos) {
@@ -442,17 +445,19 @@
                 hangmanApp.wastype = tipoTest == tipoOk ? 1 : 0;
                 hangmanApp.waspast = pasadoTest == pasadoOk ? 1 : 0;
                 hangmanApp.wassguess = 1;
-                hangmanApp.datailgameroom();
-
-
+                
+                
                 if (tipoTest === tipoOk && pasadoTest === pasadoOk) {
                     hangmanApp.gano();
+                    this.pointsAcum += 15;
                     this.puntos += 15;
                 } else {
                     this.vidas--;
+                    this.pointsAcum -= 10;
                     this.puntos -= 10;
                     hangmanApp.perdio();
                 }
+                hangmanApp.datailgameroom();
                 form.reset();
             };
 
@@ -508,12 +513,13 @@
             };
 
             this.datailgameroom = async () => {
-                var datosEnviar = {gameroomid: hangmanApp.idgameroom ,wordid: hangmanApp.verboJuega["id"] ,roomid: hangmanApp.idroom ,verbAdivinado: hangmanApp.wassguess,  tipo: hangmanApp.wastype, pasado : hangmanApp.waspast };
+                var datosEnviar = {gameroomid: hangmanApp.idgameroom ,wordid: hangmanApp.verboJuega["id"] ,roomid: hangmanApp.idroom ,verbAdivinado: hangmanApp.wassguess,  tipo: hangmanApp.wastype, pasado : hangmanApp.waspast, puntos: hangmanApp.pointsAcum};
                 await fetch(this.urlApiRoom + "?detail=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .finally(respuesta => {
                     })
                     .catch(console.log);
+                hangmanApp.pointsAcum = 0;
             };
 
 

@@ -47,8 +47,9 @@ if (isset($_GET["detail"])) {
     $verbo = $data->verbAdivinado;
     $tipo = $data->tipo;
     $pasado = $data->pasado;
+    $puntos = $data->puntos;
     
-    $insert = mysqli_query($conexion, "INSERT INTO detailgameroom( gameroom_id, word_id, guessed, typecorrect, pastcorrect) VALUES ($gameroomid, $wordid, $verbo, $tipo, $pasado)");
+    $insert = mysqli_query($conexion, "INSERT INTO detailgameroom( gameroom_id, word_id, guessed, typecorrect, pastcorrect,pointsperword) VALUES ($gameroomid, $wordid, $verbo, $tipo, $pasado, $puntos)");
     
     $sql = mysqli_query($conexion, "SELECT * FROM room_has_word WHERE word_id= $wordid AND room_id= $roomid");
     while ($row = mysqli_fetch_array($sql)) {

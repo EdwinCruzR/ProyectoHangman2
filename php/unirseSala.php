@@ -32,12 +32,13 @@
             $roomcode = $_POST['roomcode'];
             
             $verifCode = mysqli_query($conexion, "SELECT id FROM room WHERE roomcode='$roomcode'");
-            while($result2 = mysqli_fetch_assoc($verifCode)){
-                $roomid = $result2['id'];
-            }
-            $existwords = mysqli_query($conexion, "SELECT word_id FROM room_has_word WHERE room_id = $roomid");
-
+            
             if(mysqli_num_rows($verifCode) !=0 ){
+                
+                while($result2 = mysqli_fetch_assoc($verifCode)){
+                    $roomid = $result2['id'];
+                }
+                $existwords = mysqli_query($conexion, "SELECT word_id FROM room_has_word WHERE room_id = $roomid");
                 $isopen = mysqli_query($conexion, "SELECT isopen FROM room WHERE isopen = 1 AND roomcode='$roomcode'");
                 if(mysqli_num_rows($isopen) !=0 ){
                     if (mysqli_num_rows($existwords) != 0) {
