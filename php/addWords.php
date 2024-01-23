@@ -21,6 +21,13 @@ while ($row = mysqli_fetch_array($consultaWordsOnList)) {
 if (isset($_POST['submit_editar_lista'])) {
     $selectedWords = isset($_POST['selected_words']) ? $_POST['selected_words'] : array();
 
+    $selectROP = mysqli_query($conexion, "SELECT id FROM room WHERE user_id = $iduser");
+
+    $roomsofplayer = array();
+    while ($row = mysqli_fetch_array($selectROP)) {
+        $roomsofplayer[] = $row['id'];
+    }
+
     //palabras que fueron deseleccionadas
     $deselectedWords = array_diff($WordsOnList, $selectedWords);
 
@@ -29,10 +36,16 @@ if (isset($_POST['submit_editar_lista'])) {
 
     foreach ($selectedWords as $idPalabra) {
         $insertListWord = mysqli_query($conexion, "INSERT INTO list_has_word (list_id, word_id) VALUES ($idLista, $idPalabra)");
+        foreach ($roomsofplayer as $idRoomes) {
+            $insertRoomWord = mysqli_query($conexion, "INSERT INTO room_has_word (room_id, word_id) VALUES ($idRoomes, $idPalabra)");
+        }
     }
 
     foreach ($deselectedWords as $idPalabra) {
         $deleteListWord = mysqli_query($conexion, "DELETE FROM list_has_word WHERE list_id = $idLista AND word_id = $idPalabra");
+        foreach ($roomsofplayer as $idRoomes) {
+            $deleteRoomWord = mysqli_query($conexion, "DELETE FROM room_has_word WHERE word_id = $idPalabra AND room_id = $idRoomes");
+        }
     }
 
     echo "<script> alert('lista actualizada con exito'); </script>";
