@@ -35,17 +35,19 @@
             while($result2 = mysqli_fetch_assoc($verifCode)){
                 $roomid = $result2['id'];
             }
+            $existwords = mysqli_query($conexion, "SELECT word_id FROM room_has_word WHERE room_id = $roomid");
 
             if(mysqli_num_rows($verifCode) !=0 ){
                 $isopen = mysqli_query($conexion, "SELECT isopen FROM room WHERE isopen = 1 AND roomcode='$roomcode'");
                 if(mysqli_num_rows($isopen) !=0 ){
-                    $existwords = mysqli_query($conexion, "SELECT * FROM room_has_word WHERE room_id = $roomid");
-                    if(mysqli_num_rows($existwords) !=0){
-                        $message = "La sala no tiene palabras seleccionas";
-                    }else{
+                    if (mysqli_num_rows($existwords) != 0) {
                         header("Location: ./roomgame.php?roomcode=" . $roomcode);
+                        exit();
+                        
+                    } else {
+                        $message = "La sala no tiene palabras seleccionadas";
+                        mysqli_stmt_close($existwords);
                     }
-                    exit();
                 } else {
                     // La sala está cerrada
                     $message = "La sala está cerrada";
@@ -56,8 +58,6 @@
             }
         } 
         
-        // $verifCode->close();
-        // $isopen->close();
         ?>
 
     <h2>Unete a una sala <?php echo $name ?></h2>
