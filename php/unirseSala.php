@@ -46,7 +46,7 @@
                         
                     } else {
                         $message = "La sala no tiene palabras seleccionadas";
-                        mysqli_stmt_close($existwords);
+                        // mysqli_stmt_close($existwords);
                     }
                 } else {
                     // La sala está cerrada

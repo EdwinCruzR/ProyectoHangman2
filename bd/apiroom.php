@@ -43,14 +43,32 @@ if (isset($_GET["detail"])) {
     $data = json_decode(file_get_contents("php://input"));
     $gameroomid = $data->gameroomid;
     $wordid = $data->wordid;
+    $roomid = $data->roomid;
     $verbo = $data->verbAdivinado;
     $tipo = $data->tipo;
     $pasado = $data->pasado;
-    $sql = mysqli_query($conexion, "INSERT INTO detailgameroom( gameroom_id, word_id, guessed, typecorrect, pastcorrect) VALUES ($gameroomid, $wordid, $verbo, $tipo, $pasado)");
+    
+    $insert = mysqli_query($conexion, "INSERT INTO detailgameroom( gameroom_id, word_id, guessed, typecorrect, pastcorrect) VALUES ($gameroomid, $wordid, $verbo, $tipo, $pasado)");
+    
+    $sql = mysqli_query($conexion, "SELECT * FROM room_has_word WHERE word_id= $wordid AND room_id= $roomid");
+    while ($row = mysqli_fetch_array($sql)) {
+        $usada = $row['used'];
+        $adivinado = $row['guessed'];
+        $tipoFail = $row['typefails'];
+        $pasadoFail = $row['pastfails'];
+    }
+    
+    $usada = $usada + 1;
+    $adivinado = $adivinado + $verbo;
+    $tipoFail = $tipoFail + (($tipo == 1)? 0 : 1);
+    $pasadoFail = $pasadoFail + (($pasado == 1)? 0 : 1);
+    
+    $sql2 = mysqli_query($conexion, "UPDATE room_has_word SET used = $usada, guessed=$adivinado, typefails= $tipoFail, pastfails=$pasadoFail WHERE word_id= $wordid AND room_id= $roomid");
     
     echo json_encode([["success" => 0]]);
     exit();
 }
+
 
 if (isset($_GET["fin"])) {
     $data = json_decode(file_get_contents("php://input"));

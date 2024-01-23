@@ -508,13 +508,14 @@
             };
 
             this.datailgameroom = async () => {
-                var datosEnviar = {gameroomid: hangmanApp.idgameroom ,wordid: hangmanApp.verboJuega["id"] ,verbAdivinado: hangmanApp.wassguess,  tipo : hangmanApp.wastype, pasado : hangmanApp.waspast };
+                var datosEnviar = {gameroomid: hangmanApp.idgameroom ,wordid: hangmanApp.verboJuega["id"] ,roomid: hangmanApp.idroom ,verbAdivinado: hangmanApp.wassguess,  tipo: hangmanApp.wastype, pasado : hangmanApp.waspast };
                 await fetch(this.urlApiRoom + "?detail=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .finally(respuesta => {
                     })
                     .catch(console.log);
             };
+
 
             this.insertarJuego = async () => {
                 var datosEnviar = { userid : <?= $id ?>, roomid : hangmanApp.idroom };
