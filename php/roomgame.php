@@ -409,7 +409,7 @@
                                 hangmanApp.waspast = 0;
                                 hangmanApp.datailgameroom();
                                 hangmanApp.creaFeedback();
-                                //hangmanApp.vidas--;
+                                hangmanApp.vidas--;
                                 hangmanApp.perdio();
                             }
                         }

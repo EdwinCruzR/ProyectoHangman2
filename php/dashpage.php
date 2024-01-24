@@ -43,7 +43,7 @@
       <ul class="navbar-nav">
       <div class="left">
         <li class="nav-item">
-        <p class="nav-link scrollto">ADMINISTRADOR DOCENTE</p>
+        <p class="nav-link scrollto">ADMINISTRADOR SALAS</p>
         </li>
         <li class="nav-item">
         <p class="nav-link ">¡Hola!, <?php echo $name ?></p>
