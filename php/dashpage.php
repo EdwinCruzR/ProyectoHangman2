@@ -11,11 +11,7 @@
 
     while($result = mysqli_fetch_assoc($query)){
         $name = $result['name'];
-        $lastname = $result['lastname'];
-        $email = $result['email'];
-        $school = $result['school'];
-        $avatar = $result['idavatar'];
-        $rol = $result['roles_id'];
+        $hrsPlayed = $result['hrsjugadas'];
     }
 
 ?>
@@ -51,6 +47,9 @@
         </li>
         <li class="nav-item">
         <p class="nav-link ">¡Hola!, <?php echo $name ?></p>
+        </li>   
+        <li class="nav-item">
+        <p class="nav-link ">Tiempo Jugado: <?php echo $hrsPlayed ?></p>
         </li>   
       </div> 
       <div class="right">   
