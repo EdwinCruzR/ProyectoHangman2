@@ -79,15 +79,31 @@ if (isset($_GET["fin"])) {
     $rindio = $data->rindio;
 
     mysqli_query($conexion, "UPDATE gameroom SET score = $puntos , timestampend = CURRENT_TIMESTAMP, totaltime = TIMEDIFF( timestampend , timestampstart) WHERE id = $idgr");
-    // $consultTime = mysqli_query($conexion, "SELECT totaltime FROM gameroom WHERE id= $idgr");
-    // while ($rows = mysqli_fetch_array($consultTime)) {
-    //     $hrsjged = $rows['totaltime'];
-    // }
-
-    // mysqli_query($conexion, "UPDATE users SET hrsjugadas = hrsjugadas + $hrsjged WHERE id = $iduser");
     
-    echo json_encode([["success" => 1]]);
-    exit();
+    
+    
+    
+    $sql = mysqli_query($conexion, "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(hrsjugadas))) AS totaltime FROM users WHERE id = $iduser");
+    while ($row = mysqli_fetch_array($sql)) {
+        $hrsgrd = $row['totaltime'];
+    }
+
+    // Suma del tiempo jugado en la última partida
+    $sql2 = mysqli_query($conexion, "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(totaltime))) AS gameTime FROM gameroom WHERE id = $idgr");
+    while ($row2 = mysqli_fetch_array($sql2)) {
+        $hrsjged = $row2['gameTime'];
+    }
+
+    // Actualización del tiempo total jugado por el usuario
+    $updateUserTimeQuery = "UPDATE users SET hrsjugadas = ADDTIME('$hrsgrd', '$hrsjged') WHERE id = $iduser";
+    if (mysqli_query($conexion, $updateUserTimeQuery)) {
+        echo json_encode([["success" => 1]]);
+        exit();
+    } else {
+        // Manejo de errores para la actualización del tiempo total del usuario
+        echo json_encode([["success" => 0, "error" => mysqli_error($conexion)]]);
+        exit();
+    }
 }
 
 if (isset($_GET["tablaSala"])) {
