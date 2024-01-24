@@ -552,7 +552,7 @@
                 // idSend = hangmanApp.datosjuego[0][0]["id"];
                 rindioSend = (hangmanApp.seRindio) ? 1 : 0;
                 puntosSend = (hangmanApp.seRindio) ? 0 : this.puntos;
-                var datosEnviar = { idgr: hangmanApp.idgameroom, puntos: puntosSend, rindio: rindioSend };  
+                var datosEnviar = { userid: <?= $id ?> , idgr: hangmanApp.idgameroom, puntos: puntosSend, rindio: rindioSend };  
                 await fetch(this.urlApiRoom + "?fin=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                 .then(respuesta => respuesta.json())
                 .then((respuesta) => {

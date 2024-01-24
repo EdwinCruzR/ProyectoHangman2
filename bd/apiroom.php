@@ -73,10 +73,19 @@ if (isset($_GET["detail"])) {
 
 if (isset($_GET["fin"])) {
     $data = json_decode(file_get_contents("php://input"));
+    $iduser = $data->userid;
     $idgr = $data->idgr;
     $puntos = $data->puntos;
     $rindio = $data->rindio;
+
     mysqli_query($conexion, "UPDATE gameroom SET score = $puntos , timestampend = CURRENT_TIMESTAMP, totaltime = TIMEDIFF( timestampend , timestampstart) WHERE id = $idgr");
+    // $consultTime = mysqli_query($conexion, "SELECT totaltime FROM gameroom WHERE id= $idgr");
+    // while ($rows = mysqli_fetch_array($consultTime)) {
+    //     $hrsjged = $rows['totaltime'];
+    // }
+
+    // mysqli_query($conexion, "UPDATE users SET hrsjugadas = hrsjugadas + $hrsjged WHERE id = $iduser");
+    
     echo json_encode([["success" => 1]]);
     exit();
 }
