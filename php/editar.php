@@ -69,7 +69,7 @@ $iduser = $_SESSION['id'];
                         <label class="form-label" for="wordSource">Palabras de la sala:</label>
                         <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()" value="1">
                             <option value="0" <?= (($row['isgeneral']== 1)? 'selected': '')?> >Palabras del sistema</option>
-                            <option value="1" <?= (($row['isgeneral']== 0)? 'selected': '')?> >Palabras del docente</option>
+                            <option value="1" <?= (($row['isgeneral']== 0)? 'selected': '')?> >Palabras del usuario</option>
                         </select>
                         <?php 
                             $consulta_lists = mysqli_query($conexion,"SELECT * FROM lists WHERE user_id=$iduser"); 

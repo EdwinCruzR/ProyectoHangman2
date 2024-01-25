@@ -196,7 +196,7 @@ $iduser = $_SESSION['id'];
                             <label class="form-label" for="wordSource">Palabras de la sala:</label>
                             <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()">
                                 <option value="0">Palabras del sistema</option>
-                                <option value="1">Palabras del docente</option>
+                                <option value="1">Palabras del usuarios</option>
                             </select>
 
                             <?php 

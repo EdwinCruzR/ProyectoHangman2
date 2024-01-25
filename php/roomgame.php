@@ -38,7 +38,7 @@
                     let descriptiom = document.getElementById('description');
                     descriptiom.innerHTML ="Descripcion: " + datodescription;
                     let vidas = document.getElementById('vidas');
-                    vidas.innerHTML ="Vidas: " + (datolives == 0 ? "Ilimitadas" : datolives);
+                    vidas.innerHTML ="Vidas: " + (datolives == -1 ? "Ilimitadas" : datolives);
                     let clueafter = document.getElementById('clueafter');
                     clueafter.innerHTML ="Pistas despues de: " + datoclueafter + " intentos";
                     
