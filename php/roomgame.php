@@ -352,6 +352,9 @@
                     boton.className = "botonLetra";
                     //* Se programa el evento clic de cada botón
                     boton.onclick = function (e) {
+                        let sonido = new Audio
+                        sonido.src = "../assets/songs/mech-keyboard.mp3";
+                        sonido.play();
                         if (hangmanApp.verboArray.includes(e.target.id)) {
                             let ind = 0;
                             hangmanApp.verboArray.forEach(car => {
@@ -416,6 +419,8 @@
                         let borraboton = document.getElementById(e.target.id);
                         divBotones.removeChild(borraboton);
                     };
+                    boton.onmousedown = function (e) {
+                    }
                     contenedor.appendChild(boton);
                 });
             }
