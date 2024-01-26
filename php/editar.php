@@ -69,7 +69,7 @@ $iduser = $_SESSION['id'];
                         <label class="form-label" for="wordSource">Palabras de la sala:</label>
                         <select class="select-input" id="wordSource" name="wordSource" onchange="toggleWordList()" value="1">
                             <option value="0" <?= (($row['isgeneral']== 1)? 'selected': '')?> >Palabras del sistema</option>
-                            <option value="1" <?= (($row['isgeneral']== 0)? 'selected': '')?>>Palabras del docente</option>
+                            <option value="1" <?= (($row['isgeneral']== 0)? 'selected': '')?> >Palabras del usuario</option>
                         </select>
                         <?php 
                             $consulta_lists = mysqli_query($conexion,"SELECT * FROM lists WHERE user_id=$iduser"); 
@@ -82,15 +82,20 @@ $iduser = $_SESSION['id'];
                                 
                             <?php
                             if ($consulta_lists->num_rows > 0) {
-                                while ($row = mysqli_fetch_array($consulta_lists)){ ?>
-                                    <option value="<?= $row['id'] ?>"><?= $row['listname'] ?></option>
-                                <?php } 
+                                while ($rowed = mysqli_fetch_array($consulta_lists)){ ?>
+                                    <option value="<?= $rowed['id'] ?>"><?= $rowed['listname'] ?></option>
+                            <?php } 
                             }else {
                                 ?> <option value="0">Sin listas disponibles</option> <?php
                             }
                             ?>
                             </select>
                         </div>
+                        <script>
+                            var wordList = document.getElementById("wordList");
+                            wordList.style.display = '<?= ($row['isgeneral'] == 1) ? "none" : "block" ?>';
+                        </script>
+
                         
                         <input class="form-input" type="hidden" id="id" name="id"  value="<?= $row['id'] ?>">
                         <input type="submit" class="form-button" name="submit_editar_sala" value="Editar Sala" required>
@@ -269,8 +274,6 @@ $iduser = $_SESSION['id'];
     }
 ?>
 <script>
-    var wordList = document.getElementById("wordList");
-    wordList.style.display = "none";
 
     var checkbox = document.getElementById('unlimitedLives');
       var numLivesInput = document.getElementById('numLives');
@@ -325,11 +328,11 @@ $iduser = $_SESSION['id'];
     }
 
     function toggleWordList() {
-      var wordList = document.getElementById("wordList");
-      var wordSource = document.getElementById("wordSource");
-      
-      // Muestra la lista de palabras solo cuando se selecciona "Palabras del docente"
-      wordList.style.display = (wordSource.value === "teacher") ? "block" : "none";
+        var wordList = document.getElementById("wordList");
+        var wordSource = document.getElementById("wordSource");
+
+        // Muestra la lista de palabras solo cuando se selecciona "Palabras del docente"
+        wordList.style.display = (wordSource.value === "1") ? "block" : "none";
     }
 </script>
 <!-- <script src="../assets/js/salas.js"></script> -->
