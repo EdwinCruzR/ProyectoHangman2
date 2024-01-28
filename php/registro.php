@@ -9,6 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/login.css">
     <title>Register</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+      emailjs.init('O3AE29jtznmBCGcVO');
+    </script>
 </head>
 <body>
 <div class="login-root">
@@ -75,11 +79,23 @@ include("../bd/conexion.php");
                   </div>";
         }else{
 
-            mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
-            
+          mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
+          ?>
+          <script>
+            emailjs.send("TeamHangmanG","template_Hangman",{
+              to_name: "<?= $name ?>",
+              to_email: "<?= $email ?>",
+            });
+          </script>
+          <?php
+            echo "<br>";
             echo "<div class='alert alert-success' role='alert'>
-                    Registrado correctamente
+            <br>
+                    Registrado correctamente, se envio un correo a tu mail.
+                    <br>
+                    Si no lo ves en tu bandeja de entrada, ve la carpeta de spam
                   </div>";
+            echo "<br>";
                     echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
                     <a href='./login.php'><button type='button' class='btn btn-success'>Iniciar sesion</button></a>
                   </div>";
