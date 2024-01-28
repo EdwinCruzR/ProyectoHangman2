@@ -1,12 +1,12 @@
-<?php 
-   session_start();
-   
-   include("../bd/conexion.php");
-   if(!isset($_SESSION['id'])){
+<?php
+session_start();
+
+include("../bd/conexion.php");
+if (!isset($_SESSION['id'])) {
     header("Location: ./login.php");
-    }
-    $roomcode = $_GET['roomcode'];
-    $id = $_SESSION['id'];
+}
+$roomcode = $_GET['roomcode'];
+$id = $_SESSION['id'];
 ?>
 <!doctype html>
 <html lang="es">
@@ -34,14 +34,14 @@
                     const datolives = respuesta[0].lives;
                     const datoclueafter = respuesta[0].clueafter;
                     let name = document.getElementById('roomname');
-                    name.innerHTML ="Nombre de la sala: " + datoname;
+                    name.innerHTML = "Nombre de la sala: " + datoname;
                     let descriptiom = document.getElementById('description');
-                    descriptiom.innerHTML ="Descripcion: " + datodescription;
+                    descriptiom.innerHTML = "Descripcion: " + datodescription;
                     let vidas = document.getElementById('vidas');
-                    vidas.innerHTML ="Vidas: " + (datolives == -1 ? "Ilimitadas" : datolives);
+                    vidas.innerHTML = "Vidas: " + (datolives == -1 ? "Ilimitadas" : datolives);
                     let clueafter = document.getElementById('clueafter');
-                    clueafter.innerHTML ="Pistas despues de: " + datoclueafter + " intentos";
-                    
+                    clueafter.innerHTML = "Pistas despues de: " + datoclueafter + " intentos";
+
                 })
                 .finally(respuesta => {
                 })
@@ -78,9 +78,9 @@
                                     <p id="description"></p>
                                     <p id="vidas"></p>
                                     <p id="clueafter"></p>
-                                </div>    
+                                </div>
                         </div>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
@@ -133,8 +133,8 @@
                         onclick="hangmanApp.rendir();">
                 </div>
             </div>
-            <div id="verbo"class="row">
-                <div class="col-12 text-center">Verbo: 
+            <div id="verbo" class="row">
+                <div class="col-12 text-center">Verbo:
                     <span class="spanVerbo">
                     </span>
                 </div>
@@ -162,8 +162,8 @@
             </div>
             <div class="row oculto">
                 <div id="divAdivinaPasadoTipo" class="col-12">
-                    <form action="javascript:void(0);" method="post" class="form" 
-                        onsubmit="hangmanApp.revisarPasado();" id="formulario">
+                    <form action="javascript:void(0);" method="post" class="form" onsubmit="hangmanApp.revisarPasado();"
+                        id="formulario">
                         <label class="form-label">Selecciona el tipo de verbo: </label>
                         <div class="form-check mb-2">
                             <input class="form-check-input" type="radio" name="tipoV" id="regular" value="r" checked>
@@ -179,8 +179,8 @@
                         </div>
                         <div class="mb-2">
 
-                            <input required type="text" class="form-control" name="txtPasado" id="txtPasado" autocomplete="off"
-                                aria-describedby="helpId" placeholder="Simple past">
+                            <input required type="text" class="form-control" name="txtPasado" id="txtPasado"
+                                autocomplete="off" aria-describedby="helpId" placeholder="Simple past">
                             <small id="helpId" class="form-text text-muted"></small>
                         </div>
 
@@ -250,7 +250,7 @@
             this.randomKey = (max) => {
                 return Math.floor(Math.random() * max);
             }
-            
+
 
             this.leerVerbos = async () => {
                 var datosEnviar = { roomid: hangmanApp.idroom };
@@ -285,20 +285,20 @@
                     .finally(respuesta => {
                     })
                     .catch(console.log());
-                    hangmanApp.aJugar();
+                hangmanApp.aJugar();
             };
 
             this.seleccionaVerbo = () => {
                 if (hangmanApp.verbos.length == 0) {
                     hangmanApp.terminar();
-                }else{
-                    if(hangmanApp.randomWords){
+                } else {
+                    if (hangmanApp.randomWords) {
                         let n = hangmanApp.verbos.length;
                         let key = this.randomKey(n);
                         verbo = hangmanApp.verbos[key];
                         hangmanApp.verbos.splice(key, 1);
                         return verbo;
-                    }else{
+                    } else {
                         verbo = hangmanApp.verbos[0];
                         hangmanApp.verbos.splice(0, 1);
                         return verbo;
@@ -318,7 +318,7 @@
                 hangmanApp.aciertos = 0;
                 hangmanApp.intentos = 6;
                 //hangmanApp.spanIntentos.innerHTML = hangmanApp.intentos;
-                hangmanApp.spanVidas.innerHTML = (hangmanApp.vidas==-1)? "Ilimitadas" : "♥".repeat(hangmanApp.vidas);
+                hangmanApp.spanVidas.innerHTML = (hangmanApp.vidas == -1) ? "Ilimitadas" : "♥".repeat(hangmanApp.vidas);
                 hangmanApp.verboArray = hangmanApp.verboJuega["word"].split("");
                 hangmanApp.verboDashes = [].concat(hangmanApp.verboArray);
                 hangmanApp.verboDashes.fill("_");
@@ -352,6 +352,9 @@
                     boton.className = "botonLetra";
                     //* Se programa el evento clic de cada botón
                     boton.onclick = function (e) {
+                        let sonido = new Audio
+                        sonido.src = "../assets/songs/mech-keyboard.mp3";
+                        sonido.play();
                         if (hangmanApp.verboArray.includes(e.target.id)) {
                             let ind = 0;
                             hangmanApp.verboArray.forEach(car => {
@@ -369,6 +372,9 @@
                                 hangmanApp.spanVerbo.innerHTML += car + "   ";
                             });
                             if (hangmanApp.aciertos == hangmanApp.verboArray.length) {
+                                let sonido = new Audio
+                                sonido.src = "../assets/songs/adivinar.mp3";
+                                sonido.play();
                                 hangmanApp.adivinarPasado();
                             }
                         } else {
@@ -378,24 +384,33 @@
                             hangmanApp.pointsAcum -= 1;
                             hangmanApp.spanPuntos.innerHTML = hangmanApp.puntos;
                             //hangmanApp.spanIntentos.innerHTML = hangmanApp.intentos;
+                            let sonido2 = new Audio
+                            sonido2.src = "../assets/songs/loseLetter.mp3";
+                            
                             switch (hangmanApp.intentos) {
                                 case 0:
                                     document.getElementById("img7").style.visibility = "visible";
+                                    sonido2.play();
                                     break;
                                 case 1:
                                     document.getElementById("img6").style.visibility = "visible";
+                                    sonido2.play();
                                     break;
                                 case 2:
                                     document.getElementById("img5").style.visibility = "visible";
+                                    sonido2.play();
                                     break;
                                 case 3:
                                     document.getElementById("img4").style.visibility = "visible";
+                                    sonido2.play();
                                     break;
                                 case 4:
                                     document.getElementById("img3").style.visibility = "visible";
+                                    sonido2.play();
                                     break;
                                 case 5:
                                     document.getElementById("img2").style.visibility = "visible";
+                                    sonido2.play();
                                     break;
                             }
                             if (hangmanApp.errores == hangmanApp.pistaDespuesDe) {
@@ -416,12 +431,14 @@
                         let borraboton = document.getElementById(e.target.id);
                         divBotones.removeChild(borraboton);
                     };
+                    boton.onmousedown = function (e) {
+                    }
                     contenedor.appendChild(boton);
                 });
             }
 
             this.adivinarPasado = () => {
-                
+
                 var verbo = hangmanApp.verboJuega["word"];
                 hangmanApp.divBotones.classList.add("quitar");
                 document.getElementById("helpId").innerHTML = "Escribe el pasado simple del verbo " + verbo.toLowerCase();
@@ -430,7 +447,7 @@
             };
 
             this.revisarPasado = () => {
-                let form=document.getElementById("formulario");
+                let form = document.getElementById("formulario");
                 hangmanApp.divAdivinaPasadoTipo.classList.add("quitar");
                 tipoOk = hangmanApp.verboJuega["type"].toLowerCase().trim();
                 pasadoOk = hangmanApp.verboJuega["simplepast"].toLowerCase().trim();
@@ -445,8 +462,8 @@
                 hangmanApp.wastype = tipoTest == tipoOk ? 1 : 0;
                 hangmanApp.waspast = pasadoTest == pasadoOk ? 1 : 0;
                 hangmanApp.wassguess = 1;
-                
-                
+
+
                 if (tipoTest === tipoOk && pasadoTest === pasadoOk) {
                     hangmanApp.gano();
                     this.pointsAcum += 15;
@@ -462,12 +479,17 @@
             };
 
             this.gano = () => {
+                let sonido = new Audio
+                sonido.src = "../assets/songs/win.mp3";
+                sonido.play();
                 document.getElementById("modalTitleId2").innerHTML = "¡Correcto :) !";
                 modalResult.show();
             };
 
             this.perdio = () => {
-                
+                let sonido = new Audio
+                sonido.src = "../assets/songs/lose.mp3";
+                sonido.play();
                 document.getElementById("modalTitleId2").innerHTML = "¡Incorrecto :( !";
                 modalResult.show();
             };
@@ -482,38 +504,38 @@
             };
 
             this.creaFeedback = () => {
-                if(!(hangmanApp.isfeedback)){
+                if (!(hangmanApp.isfeedback)) {
                     resultado = "";
-                } else{
-                resultado = 
-                "<thead>"+
-                    "<tr>" +
-                    "<th scope='col'>Dato</th>"+
-                    "<th scope='col'>Valor</th>"+
-                    "</tr>"+
-                    "</thead>"+
-                    "<tr>" +
-                    "<td>Verbo:</td>" +
-                    "<td>" + this.verboJuega["word"].toLowerCase() + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<td>Tipo:</td>" +
-                    "<td>" + ((this.verboJuega["type"].toLowerCase() == "r") ? "regular" : "irregular") + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<td>Pasado:</td>" +
-                    "<td>" + this.verboJuega["simplepast"].toLowerCase() + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<td>Ejemplo:</td>" +
-                    "<td>" + this.verboJuega["example"] + "</td>" +
-                    "</tr>";
+                } else {
+                    resultado =
+                        "<thead>" +
+                        "<tr>" +
+                        "<th scope='col'>Dato</th>" +
+                        "<th scope='col'>Valor</th>" +
+                        "</tr>" +
+                        "</thead>" +
+                        "<tr>" +
+                        "<td>Verbo:</td>" +
+                        "<td>" + this.verboJuega["word"].toLowerCase() + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>Tipo:</td>" +
+                        "<td>" + ((this.verboJuega["type"].toLowerCase() == "r") ? "regular" : "irregular") + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>Pasado:</td>" +
+                        "<td>" + this.verboJuega["simplepast"].toLowerCase() + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>Ejemplo:</td>" +
+                        "<td>" + this.verboJuega["example"] + "</td>" +
+                        "</tr>";
                 }
                 this.resultTabla.innerHTML = resultado;
             };
 
             this.datailgameroom = async () => {
-                var datosEnviar = {gameroomid: hangmanApp.idgameroom ,wordid: hangmanApp.verboJuega["id"] ,roomid: hangmanApp.idroom ,verbAdivinado: hangmanApp.wassguess,  tipo: hangmanApp.wastype, pasado : hangmanApp.waspast, puntos: hangmanApp.pointsAcum};
+                var datosEnviar = { gameroomid: hangmanApp.idgameroom, wordid: hangmanApp.verboJuega["id"], roomid: hangmanApp.idroom, verbAdivinado: hangmanApp.wassguess, tipo: hangmanApp.wastype, pasado: hangmanApp.waspast, puntos: hangmanApp.pointsAcum };
                 await fetch(this.urlApiRoom + "?detail=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .finally(respuesta => {
@@ -524,7 +546,7 @@
 
 
             this.insertarJuego = async () => {
-                var datosEnviar = { userid : <?= $id ?>, roomid : hangmanApp.idroom };
+                var datosEnviar = { userid: <?= $id ?>, roomid: hangmanApp.idroom };
                 await fetch(this.urlApiRoom + "?nuevo=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .then((respuesta) => {
@@ -552,10 +574,10 @@
                 // idSend = hangmanApp.datosjuego[0][0]["id"];
                 rindioSend = (hangmanApp.seRindio) ? 1 : 0;
                 puntosSend = (hangmanApp.seRindio) ? 0 : this.puntos;
-                var datosEnviar = { userid: <?= $id ?> , idgr: hangmanApp.idgameroom, puntos: puntosSend, rindio: rindioSend };  
+                var datosEnviar = { userid: <?= $id ?>, idgr: hangmanApp.idgameroom, puntos: puntosSend, rindio: rindioSend };
                 await fetch(this.urlApiRoom + "?fin=1", { method: "POST", body: JSON.stringify(datosEnviar) })
-                .then(respuesta => respuesta.json())
-                .then((respuesta) => {
+                    .then(respuesta => respuesta.json())
+                    .then((respuesta) => {
                         window.location = "tablaroom.php?r=" + hangmanApp.idroom;
                     })
                     .finally(respuesta => {
@@ -572,6 +594,9 @@
             this.rendir = () => {
                 this.seRindio = confirm("¿De verdad deseas rendirte?");
                 if (this.seRindio) {
+                    let sonido = new Audio
+                sonido.src = "../assets/songs/lose.mp3";
+                sonido.play();
                     this.terminar();
                 }
             };
