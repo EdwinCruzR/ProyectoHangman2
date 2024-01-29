@@ -142,7 +142,7 @@
                         <th><?= $row['description'] ?></th>
                         <th><?= (($row['lives'] == -1)? "ilimitadas" : $row['lives'])     ?></th>
                         <th><?=  (($row['clue'] == 1)? "Si" : "No") ?></th>
-                        <th><?php echo $row['clueafter'] ?> intentos</th>
+                        <th><?php echo(($row['clue'] == 1)?  "$row[clueafter] intentos" : "Desactivado")?> </th>
                         <th><?= (($row['feedback'] == 1)? "Si" : "No")  ?></th>
                         <th><?= (($row['random'] == 1)? "Si" : "No") ?></th>
                         <th><?= (($row['isopen'] == 1)? "Si" : "No") ?></th>
