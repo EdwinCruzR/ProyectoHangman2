@@ -14,7 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/login.css">
-    <title>Login</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+    emailjs.init('O3AE29jtznmBCGcVO')
+    </script>
+    <title>Envia tu información</title>
 </head>
 <body>
 <div class="login-root">
@@ -61,52 +65,55 @@
             
             if(isset($_POST['submit'])){
                 $email = mysqli_real_escape_string($conexion,$_POST['email']);
-                $password = mysqli_real_escape_string($conexion,$_POST['password']);
 
-                $result = mysqli_query($conexion,"SELECT * FROM users WHERE email='$email' AND password='$password' ");
+                $result = mysqli_query($conexion,"SELECT email, password, name FROM users WHERE email='$email'");
                 $row = mysqli_fetch_assoc($result);
 
                 if(is_array($row) && !empty($row)){
-                    $_SESSION['id'] = $row['id'];
+                ?> 
+                    <script>
+                        emailjs.send("TeamHangmanG","HangmanGameReset",{
+                            to_name: "<?= $row['name'] ?>",
+                            to_mail: "<?= $row['email'] ?>",
+                            to_password: "<?= $row['password'] ?>",
+                        });
+                    </script>
+                <?php
+
+                    echo "<br>";
+                    echo "<div class='alert alert-success' role='alert'>
+                            Correo enviado correctamente.
+                            <br>
+                            Si no lo ves en tu bandeja de entrada,checa la carpeta de SPAM.
+                            <br>
+                            
+                        </div>";
+                    echo "<br>";
                 }else{
                     echo "<div class='alert alert-danger' role='alert'>
-                    Error al iniciar sesion, contraseña o email incorrectos!
-                  </div>";
+                            No hay se encontro alguna coincidencia con el email ingresado.
+                        </div>";
                     echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-                    <a href='./login.php'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
-                  </div>";
-        
-                }
-                //este es porsi ya habia iniciado antes q lo mande directo al dash
-                if(isset($_SESSION['id'])){
-                    header("Location: ./dashpage.php");
+                            <a href='./login.php'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
+                        </div>";
                 }
             }else{
 
             
             ?>
             <div class="formbg-inner padding-horizontal--48">
-              <span class="padding-bottom--15">Iniciar Sesion</span>
-              <form id="stripe-login" action="" method="post">
-                <div class="field padding-bottom--24">
-                  <label for="email">Email</label>
-                  <input type="email" name="email">
-                </div>
-                <div class="field padding-bottom--24">
-                  <div class="grid--50-50">
-                    <label for="password">Password</label>
-                    <div class="reset-pass">
-                      <a href="./forgot.php">Forgot your password?</a>
+                <span class="padding-bottom--15">Enviar datos</span>
+                <form id="stripe-login" action="" method="post">
+                    <div class="field padding-bottom--24">
+                        <label for="email">Email</label>
+                        <input type="email" name="email">
                     </div>
-                  </div>
-                  <input type="password" name="password">
-                </div>
-                <div class="field padding-bottom--24">
-                <input type="submit" class="btn" name="submit" value="Login" required>
-                </div>
-              </form>
-              <div class="links">
-                    No tienes cuenta? <a href="./registro.php">Registrate ahora</a>
+                    <div class="field padding-bottom--24">
+                        <input type="submit" class="btn" name="submit" value="Enviar datos" required>
+                    </div>
+                </form>
+                <div class="links">
+                    <a href="./login.php">Regresar</a>
                 </div>
             </div>
             <?php } ?>
@@ -115,30 +122,6 @@
       </div>
     </div>
   </div>
-      <!-- <div class="container">
-        <div class="box form-box"> -->
-           
-
-            
-            <!-- <h1>Login</h1>
-            <form action="" method="post">
-                <div class="field input">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" required>
-                </div>
-
-                <div class="field input">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required>
-                </div>
-
-                <div class="field">
-                    <input type="submit" class="btn" name="submit" value="Login" required>
-                </div>
-                <div class="links">
-                    No tienes cuenta? <a href="./registro.php">Registrate ahora</a>
-                </div>
-            </form> -->
         
 </body>
 </html>

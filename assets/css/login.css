@@ -232,3 +232,21 @@
       transform: translateX(0px);
     }
   } 
+
+  /* Estilos para que parezca un enlace */
+  #forgotpass {
+    display: inline; /* Para que el formulario se muestre en línea */
+  }
+
+  #forgotpassinput[type="submit"] {
+    background: none;
+    border: 2px solid #ffffff;
+    color: blue; /* Puedes cambiar el color según tus preferencias */
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  #forgotpassinput[type="submit"]:hover {
+    text-decoration: none; /* Elimina la subrayado al pasar el ratón sobre el enlace simulado */
+  }
