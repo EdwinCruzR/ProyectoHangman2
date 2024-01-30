@@ -242,6 +242,7 @@ $id = $_SESSION['id'];
             this.verboArray = new Array();
             this.datosjuego = new Array();
             this.puntos = 0;
+            this.timeperword="";
             this.urlApiWords = "../bd/apiwords.php";
             this.urlApiGeneral = "../bd/apigeneral.php";
             this.urlApiRoom = "../bd/apiroom.php";
@@ -416,7 +417,7 @@ $id = $_SESSION['id'];
                                 hangmanApp.wassguess = 0;
                                 hangmanApp.wastype = 0;
                                 hangmanApp.waspast = 0;
-                                
+                                hangmanApp.detenerContador();
                                 hangmanApp.datailgameroom();
                                 hangmanApp.creaFeedback();
                                 hangmanApp.vidas--;
@@ -532,42 +533,42 @@ $id = $_SESSION['id'];
                 this.resultTabla.innerHTML = resultado;
             };
 
-            let segundos = 0;
-            let minutos = 0;
-            let horas = 0;
-            let intervalo;
+            this.segundos = 0;
+            this.minutos = 0;
+            this.horas = 0;
+            this.intervalo;
 
             this.actualizarContador = () => {
-                segundos++;
+                hangmanApp.segundos++;
 
-                if (segundos == 60) {
-                    segundos = 0;
-                    minutos++;
+                if (hangmanApp.segundos == 60) {
+                    hangmanApp.segundos = 0;
+                    hangmanApp.minutos++;
 
-                    if (minutos == 60) {
-                        minutos = 0;
-                        horas++;
+                    if (hangmanApp.minutos == 60) {
+                        hangmanApp.minutos = 0;
+                        hangmanApp.horas++;
                     }
                 }
 
-                hangmanApp.timeperword = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+                hangmanApp.timeperword = `${hangmanApp.horas < 10 ? '0' : ''}${hangmanApp.horas}:${hangmanApp.minutos < 10 ? '0' : ''}${hangmanApp.minutos}:${hangmanApp.segundos < 10 ? '0' : ''}${hangmanApp.segundos}`;
                 console.log(hangmanApp.timeperword);
             }
 
             this.detenerContador = () => {
-                clearInterval(intervalo);
+                clearInterval(hangmanApp.intervalo);
             }
             this.iniciarContador = () => {
                 // Evitar iniciar múltiples intervalos
-                this.detenerContador();
-                intervalo = setInterval(this.actualizarContador(), 1000);
+                hangmanApp.detenerContador();
+                hangmanApp.intervalo = setInterval(hangmanApp.actualizarContador(), 1000);
             }
 
             this.reiniciarContador = () => {
-                this.detenerContador();
-                segundos = 0;
-                minutos = 0;
-                horas = 0;
+                hangmanApp.detenerContador();
+                hangmanApp.segundos = 0;
+                hangmanApp.minutos = 0;
+                hangmanApp.horas = 0;
                 document.getElementById('contador').innerText = '00:00:00';
             }
 
