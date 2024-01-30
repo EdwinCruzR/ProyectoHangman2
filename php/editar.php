@@ -197,7 +197,7 @@ $iduser = $_SESSION['id'];
                 $description = $_POST['descripcion'];
                 $id = $_POST['id'];
 
-                $insertUpdateWord = mysqli_query($conexion, "UPDATE lists SET listname='$list', description= '$description' WHERE id=$id");
+                $insertUpdateWord = mysqli_query($conexion, "UPDATE lists SET listname=$list, description= $description WHERE id=$id");
 
                 if(!($insertUpdateWord)){
                     echo "<script> alert('Error al editar'); </script>";
@@ -257,7 +257,7 @@ $iduser = $_SESSION['id'];
                     $id = $_POST['id'];
                     
                 //   UPDATE words SET isactive = b'1', word = 'watafak' WHERE id = 17 AND user_id = 4;
-                    $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word='$word', type= '$type', clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$id");
+                    $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word=$word, type= $type, clue=$clue, simplepast=$wordPast, example=$eg WHERE id=$id");
                     
                     if(!($insertUpdateWord)){
                         echo "<script> alert('Error al editar'); </script>";
