@@ -124,7 +124,7 @@ $iduser = $_SESSION['id'];
                     $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;
 
                     $id= $_POST['id'];
-                    $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname=$roomName, description= $roomDescription, lives=$lives, clue=$clue, clueafter=$clueafter, feedback=$feedback, random=$random, isopen=$isopen WHERE id=$id");
+                    $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description='$roomDescription', lives=$lives, clue=$clue, clueafter=$clueafter, feedback=$feedback, random=$random, isopen=$isopen WHERE id=$id");
                     $consultaDeleteCtt = mysqli_query($conexion, "DELETE FROM room_has_word WHERE room_id = $id");
                     if($isgeneral == 1){
                         $consultaWordsSystem = mysqli_query($conexion, "SELECT id FROM words WHERE user_id = 1");
@@ -287,6 +287,12 @@ $iduser = $_SESSION['id'];
         } else {
             numLivesInput.disabled = false;
         }
+        var cluesInputs = document.getElementById("errorNumber");
+      if(document.getElementById("showHints").checked) {
+        cluesInputs.disabled=false;
+      } else {
+        cluesInputs.disabled=true;
+      }
     
     function toggleLivesInput() {
       var checkbox = document.getElementById('unlimitedLives');

@@ -318,7 +318,7 @@ $id = $_SESSION['id'];
                 hangmanApp.aciertos = 0;
                 hangmanApp.intentos = 6;
                 //hangmanApp.spanIntentos.innerHTML = hangmanApp.intentos;
-                hangmanApp.spanVidas.innerHTML = (hangmanApp.vidas == -1) ? "Ilimitadas" : "♥".repeat(hangmanApp.vidas);
+                hangmanApp.spanVidas.innerHTML = (hangmanApp.vidas <= -1) ? "Ilimitadas" : "♥".repeat(hangmanApp.vidas);
                 hangmanApp.verboArray = hangmanApp.verboJuega["word"].split("");
                 hangmanApp.verboDashes = [].concat(hangmanApp.verboArray);
                 hangmanApp.verboDashes.fill("_");
@@ -438,7 +438,6 @@ $id = $_SESSION['id'];
             }
 
             this.adivinarPasado = () => {
-
                 var verbo = hangmanApp.verboJuega["word"];
                 hangmanApp.divBotones.classList.add("quitar");
                 document.getElementById("helpId").innerHTML = "Escribe el pasado simple del verbo " + verbo.toLowerCase();
@@ -499,8 +498,11 @@ $id = $_SESSION['id'];
                     hangmanApp.spanVidas.innerHTML = "";
                     this.perdioLasVidas = true;
                     this.terminar();
+                } else {
+                    if(this.vidas < 0){
+                        this.iniciar();
+                    } else this.iniciar();
                 }
-                else this.iniciar();
             };
 
             this.creaFeedback = () => {
