@@ -228,12 +228,12 @@ $id = $_GET['id'];
                                                                 <table class="tabla3">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>palabra</th>
-                                                                            <th>adivinada</th>
-                                                                            <th>tipo</th>
-                                                                            <th>pasado</th>
-                                                                            <th>tiempo invertido</th>
-                                                                            <th>puntos acumulados</th>
+                                                                            <th>Palabra</th>
+                                                                            <th>Adivinada</th>
+                                                                            <th>Tipo</th>
+                                                                            <th>Pasado</th>
+                                                                            <th>Tiempo invertido</th>
+                                                                            <th>Puntos acumulados</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -289,8 +289,10 @@ $id = $_GET['id'];
             <div class="botones">
                 <a href="#" data-toggle="modal" data-target="#listaPalabrasModal"><button type="button"
                         class="btn btn-success regresar">Lista de palabras</button></a>
-                <a href="#" data-toggle="modal" data-target="#MenuPalabrasFalladas"><button type="button"
-                        class="btn btn-success regresar">Palabras falladas</button></a>
+                <a href="#" data-toggle="modal" data-target="#FailsType"><button type="button"
+                        class="btn btn-success regresar">Palabras falladas por tipo</button></a>
+                <a href="#" data-toggle="modal" data-target="#FailsPast"><button type="button"
+                        class="btn btn-success regresar">Palabras falladas por pasado</button></a>
                 <a href="#" data-toggle="modal" data-target="#palabrasInactivas"><button type="button"
                         class="btn btn-success regresar">Palabras inactivas</button></a>
 
@@ -322,12 +324,12 @@ $id = $_GET['id'];
                                     <thead>
                                         <tr>
                                             <!-- <th>ID</th> -->
-                                            <th>id</th>
-                                            <th>word</th>
-                                            <th>tipo</th>
-                                            <th>pista</th>
-                                            <th>pasado</th>
-                                            <th>ejemplo</th>
+                                            <th>Id</th>
+                                            <th>Word</th>
+                                            <th>Tipo</th>
+                                            <th>Pista</th>
+                                            <th>Pasado</th>
+                                            <th>Ejemplo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -375,7 +377,7 @@ $id = $_GET['id'];
                 </div>
             </div>
 
-            <div class="modal fade" id="MenuPalabrasFalladas" tabindex="-1" role="dialog"
+            <!-- <div class="modal fade" id="MenuPalabrasFalladas" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -395,7 +397,7 @@ $id = $_GET['id'];
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="modal fade" id="FailsType" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -412,16 +414,16 @@ $id = $_GET['id'];
                             $comsultaRhw = mysqli_query($conexion, "SELECT words.*, room_has_word.typefails FROM words JOIN room_has_word ON words.id = room_has_word.word_id WHERE room_has_word.room_id = $roomid ORDER BY room_has_word.typefails DESC");
                             ?>
                             <div class="container3">
-                                <table class="tabla3">
+                                <table>
                                     <thead>
                                         <tr>
                                             <!-- <th>ID</th> -->
-                                            <th>veces fallada</th>
-                                            <th>word</th>
-                                            <th>tipo</th>
-                                            <th>pista</th>
-                                            <th>pasado</th>
-                                            <th>ejemplo</th>
+                                            <th>Veces fallada</th>
+                                            <th>Word</th>
+                                            <th>Tipo</th>
+                                            <th>Pista</th>
+                                            <th>Pasado</th>
+                                            <th>Ejemplo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -454,7 +456,6 @@ $id = $_GET['id'];
                                             <?php
                                             endwhile;
                                         ?>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -485,12 +486,12 @@ $id = $_GET['id'];
                                     <thead>
                                         <tr>
                                             <!-- <th>ID</th> -->
-                                            <th>veces fallada</th>
-                                            <th>word</th>
-                                            <th>tipo</th>
-                                            <th>pista</th>
-                                            <th>pasado</th>
-                                            <th>ejemplo</th>
+                                            <th>Veces fallada</th>
+                                            <th>Word</th>
+                                            <th>Tipo</th>
+                                            <th>Pista</th>
+                                            <th>Pasado</th>
+                                            <th>Ejemplo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -554,12 +555,12 @@ $id = $_GET['id'];
                                     <thead>
                                         <tr>
                                             <!-- <th>ID</th> -->
-                                            <th>veces usada</th>
-                                            <th>word</th>
-                                            <th>tipo</th>
-                                            <th>pista</th>
-                                            <th>pasado</th>
-                                            <th>ejemplo</th>
+                                            <th>Veces usada</th>
+                                            <th>Word</th>
+                                            <th>Tipo</th>
+                                            <th>Pista</th>
+                                            <th>Pasado</th>
+                                            <th>Ejemplo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
