@@ -82,11 +82,14 @@
 
                     echo "<br>";
                     echo "<div class='alert alert-success' role='alert'>
+                          <div>
                             Correo enviado correctamente.
-                            <br>
                             Si no lo ves en tu bandeja de entrada,checa la carpeta de SPAM.
-                            <br>
-                            
+                          </div>
+                          <br>
+                          <div class='d-grid gap-2 d-md-flex justify-content-md-center'>
+                            <a href='./login.php'><button type='button' class='btn btn-success'>Iniciar sesion</button></a>
+                          </div>
                         </div>";
                     echo "<br>";
                 }else{
