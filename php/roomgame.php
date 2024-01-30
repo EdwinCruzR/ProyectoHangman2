@@ -330,11 +330,13 @@ $id = $_SESSION['id'];
                 hangmanApp.spanPista.classList.add("quitar");
                 hangmanApp.spanPista.innerHTML = verbo["clue"];
                 this.crearBotones();
+                hangmanApp.timeperword = "";
+                this.iniciarContador();
                 hangmanApp.divBotones.classList.remove("quitar");
                 hangmanApp.divAdivinaPasadoTipo.classList.remove("quitar");
                 hangmanApp.divAdivinaPasadoTipo.classList.remove("visible");
                 hangmanApp.divAdivinaPasadoTipo.classList.add("oculto");
-                //document.getElementById("loading").style.display = "none";
+                document.getElementById("loading").style.display = "none";
                 document.getElementById("loading").classList.add("quitar");
                 document.getElementById("divPrincipal").classList.remove("oculto");
             };
@@ -384,31 +386,25 @@ $id = $_SESSION['id'];
                             hangmanApp.pointsAcum -= 1;
                             hangmanApp.spanPuntos.innerHTML = hangmanApp.puntos;
                             //hangmanApp.spanIntentos.innerHTML = hangmanApp.intentos;
-                            
+
                             switch (hangmanApp.intentos) {
                                 case 0:
                                     document.getElementById("img7").style.visibility = "visible";
-                                    sonido2.play();
                                     break;
                                 case 1:
                                     document.getElementById("img6").style.visibility = "visible";
-                                    sonido2.play();
                                     break;
                                 case 2:
                                     document.getElementById("img5").style.visibility = "visible";
-                                    sonido2.play();
                                     break;
                                 case 3:
                                     document.getElementById("img4").style.visibility = "visible";
-                                    sonido2.play();
                                     break;
                                 case 4:
                                     document.getElementById("img3").style.visibility = "visible";
-                                    sonido2.play();
                                     break;
                                 case 5:
                                     document.getElementById("img2").style.visibility = "visible";
-                                    sonido2.play();
                                     break;
                             }
                             if (hangmanApp.errores == hangmanApp.pistaDespuesDe) {
@@ -420,6 +416,7 @@ $id = $_SESSION['id'];
                                 hangmanApp.wassguess = 0;
                                 hangmanApp.wastype = 0;
                                 hangmanApp.waspast = 0;
+                                
                                 hangmanApp.datailgameroom();
                                 hangmanApp.creaFeedback();
                                 hangmanApp.vidas--;
@@ -471,6 +468,7 @@ $id = $_SESSION['id'];
                     this.puntos -= 10;
                     hangmanApp.perdio();
                 }
+                this.detenerContador();
                 hangmanApp.datailgameroom();
                 form.reset();
             };
@@ -497,7 +495,7 @@ $id = $_SESSION['id'];
                     this.perdioLasVidas = true;
                     this.terminar();
                 } else {
-                    if(this.vidas < 0){
+                    if (this.vidas < 0) {
                         this.iniciar();
                     } else this.iniciar();
                 }
@@ -534,8 +532,47 @@ $id = $_SESSION['id'];
                 this.resultTabla.innerHTML = resultado;
             };
 
+            let segundos = 0;
+            let minutos = 0;
+            let horas = 0;
+            let intervalo;
+
+            this.actualizarContador = () => {
+                segundos++;
+
+                if (segundos == 60) {
+                    segundos = 0;
+                    minutos++;
+
+                    if (minutos == 60) {
+                        minutos = 0;
+                        horas++;
+                    }
+                }
+
+                hangmanApp.timeperword = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+                console.log(hangmanApp.timeperword);
+            }
+
+            this.detenerContador = () => {
+                clearInterval(intervalo);
+            }
+            this.iniciarContador = () => {
+                // Evitar iniciar múltiples intervalos
+                this.detenerContador();
+                intervalo = setInterval(this.actualizarContador(), 1000);
+            }
+
+            this.reiniciarContador = () => {
+                this.detenerContador();
+                segundos = 0;
+                minutos = 0;
+                horas = 0;
+                document.getElementById('contador').innerText = '00:00:00';
+            }
+
             this.datailgameroom = async () => {
-                var datosEnviar = { gameroomid: hangmanApp.idgameroom, wordid: hangmanApp.verboJuega["id"], roomid: hangmanApp.idroom, verbAdivinado: hangmanApp.wassguess, tipo: hangmanApp.wastype, pasado: hangmanApp.waspast, puntos: hangmanApp.pointsAcum };
+                var datosEnviar = { gameroomid: hangmanApp.idgameroom, wordid: hangmanApp.verboJuega["id"], roomid: hangmanApp.idroom, verbAdivinado: hangmanApp.wassguess, tipo: hangmanApp.wastype, pasado: hangmanApp.waspast, timeperword: hangmanApp.timeperword, puntos: hangmanApp.pointsAcum };
                 await fetch(this.urlApiRoom + "?detail=1", { method: "POST", body: JSON.stringify(datosEnviar) })
                     .then(respuesta => respuesta.json())
                     .finally(respuesta => {
@@ -558,7 +595,7 @@ $id = $_SESSION['id'];
             };
 
             this.terminar = async () => {
-                //document.getElementById("loading").style.display = "block";
+                document.getElementById("loading").style.display = "block";
                 document.getElementById("loading").classList.remove("quitar");
                 document.getElementById("vidas").style.display = "none";
                 document.getElementById("rendirse").style.display = "none";
@@ -595,8 +632,8 @@ $id = $_SESSION['id'];
                 this.seRindio = confirm("¿De verdad deseas rendirte?");
                 if (this.seRindio) {
                     let sonido = new Audio
-                sonido.src = "../assets/songs/lose.mp3";
-                sonido.play();
+                    sonido.src = "../assets/songs/lose.mp3";
+                    sonido.play();
                     this.terminar();
                 }
             };

@@ -49,10 +49,6 @@ $iduser = $_SESSION['id'];
 
                         <label class="form-label" for="showHints">¿Mostrar pistas?</label>
                         <input class="checkbox-input" type="checkbox" id="showHints" name="showHints" onclick="toggleCluesInput()" <?= (($row['clue'] == 1)? 'checked': '')?> >
-                        <!--<select class="select-input" id="showHints" name="showHints">
-                            <option value="OnHints">On</option>
-                            <option value="OffHints">Off</option>
-                        </select>-->
 
                         <label class="form-label" for="errorNumber">Mostrar pistas después del error número:</label>
                         <input class="form-input" type="number" id="errorNumber" name="errorNumber" min="1" max="5" value="<?= (($row['clueafter'] < 0)? '': $row['clueafter']) ?>">
@@ -124,7 +120,7 @@ $iduser = $_SESSION['id'];
                     $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;
 
                     $id= $_POST['id'];
-                    $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description='$roomDescription', lives=$lives, clue=$clue, clueafter=$clueafter, feedback=$feedback, random=$random, isopen=$isopen WHERE id=$id");
+                    $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description='$roomDescription', lives=$lives, clue=$clue, clueafter=$clueafter, feedback=$feedback, random=$random, isopen=$isopen, isgeneral=$isgeneral WHERE id=$id");
                     $consultaDeleteCtt = mysqli_query($conexion, "DELETE FROM room_has_word WHERE room_id = $id");
                     if($isgeneral == 1){
                         $consultaWordsSystem = mysqli_query($conexion, "SELECT id FROM words WHERE user_id = 1");
@@ -197,7 +193,7 @@ $iduser = $_SESSION['id'];
                 $description = $_POST['descripcion'];
                 $id = $_POST['id'];
 
-                $insertUpdateWord = mysqli_query($conexion, "UPDATE lists SET listname=$list, description= $description WHERE id=$id");
+                $insertUpdateWord = mysqli_query($conexion, "UPDATE lists SET listname='$list', description='$description' WHERE id=$id");
 
                 if(!($insertUpdateWord)){
                     echo "<script> alert('Error al editar'); </script>";
@@ -248,16 +244,16 @@ $iduser = $_SESSION['id'];
             <?php
                 
                 if(isset($_POST['submit_editar_palabra'])){
-
-                    $word = $_POST['wordName'];
-                    $type = $_POST['typeListSelect'];
-                    $clue = $_POST['clue'];
-                    $wordPast = $_POST['wordPast'];
-                    $eg = $_POST['eg'];
+                            
+                    $word = mb_convert_case($_POST['wordName'], MB_CASE_UPPER, "UTF-8");
+                    $type = mb_convert_case($_POST['typeListSelect'], MB_CASE_UPPER, "UTF-8"); 
+                    $clue = mb_convert_case($_POST['clue'], MB_CASE_UPPER, "UTF-8");
+                    $wordPast = mb_convert_case($_POST['wordPast'], MB_CASE_UPPER, "UTF-8"); 
+                    $eg = mb_convert_case($_POST['eg'], MB_CASE_UPPER, "UTF-8");
                     $id = $_POST['id'];
                     
                 //   UPDATE words SET isactive = b'1', word = 'watafak' WHERE id = 17 AND user_id = 4;
-                    $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word=$word, type= $type, clue=$clue, simplepast=$wordPast, example=$eg WHERE id=$id");
+                    $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word='$word', type='$type', clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$id");
                     
                     if(!($insertUpdateWord)){
                         echo "<script> alert('Error al editar'); </script>";
