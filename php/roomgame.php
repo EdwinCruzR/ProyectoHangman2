@@ -384,8 +384,6 @@ $id = $_SESSION['id'];
                             hangmanApp.pointsAcum -= 1;
                             hangmanApp.spanPuntos.innerHTML = hangmanApp.puntos;
                             //hangmanApp.spanIntentos.innerHTML = hangmanApp.intentos;
-                            let sonido2 = new Audio
-                            sonido2.src = "../assets/songs/loseLetter.mp3";
                             
                             switch (hangmanApp.intentos) {
                                 case 0:
