@@ -239,7 +239,7 @@
             <div class="container3">
 
             <?php 
-            $consulta_salas = mysqli_query($conexion,"SELECT * FROM lists");
+            $consulta_salas = mysqli_query($conexion,"SELECT * FROM lists WHERE user_id=$id");
                     
             if ($consulta_salas->num_rows > 0) {
             ?>
