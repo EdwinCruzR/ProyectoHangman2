@@ -334,7 +334,7 @@ $id = $_SESSION['id'];
                 hangmanApp.divAdivinaPasadoTipo.classList.remove("quitar");
                 hangmanApp.divAdivinaPasadoTipo.classList.remove("visible");
                 hangmanApp.divAdivinaPasadoTipo.classList.add("oculto");
-                //document.getElementById("loading").style.display = "none";
+                document.getElementById("loading").style.display = "none";
                 document.getElementById("loading").classList.add("quitar");
                 document.getElementById("divPrincipal").classList.remove("oculto");
             };
@@ -387,28 +387,22 @@ $id = $_SESSION['id'];
                             
                             switch (hangmanApp.intentos) {
                                 case 0:
-                                    document.getElementById("img7").style.visibility = "visible";
-                                    sonido2.play();
+                                    document.getElementById("img7").style.visibility = "visible";                                   
                                     break;
                                 case 1:
-                                    document.getElementById("img6").style.visibility = "visible";
-                                    sonido2.play();
+                                    document.getElementById("img6").style.visibility = "visible";                                    
                                     break;
                                 case 2:
-                                    document.getElementById("img5").style.visibility = "visible";
-                                    sonido2.play();
+                                    document.getElementById("img5").style.visibility = "visible";                                   
                                     break;
                                 case 3:
-                                    document.getElementById("img4").style.visibility = "visible";
-                                    sonido2.play();
+                                    document.getElementById("img4").style.visibility = "visible";                                  
                                     break;
                                 case 4:
-                                    document.getElementById("img3").style.visibility = "visible";
-                                    sonido2.play();
+                                    document.getElementById("img3").style.visibility = "visible";                                   
                                     break;
                                 case 5:
-                                    document.getElementById("img2").style.visibility = "visible";
-                                    sonido2.play();
+                                    document.getElementById("img2").style.visibility = "visible";                                   
                                     break;
                             }
                             if (hangmanApp.errores == hangmanApp.pistaDespuesDe) {
@@ -558,7 +552,7 @@ $id = $_SESSION['id'];
             };
 
             this.terminar = async () => {
-                //document.getElementById("loading").style.display = "block";
+                document.getElementById("loading").style.display = "block";
                 document.getElementById("loading").classList.remove("quitar");
                 document.getElementById("vidas").style.display = "none";
                 document.getElementById("rendirse").style.display = "none";
