@@ -332,6 +332,7 @@ $id = $_SESSION['id'];
                 hangmanApp.spanPista.innerHTML = verbo["clue"];
                 this.crearBotones();
                 hangmanApp.timeperword = "";
+                this.reiniciarContador();
                 this.iniciarContador();
                 hangmanApp.divBotones.classList.remove("quitar");
                 hangmanApp.divAdivinaPasadoTipo.classList.remove("quitar");
@@ -561,7 +562,7 @@ $id = $_SESSION['id'];
             this.iniciarContador = () => {
                 // Evitar iniciar múltiples intervalos
                 hangmanApp.detenerContador();
-                hangmanApp.intervalo = setInterval(hangmanApp.actualizarContador(), 1000);
+                hangmanApp.intervalo = setInterval(hangmanApp.actualizarContador, 1000);
             }
 
             this.reiniciarContador = () => {
@@ -569,7 +570,7 @@ $id = $_SESSION['id'];
                 hangmanApp.segundos = 0;
                 hangmanApp.minutos = 0;
                 hangmanApp.horas = 0;
-                document.getElementById('contador').innerText = '00:00:00';
+                //document.getElementById('contador').innerText = '00:00:00';
             }
 
             this.datailgameroom = async () => {
