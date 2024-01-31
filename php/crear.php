@@ -91,8 +91,8 @@ $iduser = $_SESSION['id'];
 
                 $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?roomcode='.$roomcode;
 
-                $insertCreate = mysqli_prepare($conexion, "INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, hasstartdatetime, startdatetime, hasenddatetime, enddatetime, isgeneral, roomcode, qrstring, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                mysqli_stmt_bind_param($insertCreate, "ssiiiiiiisisissi", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $iduser);
+                $insertCreate = mysqli_prepare($conexion, "INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, hasstartdatetime, startdatetime, hasenddatetime, enddatetime, isgeneral, roomcode, qrstring, user_id, lists_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                mysqli_stmt_bind_param($insertCreate, "ssiiiiiiisisissii", $roomName, $roomDescription, $lives, $clue, $clueafter, $feedback, $random, $isopen, $hasstartdatetime, $timestampOpen, $hasenddatetime, $timestampClose, $isgeneral, $roomcode, $qrcode, $iduser, $islist);
                 mysqli_stmt_execute($insertCreate);
 
                 $consulta_nuevaID = mysqli_query($conexion, "SELECT id FROM room WHERE roomcode = '$roomcode'");

@@ -83,7 +83,7 @@ $iduser = $_SESSION['id'];
                             <?php
                             if ($consulta_lists->num_rows > 0) {
                                 while ($rowed = mysqli_fetch_array($consulta_lists)){ ?>
-                                    <option value="<?= $rowed['id'] ?>"><?= $rowed['listname'] ?></option>
+                                    <option <?= (($rowed['id']== $row['lists_id'])? 'selected': '')?> value="<?= $rowed['id'] ?>"><?= $rowed['listname'] ?></option>
                             <?php } 
                             }else {
                                 ?> <option value="0">Sin listas disponibles</option> <?php
@@ -106,7 +106,7 @@ $iduser = $_SESSION['id'];
                 </div>
                 <?php
                 if(isset($_POST['submit_editar_sala'])){    
-
+                    $islist = 0;
                     $roomName = $_POST['roomName'];
                     $roomDescription = $_POST['roomDescription'];
                     $lives = (isset($_POST["unlimitedLives"]) && $_POST["unlimitedLives"] == "on")? -1 : intval($_POST['numLives']);
@@ -117,10 +117,12 @@ $iduser = $_SESSION['id'];
                     $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on")? 1 : 0 ;
 
                     $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "0") ? 1 : 0;
-                    $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;
+                    if($isgeneral == 0){
+                        $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;
+                    }
 
                     $id= $_POST['id'];
-                    $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description='$roomDescription', lives=$lives, clue=$clue, clueafter=$clueafter, feedback=$feedback, random=$random, isopen=$isopen, isgeneral=$isgeneral WHERE id=$id");
+                    $querymodificar = mysqli_query($conexion, "UPDATE room SET roomname='$roomName', description='$roomDescription', lives=$lives, clue=$clue, clueafter=$clueafter, feedback=$feedback, random=$random, isopen=$isopen, isgeneral=$isgeneral, lists_id=$islist WHERE id=$id");
                     $consultaDeleteCtt = mysqli_query($conexion, "DELETE FROM room_has_word WHERE room_id = $id");
                     if($isgeneral == 1){
                         $consultaWordsSystem = mysqli_query($conexion, "SELECT id FROM words WHERE user_id = 1");

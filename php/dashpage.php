@@ -132,9 +132,19 @@
             </thead>
             <tbody>
                 <?php 
-                  $num = 0;
-                  while ($row = mysqli_fetch_array($consulta_salas)): 
-                  $num = $num + 1;
+                    $num = 0;
+                    while ($row = mysqli_fetch_array($consulta_salas)): 
+                    $num = $num + 1;
+
+                    $nombrelisti = "";
+                    if($row['lists_id'] > 0 ){
+                        $idlisti = $row['lists_id'];
+                        $consulta_lista = mysqli_query($conexion,"SELECT * FROM lists WHERE id= $idlisti");
+                        while ($roweded = mysqli_fetch_array($consulta_lista)): 
+                            $nombrelisti = $roweded['listname'];
+                        endwhile;
+                    }
+
                   ?>
                     <tr>
                         <th><?= $row['id'] ?></th>
@@ -146,7 +156,8 @@
                         <th><?= (($row['feedback'] == 1)? "Si" : "No")  ?></th>
                         <th><?= (($row['random'] == 1)? "Si" : "No") ?></th>
                         <th><?= (($row['isopen'] == 1)? "Si" : "No") ?></th>
-                        <th><?= (($row['isgeneral'] == 1)? "Sistema" : "Lista") ?></th>
+                        
+                        <th><?= (($row['isgeneral'] == 1)? "Sistema" :"Lista: " . $nombrelisti )?></th> 
                         <th><?= $row['timestamp'] ?></th>
                         <th><?= $row['roomcode'] ?></th>
                         <th>
