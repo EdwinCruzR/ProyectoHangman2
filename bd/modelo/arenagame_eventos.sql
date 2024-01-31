@@ -1,18 +1,14 @@
 DELIMITER //
 CREATE EVENT update_room_status
-ON SCHEDULE EVERY 1 MINUTE
+ON SCHEDULE EVERY 30 SECOND
 DO
 BEGIN
-    IF (hasstartdatetime = 1 AND NOW() < stardatetime) THEN
-        UPDATE room SET isopen = 0;
-    ELSEIF (hasstartdatetime = 1 AND NOW() > stardatetime) THEN
-        UPDATE room SET isopen = 1;
-    END IF;
-
-    IF (hasenddatetime = 1 AND NOW() < enddatetime) THEN
-        UPDATE room SET isopen = 1;
-    ELSEIF (hasenddatetime = 1 AND NOW() > enddatetime) THEN
-        UPDATE room SET isopen = 0;
-    END IF;   
+    UPDATE room
+    SET isopen =
+        CASE
+            WHEN hasenddatetime = 1 AND NOW() >= enddatetime THEN 0
+            WHEN hasstardatetime = 1 AND NOW() <= stardatetime THEN 0
+            ELSE 1
+        END;
 END //
 DELIMITER ;
