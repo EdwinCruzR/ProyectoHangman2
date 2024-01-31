@@ -79,11 +79,9 @@ if (isset($_GET["fin"])) {
     $idgr = $data->idgr;
     $puntos = $data->puntos;
     $rindio = $data->rindio;
+    $status = $data->status;
 
-    mysqli_query($conexion, "UPDATE gameroom SET score = $puntos , timestampend = CURRENT_TIMESTAMP, totaltime = TIMEDIFF( timestampend , timestampstart) WHERE id = $idgr");
-    
-    
-    
+    mysqli_query($conexion, "UPDATE gameroom SET score = $puntos , timestampend = CURRENT_TIMESTAMP, totaltime = TIMEDIFF( timestampend , timestampstart) , status = $status WHERE id = $idgr");
     
     $sql = mysqli_query($conexion, "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(hrsjugadas))) AS totaltime FROM users WHERE id = $iduser");
     while ($row = mysqli_fetch_array($sql)) {

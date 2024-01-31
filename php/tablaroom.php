@@ -100,7 +100,7 @@
                                     "<td>" + (registro.name) + "</td>" +
                                     "<td>" + (registro.score) + "</td>" +
                                     "<td>" + (registro.totaltime) + "</td>" +
-                                    "<td>" + ((registro.giveup == 1) ? "Se rindió" :(registro.giveup == 0) ? "Acabó vidas" : "Vidas Ilimitadas") + "</td>" +
+                                    "<td>" + ((registro.status == 1) ? "Se rindió" :(registro.status == 0) ? "Acabó vidas" : "Vidas Ilimitadas") + "</td>" +
                                     "</tr>";
                             }
                         );
