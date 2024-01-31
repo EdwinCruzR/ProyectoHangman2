@@ -247,7 +247,7 @@ $id = $_SESSION['id'];
             this.urlApiGeneral = "../bd/apigeneral.php";
             this.urlApiRoom = "../bd/apiroom.php";
             this.spinner = document.getElementById("loading");
-
+            this.verbosfinish = 0
             this.randomKey = (max) => {
                 return Math.floor(Math.random() * max);
             }
@@ -291,6 +291,7 @@ $id = $_SESSION['id'];
 
             this.seleccionaVerbo = () => {
                 if (hangmanApp.verbos.length == 0) {
+                    hangmanApp.verbosfinish = 2;
                     hangmanApp.terminar();
                 } else {
                     if (hangmanApp.randomWords) {
@@ -613,7 +614,7 @@ $id = $_SESSION['id'];
                 // idSend = hangmanApp.datosjuego[0][0]["id"];
                 rindioSend = (hangmanApp.seRindio) ? 1 : 0;
                 puntosSend = (hangmanApp.vidas <= -1)? this.puntos : (hangmanApp.seRindio) ? 0 : this.puntos;
-                let statusSend = (hangmanApp.vidas <= -1)? -1 : (hangmanApp.seRindio) ? 1 : 0;
+                let statusSend = (hangmanApp.vidas <= -1)? -1 : (hangmanApp.seRindio) ? 1 : (hangmanApp.verbosfinish)? 2 :0;
                 
                 var datosEnviar = { userid: <?= $id ?>, idgr: hangmanApp.idgameroom, puntos: puntosSend, rindio: rindioSend, status: statusSend };
                 await fetch(this.urlApiRoom + "?fin=1", { method: "POST", body: JSON.stringify(datosEnviar) })
