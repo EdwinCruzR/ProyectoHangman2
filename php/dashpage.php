@@ -145,7 +145,7 @@
                         endwhile;
                     }
 
-                  ?>
+                ?>
                     <tr>
                         <th><?= $row['id'] ?></th>
                         <th><?= $row['roomname'] ?></th>
