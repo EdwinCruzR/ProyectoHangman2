@@ -10,11 +10,32 @@
     <link rel="stylesheet" href="../assets/css/login.css">
     <title>Register</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
       emailjs.init('O3AE29jtznmBCGcVO');
     </script>
 </head>
 <body>
+<script type="text/javascript">
+    function JSalert() {
+      Swal.fire({
+  icon: "success",
+  title: "Exitoso!",
+  text: "Registrado correctamente, se envio un correo a tu mail, Si no lo ves en tu bandeja de entrada, ve la carpeta de spam.",
+  confirmButtonColor: "#000000",
+  confirmButtonText: `<a href="./login.php">Iniciar sesion</a>`,
+});
+    }
+function JSalert2() {
+      Swal.fire({
+  icon: "warning",
+  title: "Advertencia!",
+  text: "Este email ya se uso, Prueba con otro porfi :)",
+  confirmButtonColor: "#000000",
+  confirmButtonText: `<a href="./login.php">Regresar</a>`,
+});
+    }
+  </script>
 <div class="login-root">
     <div class="box-root flex-flex flex-direction--column" style="min-height: 100vh;flex-grow: 1;">
       <div class="loginbackground box-background--white padding-top--64">
@@ -71,12 +92,9 @@ include("../bd/conexion.php");
         $verifemail = mysqli_query($conexion,"SELECT email FROM users WHERE email='$email'");
 
         if(mysqli_num_rows($verifemail) !=0 ){
-            echo "<div class='alert alert-danger' role='alert'>
-                    Este email ya se uso, Prueba con otro porfi :)
-                  </div>";
-                    echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-                    <a href='javascript:self.history.back()'><button type='button' class='btn btn-danger txt-center'>Atras</button></a>
-                  </div>";
+          echo "<script>";
+          echo "JSalert2();";
+          echo "</script>";
         }else{
 
           mysqli_query($conexion,"INSERT INTO users (email,password,name,lastname,school,roles_id) VALUES('$email','$password','$name','$lastname','$school','$rol')");
@@ -88,17 +106,9 @@ include("../bd/conexion.php");
             });
           </script>
           <?php
-            echo "<br>";
-            echo "<div class='alert alert-success' role='alert'>
-            <br>
-                    Registrado correctamente, se envio un correo a tu mail.
-                    <br>
-                    Si no lo ves en tu bandeja de entrada, ve la carpeta de spam
-                  </div>";
-            echo "<br>";
-                    echo "<div class='d-grid gap-2 d-md-flex justify-content-md-center'>
-                    <a href='./login.php'><button type='button' class='btn btn-success'>Iniciar sesion</button></a>
-                  </div>";
+            echo "<script>";
+            echo "JSalert();";
+            echo "</script>";
          
 
          }

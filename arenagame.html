@@ -279,6 +279,9 @@
                     boton.className = "botonLetra";
                     //* Se programa el evento clic de cada botón
                     boton.onclick = function (e) {
+                        let sonido = new Audio
+                        sonido.src = "./assets/songs/mech-keyboard.mp3";
+                        sonido.play();
                         if (hangmanApp.verboArray.includes(e.target.id)) {
                             let ind = 0;
                             hangmanApp.verboArray.forEach(car => {
@@ -295,6 +298,9 @@
                                 hangmanApp.spanVerbo.innerHTML += car + "   ";
                             });
                             if (hangmanApp.aciertos == hangmanApp.verboArray.length) {
+                                let sonido = new Audio
+                                sonido.src = "./assets/songs/adivinar.mp3";
+                                sonido.play();
                                 hangmanApp.adivinarPasado();
                             }
                         } else {
@@ -376,12 +382,17 @@
             };
 
             this.gano = () => {
+                let sonido = new Audio
+                sonido.src = "./assets/songs/win.mp3";
+                sonido.play();
                 document.getElementById("modalTitleId2").innerHTML = "¡Correcto :) !";
                 modalResult.show();
             };
 
             this.perdio = () => {
-                
+                let sonido = new Audio
+                sonido.src = "./assets/songs/lose.mp3";
+                sonido.play();
                 document.getElementById("modalTitleId2").innerHTML = "¡Incorrecto :( !";
                 modalResult.show();
             };
@@ -465,6 +476,9 @@
             this.rendir = () => {
                 this.seRindio = confirm("¿De verdad deseas rendirte?");
                 if (this.seRindio) {
+                    let sonido = new Audio
+                    sonido.src = "./assets/songs/lose.mp3";
+                    sonido.play();
                     this.terminar();
                 }
             };
