@@ -54,7 +54,7 @@ $iduser = $_SESSION['id'];
             if(mysqli_num_rows($consultaWDId) !=0){
                 $idsWR = array();
                 while($row = mysqli_fetch_array($consultaWDId)) {
-                    $idsWR[] = $row['id'];
+                    $idsWR[] = $row['word_id'];
                 }
 
                 foreach($idsGR as $idSGR) {
