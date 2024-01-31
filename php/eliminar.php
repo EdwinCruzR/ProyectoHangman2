@@ -66,7 +66,7 @@ $iduser = $_SESSION['id'];
             redirectToDashpage('Eliminado con exito');
             break;
         case 'palabra':
-
+            $cod = $_GET['id'];
             mysqli_query($conexion, "UPDATE words SET isactive=0 WHERE id=$cod");
             redirectToDashpage('Eliminado con exito');
 
