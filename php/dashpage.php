@@ -106,7 +106,7 @@
             <div class="container">
 
             <?php 
-            $consulta_salas = mysqli_query($conexion,"SELECT * FROM Room WHERE user_id=$id");
+            $consulta_salas = mysqli_query($conexion,"SELECT * FROM room WHERE user_id=$id");
                     
             if ($consulta_salas->num_rows > 0) {
             ?>
