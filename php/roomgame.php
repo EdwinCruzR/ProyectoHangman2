@@ -520,6 +520,10 @@ $id = $_SESSION['id'];
                         "<td>" + this.verboJuega["word"].toLowerCase() + "</td>" +
                         "</tr>" +
                         "<tr>" +
+                        "<td>Español:</td>" +
+                        "<td>" + this.verboJuega["spanish"].toLowerCase() + "</td>" +
+                        "</tr>" +
+                        "<tr>" +
                         "<td>Tipo:</td>" +
                         "<td>" + ((this.verboJuega["type"].toLowerCase() == "r") ? "regular" : "irregular") + "</td>" +
                         "</tr>" +
