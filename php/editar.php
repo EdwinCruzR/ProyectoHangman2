@@ -219,8 +219,11 @@ $iduser = $_SESSION['id'];
                     while ($row = mysqli_fetch_array($consulta_word_up)):
                     ?>
                         <form id="gameForm"  method="post">
-                            <label class="form-label" for="wordName">Nombre de la palabra:</label>
+                            <label class="form-label" for="wordName">Palabra:</label>
                             <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required value="<?= $row['word'] ?>">
+
+                            <label class="form-label" for="wordSpanish">Significado en español de la palabra:</label>
+                            <input class="form-input" type="text" id="wordSpanish" name="wordSpanish" maxlength="50" required value="<?= $row['spanish'] ?>">
 
                             <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
                             <select class="select-input" id="typeListSelect" name="typeListSelect">
@@ -248,6 +251,7 @@ $iduser = $_SESSION['id'];
                 if(isset($_POST['submit_editar_palabra'])){
                             
                     $word = mb_convert_case($_POST['wordName'], MB_CASE_UPPER, "UTF-8");
+                    $wordSpanish = mb_convert_case($_POST['wordSpanish'], MB_CASE_UPPER, "UTF-8");
                     $type = mb_convert_case($_POST['typeListSelect'], MB_CASE_UPPER, "UTF-8"); 
                     $clue = mb_convert_case($_POST['clue'], MB_CASE_UPPER, "UTF-8");
                     $wordPast = mb_convert_case($_POST['wordPast'], MB_CASE_UPPER, "UTF-8"); 
@@ -255,7 +259,7 @@ $iduser = $_SESSION['id'];
                     $id = $_POST['id'];
                     
                 //   UPDATE words SET isactive = b'1', word = 'watafak' WHERE id = 17 AND user_id = 4;
-                    $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word='$word', type='$type', clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$id");
+                    $insertUpdateWord = mysqli_query($conexion,"UPDATE words SET word='$word', type='$type', spanish='$wordSpanish' ,clue='$clue', simplepast='$wordPast', example='$eg' WHERE id=$id");
                     
                     if(!($insertUpdateWord)){
                         echo "<script> alert('Error al editar'); </script>";
