@@ -273,8 +273,11 @@ $iduser = $_SESSION['id'];
                         <h1>Crear Palabras</h1>
 
                         <form id="gameForm" method="post">
-                            <label class="form-label" for="wordName">Nombre de la palabra:</label>
+                            <label class="form-label" for="wordName">Palabra:</label>
                             <input class="form-input" type="text" id="wordName" name="wordName" maxlength="50" required>
+
+                            <label class="form-label" for="wordSpanish">Significado en español de la palabra:</label>
+                            <input class="form-input" type="text" id="wordSpanish" name="wordSpanish" maxlength="50" required>
 
                             <label class="form-label" for="typeListSelect">Seleccione el tipo de verbo:</label>
                             <select class="select-input" id="typeListSelect" name="typeListSelect">
@@ -301,12 +304,13 @@ $iduser = $_SESSION['id'];
             if(isset($_POST['submit_crear_palabra'])){
 
                 $word =  mb_convert_case($_POST['wordName'], MB_CASE_UPPER, "UTF-8");
+                $wordSpanish = mb_convert_case($_POST['wordSpanish'], MB_CASE_UPPER, "UTF-8");
                 $type = mb_convert_case($_POST['typeListSelect'], MB_CASE_UPPER, "UTF-8"); 
                 $clue = mb_convert_case($_POST['clue'], MB_CASE_UPPER, "UTF-8");
                 $wordPast = mb_convert_case($_POST['wordPast'], MB_CASE_UPPER, "UTF-8"); 
                 $eg = mb_convert_case($_POST['eg'], MB_CASE_UPPER, "UTF-8");
 
-                $insertCreate = mysqli_query($conexion,"INSERT INTO words (word, type, clue, simplepast, example, user_id) VALUES ('$word', '$type','$clue', '$wordPast', '$eg', '$iduser')");
+                $insertCreate = mysqli_query($conexion,"INSERT INTO words (word, type, spanish, clue, simplepast, example, user_id) VALUES ('$word', '$type', '$wordSpanish', '$clue', '$wordPast', '$eg', '$iduser')");
                 
                 if(!($insertCreate)){
                     echo "<script> alert('Error al crear'); </script>";
