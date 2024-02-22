@@ -79,6 +79,7 @@ if (isset($_POST['submit_editar_lista'])) {
                             <tr>
                                 <th>ID</th>
                                 <th>Palabra</th>
+                                <th>Español</th>
                                 <th>Tipo</th>
                                 <th>Pasado simple</th>
                                 <th>Acciones</th>
@@ -96,6 +97,7 @@ if (isset($_POST['submit_editar_lista'])) {
                                 <tr>
                                     <th><?= $row['id'] ?></th>
                                     <th><?= $row['word'] ?></th>
+                                    <th><?= $row['spanish'] ?></th>
                                     <th><?= (($row['type'] == "I")? "Irregular" : "Regular") ?></th>
                                     <th><?= $row['simplepast'] ?></th>
                                     <td>

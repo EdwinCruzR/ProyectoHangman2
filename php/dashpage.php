@@ -212,6 +212,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Palabra</th>
+                    <th>Español</th>
                     <th>Tipo</th>
                     <th>Pista</th>
                     <th>Pasado simple</th>
@@ -224,6 +225,7 @@
                     <tr>
                         <th><?= $row['id'] ?></th>
                         <th><?= $row['word'] ?></th>
+                        <th><?= $row['spanish'] ?></th>
                         <th><?= (($row['type'] == "I")? "IRREGULAR" : "REGULAR") ?></th>
                         <th><?= $row['clue'] ?></th>
                         <th><?= $row['simplepast'] ?></th>
