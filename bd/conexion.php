@@ -1,7 +1,8 @@
 <?php
-$servidor = "65.99.225.56";
+
+$servidor = "localhost";
 $usuario = "cbtised3_hangman";
-$contrasenia      = "vGVWQ_Ljlm*K";
+$contrasenia      = "";
 $nombreBaseDatos = "cbtised3_hangman";
 $conexion = new mysqli($servidor, $usuario, $contrasenia, $nombreBaseDatos);
 ?>

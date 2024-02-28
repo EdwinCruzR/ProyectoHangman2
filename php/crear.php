@@ -82,13 +82,13 @@ $iduser = $_SESSION['id'];
                 $isgeneral = (isset($_POST["wordSource"]) && $_POST["wordSource"] == "0") ? 1 : 0;
                 $random = (isset($_POST["randomOrder"]) && $_POST["randomOrder"] == "on") ? 1 : 0;
                 $islist = (isset($_POST["wordListSelect"]) && $_POST["wordListSelect"] != "0") ? intval($_POST['wordListSelect']) : 0;              
-                // echo $isgeneral;
+                
                 $roomcode = '';
                 do {
                     $roomcode = makeRoomCode();
                     $verifCode = mysqli_query($conexion, "SELECT roomcode FROM room WHERE roomcode='$roomcode'");
                 } while (mysqli_num_rows($verifCode) != 0);
-
+                
                 $qrcode = 'https://www.cbtis150.edu.mx/hangman/php/roomgame.php?roomcode='.$roomcode;
 
                 $insertCreate = mysqli_prepare($conexion, "INSERT INTO room (roomname, description, lives, clue, clueafter, feedback, random, isopen, hasstartdatetime, startdatetime, hasenddatetime, enddatetime, isgeneral, roomcode, qrstring, user_id, lists_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -131,7 +131,7 @@ $iduser = $_SESSION['id'];
                 if(!($insertCreate)){
                     echo "<script> alert('Error al crear la sala'); </script>";
                 }else{
-                    redirectToDashpage('Se creó correctamente');
+                    // redirectToDashpage('Se creó correctamente');
                 }
 
             }
